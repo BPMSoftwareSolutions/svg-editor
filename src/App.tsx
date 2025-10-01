@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { SelectionProvider } from './contexts/SelectionContext'
 import FileUploader from './components/FileUploader'
 import SVGViewer from './components/SVGViewer'
 import './styles/App.css'
@@ -18,26 +19,28 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>SVG Editor</h1>
-        {fileName && (
-          <div className="file-info">
-            <span className="file-name">{fileName}</span>
-            <button onClick={handleClear} className="clear-button">
-              Clear
-            </button>
-          </div>
-        )}
-      </header>
-      <main className="app-main">
-        {!svgContent ? (
-          <FileUploader onFileLoad={handleFileLoad} />
-        ) : (
-          <SVGViewer svgContent={svgContent} />
-        )}
-      </main>
-    </div>
+    <SelectionProvider>
+      <div className="app">
+        <header className="app-header">
+          <h1>SVG Editor</h1>
+          {fileName && (
+            <div className="file-info">
+              <span className="file-name">{fileName}</span>
+              <button onClick={handleClear} className="clear-button">
+                Clear
+              </button>
+            </div>
+          )}
+        </header>
+        <main className="app-main">
+          {!svgContent ? (
+            <FileUploader onFileLoad={handleFileLoad} />
+          ) : (
+            <SVGViewer svgContent={svgContent} />
+          )}
+        </main>
+      </div>
+    </SelectionProvider>
   )
 }
 

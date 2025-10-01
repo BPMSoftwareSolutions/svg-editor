@@ -1,4 +1,7 @@
 import { useRef, useState, useEffect, WheelEvent, MouseEvent } from 'react'
+import { useSelection } from '../contexts/SelectionContext'
+import SelectionOverlay from './SelectionOverlay'
+import ElementInspector from './ElementInspector'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
@@ -13,6 +16,8 @@ interface ViewportState {
 
 function SVGViewer({ svgContent }: SVGViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const svgContentRef = useRef<HTMLDivElement>(null)
+  const { selectElement } = useSelection()
   const [viewport, setViewport] = useState<ViewportState>({
     scale: 1,
     translateX: 0,
@@ -25,6 +30,42 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
   useEffect(() => {
     setViewport({ scale: 1, translateX: 0, translateY: 0 })
   }, [svgContent])
+
+  // Add click handlers to SVG elements
+  useEffect(() => {
+    const svgElement = svgContentRef.current?.querySelector('svg')
+    if (!svgElement) return
+
+    const handleElementClick = (e: Event) => {
+      const target = e.target as SVGElement
+
+      // Don't select the root SVG element
+      if (target.tagName.toLowerCase() === 'svg') {
+        selectElement(null)
+        return
+      }
+
+      // Select the clicked element
+      e.stopPropagation()
+      selectElement(target)
+    }
+
+    // Add click listeners to all SVG child elements
+    const elements = svgElement.querySelectorAll('*')
+    elements.forEach(el => {
+      el.addEventListener('click', handleElementClick)
+    })
+
+    // Click on SVG background clears selection
+    svgElement.addEventListener('click', handleElementClick)
+
+    return () => {
+      elements.forEach(el => {
+        el.removeEventListener('click', handleElementClick)
+      })
+      svgElement.removeEventListener('click', handleElementClick)
+    }
+  }, [svgContent, selectElement])
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -83,6 +124,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
 
   return (
     <div className="svg-viewer">
+      <ElementInspector />
       <div className="viewer-controls">
         <button onClick={handleZoomIn} title="Zoom In">+</button>
         <button onClick={handleZoomOut} title="Zoom Out">-</button>
@@ -98,7 +140,9 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
       >
+        <SelectionOverlay />
         <div
+          ref={svgContentRef}
           className="svg-content"
           style={{
             transform: `translate(${viewport.translateX}px, ${viewport.translateY}px) scale(${viewport.scale})`,

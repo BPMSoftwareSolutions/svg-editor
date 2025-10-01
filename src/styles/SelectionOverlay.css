@@ -1,0 +1,54 @@
+.selection-overlay {
+  position: absolute;
+  border: 2px solid #646cff;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 0 0 1px rgba(100, 108, 255, 0.3);
+}
+
+.selection-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #646cff;
+  border: 1px solid white;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.selection-handle.top-left {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.selection-handle.top-right {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.selection-handle.bottom-left {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.selection-handle.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+@media (prefers-color-scheme: light) {
+  .selection-overlay {
+    border-color: #4338ca;
+    box-shadow: 0 0 0 1px rgba(67, 56, 202, 0.3);
+  }
+
+  .selection-handle {
+    background-color: #4338ca;
+  }
+}
+
