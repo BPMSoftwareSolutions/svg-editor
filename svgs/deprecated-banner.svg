@@ -1,0 +1,142 @@
+<svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Dark code editor background -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e1e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#252526;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Red to Orange gradient for danger -->
+    <linearGradient id="dangerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F97316;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Border glow -->
+    <filter id="borderGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="280" fill="url(#bgGrad)"/>
+
+  <!-- Main border with corner cuts -->
+  <path d="M 30,10 L 870,10 L 870,250 L 30,250 Z" 
+        fill="none" 
+        stroke="#4A5568" 
+        stroke-width="2" 
+        stroke-dasharray="8,4"
+        opacity="0.6"/>
+  
+  <!-- Inner border -->
+  <path d="M 40,20 L 860,20 L 860,240 L 40,240 Z" 
+        fill="none" 
+        stroke="#4A5568" 
+        stroke-width="1" 
+        stroke-dasharray="4,2"
+        opacity="0.4"/>
+
+  <!-- Header Section -->
+  <g id="header">
+    <!-- Deprecated icon - prohibition symbol with X -->
+    <g transform="translate(60, 45)">
+      <!-- Outer circle -->
+      <circle cx="0" cy="0" r="18" fill="none" stroke="url(#dangerGrad)" stroke-width="3"/>
+      <!-- Diagonal slash -->
+      <line x1="-12" y1="-12" x2="12" y2="12" stroke="url(#dangerGrad)" stroke-width="3" stroke-linecap="round"/>
+      <!-- X mark in center -->
+      <path d="M -6,-6 L 6,6 M 6,-6 L -6,6" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Main header text with gradient -->
+    <text x="95" y="50" font-family="'Fira Code', 'Courier New', monospace" font-size="16" font-weight="bold" fill="url(#dangerGrad)">
+      DEPRECATED - Migration Required by Q2 2026
+    </text>
+  </g>
+
+  <!-- Status Line -->
+  <g id="status" transform="translate(60, 80)">
+    <text font-family="'Fira Code', 'Courier New', monospace" font-size="13" fill="#9CA3AF">
+      <tspan x="0" y="0">Sunset Date: June 30, 2026</tspan>
+      <tspan x="250" y="0" fill="#EF4444">⚠</tspan>
+      <tspan x="280" y="0">| Support Ends: March 31, 2026</tspan>
+      <tspan x="560" y="0" fill="#EF4444">⚠</tspan>
+    </text>
+  </g>
+
+  <!-- Divider line -->
+  <line x1="60" y1="105" x2="840" y2="105" stroke="#4A5568" stroke-width="1" opacity="0.5"/>
+
+  <!-- AI Agents notice -->
+  <text x="60" y="130" font-family="'Fira Code', 'Courier New', monospace" font-size="13" font-weight="bold" fill="#E5E7EB">
+    ACTION REQUIRED: Migrate to v2 API - See migration guide at /docs/migration
+  </text>
+
+  <!-- Divider line -->
+  <line x1="60" y1="145" x2="840" y2="145" stroke="#4A5568" stroke-width="1" opacity="0.5"/>
+
+  <!-- Quick Guide header -->
+  <text x="60" y="170" font-family="'Fira Code', 'Courier New', monospace" font-size="13" font-style="italic" fill="#9CA3AF">
+    Migration Path:
+  </text>
+
+  <!-- Migration steps -->
+  <g id="do-items" transform="translate(60, 185)">
+    <text font-family="'Fira Code', 'Courier New', monospace" font-size="12" fill="#10B981">
+      <tspan x="0" y="0">→</tspan>
+      <tspan x="25" y="0" fill="#D1FAE5">Review migration guide and breaking changes</tspan>
+    </text>
+    <text font-family="'Fira Code', 'Courier New', monospace" font-size="12" fill="#10B981">
+      <tspan x="0" y="22">→</tspan>
+      <tspan x="25" y="22" fill="#D1FAE5">Update imports to new v2 API endpoints</tspan>
+    </text>
+  </g>
+
+  <!-- Warning items -->
+  <g id="warning-items" transform="translate(480, 185)">
+    <text font-family="'Fira Code', 'Courier New', monospace" font-size="12" fill="#EF4444">
+      <tspan x="0" y="0">✗</tspan>
+      <tspan x="25" y="0" fill="#FEE2E2">No new features will be added</tspan>
+    </text>
+    <text font-family="'Fira Code', 'Courier New', monospace" font-size="12" fill="#EF4444">
+      <tspan x="0" y="22">✗</tspan>
+      <tspan x="25" y="22" fill="#FEE2E2">Security patches only until sunset</tspan>
+    </text>
+  </g>
+
+  <!-- Corner accent markers with gradient -->
+  <g opacity="0.4">
+    <!-- Top left -->
+    <line x1="30" y1="10" x2="50" y2="10" stroke="url(#dangerGrad)" stroke-width="2"/>
+    <line x1="30" y1="10" x2="30" y2="30" stroke="url(#dangerGrad)" stroke-width="2"/>
+    
+    <!-- Top right -->
+    <line x1="870" y1="10" x2="850" y2="10" stroke="url(#dangerGrad)" stroke-width="2"/>
+    <line x1="870" y1="10" x2="870" y2="30" stroke="url(#dangerGrad)" stroke-width="2"/>
+    
+    <!-- Bottom left -->
+    <line x1="30" y1="250" x2="50" y2="250" stroke="url(#dangerGrad)" stroke-width="2"/>
+    <line x1="30" y1="250" x2="30" y2="230" stroke="url(#dangerGrad)" stroke-width="2"/>
+    
+    <!-- Bottom right -->
+    <line x1="870" y1="250" x2="850" y2="250" stroke="url(#dangerGrad)" stroke-width="2"/>
+    <line x1="870" y1="250" x2="870" y2="230" stroke="url(#dangerGrad)" stroke-width="2"/>
+  </g>
+
+  <!-- Comment slashes on left side -->
+  <g opacity="0.3" fill="#6B7280" font-family="'Fira Code', monospace" font-size="16">
+    <text x="15" y="30">//</text>
+    <text x="15" y="60">//</text>
+    <text x="15" y="90">//</text>
+    <text x="15" y="120">//</text>
+    <text x="15" y="150">//</text>
+    <text x="15" y="180">//</text>
+    <text x="15" y="210">//</text>
+    <text x="15" y="240">//</text>
+  </g>
+</svg>
