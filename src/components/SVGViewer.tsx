@@ -3,6 +3,7 @@ import { useSelection } from '../contexts/SelectionContext'
 import SelectionOverlay from './SelectionOverlay'
 import ElementInspector from './ElementInspector'
 import Toolbar from './Toolbar'
+import TreePanel from './TreePanel'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
@@ -226,6 +227,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
 
   return (
     <div className="svg-viewer">
+      <TreePanel />
       <ElementInspector />
       <Toolbar />
       <div className="viewer-controls">
