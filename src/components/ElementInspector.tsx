@@ -4,6 +4,16 @@ import '../styles/ElementInspector.css'
 function ElementInspector() {
   const { selectedElement, clearSelection } = useSelection()
 
+  const handleDelete = () => {
+    if (!selectedElement) return
+
+    // Remove element from DOM
+    selectedElement.element.remove()
+
+    // Clear selection
+    clearSelection()
+  }
+
   if (!selectedElement) {
     return (
       <div className="element-inspector empty">
@@ -26,9 +36,14 @@ function ElementInspector() {
     <div className="element-inspector">
       <div className="inspector-header">
         <h3>Element Inspector</h3>
-        <button onClick={clearSelection} className="close-button" title="Clear Selection">
-          ×
-        </button>
+        <div className="inspector-actions">
+          <button onClick={handleDelete} className="delete-button" title="Delete element (Del)">
+            🗑️
+          </button>
+          <button onClick={clearSelection} className="close-button" title="Clear Selection">
+            ×
+          </button>
+        </div>
       </div>
 
       <div className="inspector-section">

@@ -31,6 +31,23 @@
   font-size: 0.9rem;
 }
 
+.export-button {
+  padding: 0.4em 1em;
+  font-size: 0.9em;
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 0.5rem;
+}
+
+.export-button:hover {
+  background-color: #15803d;
+  border-color: transparent;
+}
+
 .clear-button {
   padding: 0.4em 1em;
   font-size: 0.9em;

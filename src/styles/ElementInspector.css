@@ -58,6 +58,31 @@
   color: #fff;
 }
 
+.inspector-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-button:hover {
+  color: #dc2626;
+  transform: scale(1.1);
+}
+
 .close-button {
   background: none;
   border: none;

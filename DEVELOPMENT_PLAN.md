@@ -49,9 +49,10 @@ React provides significant advantages for this type of interactive editor:
 - SelectionOverlay component for visual indicators
 - ElementInspector component showing selected element details
 - Global selection state management (Context API or Zustand)
+- Delete element functionality with keyboard shortcut
 
-**User Value**: Users can identify and select specific elements within complex SVGs
-**Testing**: Click on various element types (circles, paths, groups) and verify selection feedback
+**User Value**: Users can identify and select specific elements within complex SVGs, and remove unwanted elements
+**Testing**: Click on various element types (circles, paths, groups) and verify selection feedback. Test element deletion.
 
 **Technical Tasks**:
 - [ ] Create SelectionContext for managing selected elements
@@ -60,6 +61,8 @@ React provides significant advantages for this type of interactive editor:
 - [ ] Create ElementInspector panel component
 - [ ] Add selection state hooks and utilities
 - [ ] Handle nested elements and groups with React refs
+- [ ] Implement delete functionality (Delete key + delete button)
+- [ ] Update SVG content state after element deletion
 
 ### Iteration 3: Move & Drag Functionality 🚚
 **Goal**: Allow users to drag selected elements using React's event system
