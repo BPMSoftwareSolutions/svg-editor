@@ -1,8 +1,19 @@
+import { useState, useEffect } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import '../styles/ElementInspector.css'
 
 function ElementInspector() {
   const { selectedElement, clearSelection } = useSelection()
+  const [textContent, setTextContent] = useState('')
+
+  // Update text content when selection changes
+  useEffect(() => {
+    if (selectedElement && selectedElement.type === 'text') {
+      setTextContent(selectedElement.element.textContent || '')
+    } else {
+      setTextContent('')
+    }
+  }, [selectedElement])
 
   const handleDelete = () => {
     if (!selectedElement) return
@@ -12,6 +23,56 @@ function ElementInspector() {
 
     // Clear selection
     clearSelection()
+  }
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextContent(e.target.value)
+  }
+
+  const handleTextBlur = () => {
+    if (!selectedElement || selectedElement.type !== 'text') return
+    selectedElement.element.textContent = textContent
+  }
+
+  const handleTextKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      ;(e.target as HTMLTextAreaElement).blur()
+    }
+  }
+
+  const bringToFront = () => {
+    if (!selectedElement) return
+    const parent = selectedElement.element.parentElement
+    if (parent) {
+      parent.appendChild(selectedElement.element)
+    }
+  }
+
+  const sendToBack = () => {
+    if (!selectedElement) return
+    const parent = selectedElement.element.parentElement
+    if (parent && parent.firstChild) {
+      parent.insertBefore(selectedElement.element, parent.firstChild)
+    }
+  }
+
+  const bringForward = () => {
+    if (!selectedElement) return
+    const element = selectedElement.element
+    const nextSibling = element.nextElementSibling
+    if (nextSibling) {
+      element.parentElement?.insertBefore(nextSibling, element)
+    }
+  }
+
+  const sendBackward = () => {
+    if (!selectedElement) return
+    const element = selectedElement.element
+    const prevSibling = element.previousElementSibling
+    if (prevSibling) {
+      element.parentElement?.insertBefore(element, prevSibling)
+    }
   }
 
   if (!selectedElement) {
@@ -65,6 +126,40 @@ function ElementInspector() {
           <p className="element-class">.{className}</p>
         </div>
       )}
+
+      {type === 'text' && (
+        <div className="inspector-section">
+          <h4>Text Content</h4>
+          <textarea
+            className="text-editor"
+            value={textContent}
+            onChange={handleTextChange}
+            onBlur={handleTextBlur}
+            onKeyDown={handleTextKeyDown}
+            placeholder="Enter text content..."
+            rows={3}
+          />
+          <p className="hint-text">Press Enter to apply, Shift+Enter for new line</p>
+        </div>
+      )}
+
+      <div className="inspector-section">
+        <h4>Z-Order</h4>
+        <div className="z-order-controls">
+          <button onClick={bringToFront} className="z-order-button" title="Bring to Front">
+            ⬆️ To Front
+          </button>
+          <button onClick={bringForward} className="z-order-button" title="Bring Forward">
+            ⬆ Forward
+          </button>
+          <button onClick={sendBackward} className="z-order-button" title="Send Backward">
+            ⬇ Backward
+          </button>
+          <button onClick={sendToBack} className="z-order-button" title="Send to Back">
+            ⬇️ To Back
+          </button>
+        </div>
+      </div>
 
       <div className="inspector-section">
         <h4>Dimensions</h4>
