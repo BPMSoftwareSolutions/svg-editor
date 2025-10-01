@@ -5,14 +5,28 @@
   z-index: 100;
   box-shadow: 0 0 0 1px rgba(100, 108, 255, 0.3);
   cursor: grab;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 .selection-overlay.dragging {
   cursor: grabbing;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.5);
 }
 
 .selection-overlay.resizing {
   cursor: default;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .selection-handle {
@@ -24,6 +38,14 @@
   border-radius: 50%;
   pointer-events: auto;
   cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.selection-handle:hover {
+  width: 10px;
+  height: 10px;
+  background-color: #4338ca;
+  box-shadow: 0 0 4px rgba(100, 108, 255, 0.6);
 }
 
 .selection-handle.top-left {
