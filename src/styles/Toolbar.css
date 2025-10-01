@@ -1,0 +1,87 @@
+.toolbar {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(26, 26, 26, 0.95);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  min-width: 400px;
+}
+
+.toolbar-section {
+  margin-bottom: 0;
+}
+
+.toolbar-section h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.toolbar-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.toolbar-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.75rem;
+  min-width: 80px;
+}
+
+.toolbar-button:hover:not(:disabled) {
+  background-color: rgba(100, 108, 255, 0.2);
+  border-color: #646cff;
+}
+
+.toolbar-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.toolbar-button svg {
+  flex-shrink: 0;
+}
+
+.toolbar-button span {
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: light) {
+  .toolbar {
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .toolbar-section h4 {
+    color: #999;
+  }
+
+  .toolbar-button {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .toolbar-button:hover:not(:disabled) {
+    background-color: rgba(67, 56, 202, 0.1);
+    border-color: #4338ca;
+  }
+}
+

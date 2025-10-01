@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, WheelEvent, MouseEvent } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import SelectionOverlay from './SelectionOverlay'
 import ElementInspector from './ElementInspector'
+import Toolbar from './Toolbar'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
@@ -125,6 +126,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
   return (
     <div className="svg-viewer">
       <ElementInspector />
+      <Toolbar />
       <div className="viewer-controls">
         <button onClick={handleZoomIn} title="Zoom In">+</button>
         <button onClick={handleZoomOut} title="Zoom Out">-</button>
