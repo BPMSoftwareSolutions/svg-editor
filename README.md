@@ -6,7 +6,8 @@ A modern, interactive SVG editor built with React and TypeScript.
 
 - 📁 **File Upload**: Drag and drop SVG files or click to browse
 - 🔍 **Pan & Zoom**: Navigate large SVG files with mouse controls
-- 🎯 **Element Selection**: Click on any SVG element to select it
+- 🌳 **Tree View Panel**: Hierarchical view of SVG structure with z-order visualization
+- 🎯 **Element Selection**: Click on any SVG element to select it (tree or canvas)
 - 🖱️ **Drag & Move**: Drag selected elements to reposition them
 - 📏 **Resize**: Use corner handles to resize elements
 - 📚 **Z-Order Management**: Control element stacking with toolbar buttons
@@ -56,6 +57,18 @@ npm run build
 - **Zoom In**: Scroll up or click the + button
 - **Zoom Out**: Scroll down or click the - button
 - **Reset View**: Click the Reset button
+
+### Tree View Panel
+
+The left sidebar shows a hierarchical tree view of your SVG structure:
+
+- **Element Icons**: Visual indicators for different element types (📄 svg, 📁 group, ▭ rect, ⭕ circle, etc.)
+- **Element Labels**: Shows tag name, ID (with `#`), and class (with `.`)
+- **Child Count**: Groups show the number of children in parentheses
+- **Expand/Collapse**: Click the ▶/▼ button to show/hide children
+- **Selection**: Click any element in the tree to select it on the canvas
+- **Z-Order Visualization**: Elements are listed top-to-bottom (front-to-back)
+- **Toggle Panel**: Click the ◀ button to hide the panel, ▶ to show it
 
 ### Editing Elements
 
