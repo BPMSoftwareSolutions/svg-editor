@@ -24,6 +24,7 @@ function ElementInspector() {
   }
 
   const { element, id, type, bbox } = selectedElement
+  const className = element.getAttribute('class')
 
   // Get element attributes
   const attributes: Record<string, string> = {}
@@ -51,10 +52,19 @@ function ElementInspector() {
         <p className="element-type">&lt;{type}&gt;</p>
       </div>
 
-      <div className="inspector-section">
-        <h4>ID</h4>
-        <p className="element-id">{id}</p>
-      </div>
+      {id && (
+        <div className="inspector-section">
+          <h4>ID</h4>
+          <p className="element-id">#{id}</p>
+        </div>
+      )}
+
+      {className && (
+        <div className="inspector-section">
+          <h4>Class</h4>
+          <p className="element-class">.{className}</p>
+        </div>
+      )}
 
       <div className="inspector-section">
         <h4>Dimensions</h4>
