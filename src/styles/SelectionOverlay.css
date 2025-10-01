@@ -11,6 +11,10 @@
   cursor: grabbing;
 }
 
+.selection-overlay.resizing {
+  cursor: default;
+}
+
 .selection-handle {
   position: absolute;
   width: 8px;

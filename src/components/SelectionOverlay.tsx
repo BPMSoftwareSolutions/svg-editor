@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { applyTranslation } from '../utils/transform'
+import { useResize, ResizeHandle } from '../hooks/useResize'
 import '../styles/SelectionOverlay.css'
 
 interface BoundingBox {
@@ -17,25 +18,62 @@ function SelectionOverlay() {
   const dragStartRef = useRef({ x: 0, y: 0 })
   const overlayRef = useRef<HTMLDivElement>(null)
 
+  const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
+    onResize: (width, height, left, top) => {
+      if (!selectedElement) return
+
+      const element = selectedElement.element
+      const tagName = element.tagName.toLowerCase()
+
+      // Get viewport scale
+      const viewerContainer = document.querySelector('.svg-content') as HTMLElement
+      const transform = viewerContainer?.style.transform || ''
+      const scaleMatch = transform.match(/scale\(([^)]+)\)/)
+      const scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1
+
+      // Update element dimensions based on type
+      switch (tagName) {
+        case 'rect':
+        case 'image':
+          element.setAttribute('width', (width / scale).toString())
+          element.setAttribute('height', (height / scale).toString())
+          break
+        case 'circle':
+          const radius = Math.min(width, height) / (2 * scale)
+          element.setAttribute('r', radius.toString())
+          break
+        case 'ellipse':
+          element.setAttribute('rx', (width / (2 * scale)).toString())
+          element.setAttribute('ry', (height / (2 * scale)).toString())
+          break
+      }
+
+      // Update bounding box
+      updateBbox()
+    },
+  })
+
+  const updateBbox = () => {
+    if (!selectedElement) return
+
+    const rect = selectedElement.element.getBoundingClientRect()
+    const viewerContainer = document.querySelector('.viewer-container')
+
+    if (viewerContainer) {
+      const containerRect = viewerContainer.getBoundingClientRect()
+      setBbox({
+        x: rect.left - containerRect.left,
+        y: rect.top - containerRect.top,
+        width: rect.width,
+        height: rect.height,
+      })
+    }
+  }
+
   useEffect(() => {
     if (!selectedElement) {
       setBbox(null)
       return
-    }
-
-    const updateBbox = () => {
-      const rect = selectedElement.element.getBoundingClientRect()
-      const viewerContainer = document.querySelector('.viewer-container')
-      
-      if (viewerContainer) {
-        const containerRect = viewerContainer.getBoundingClientRect()
-        setBbox({
-          x: rect.left - containerRect.left,
-          y: rect.top - containerRect.top,
-          width: rect.width,
-          height: rect.height,
-        })
-      }
     }
 
     updateBbox()
@@ -51,13 +89,22 @@ function SelectionOverlay() {
   }, [selectedElement])
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!selectedElement) return
+    if (!selectedElement || isResizing) return
 
     e.stopPropagation()
     setIsDragging(true)
     dragStartRef.current = { x: e.clientX, y: e.clientY }
 
     document.body.style.cursor = 'grabbing'
+  }
+
+  const handleHandleMouseDown = (e: React.MouseEvent, handle: ResizeHandle) => {
+    if (!selectedElement || !bbox) return
+
+    e.stopPropagation()
+
+    const rect = selectedElement.element.getBoundingClientRect()
+    handleResizeStart(e, handle, rect)
   }
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -109,12 +156,27 @@ function SelectionOverlay() {
     }
   }, [isDragging, selectedElement])
 
+  useEffect(() => {
+    if (isResizing) {
+      const handleMove = (e: any) => handleResizeMove(e)
+      const handleUp = (e: any) => handleResizeEnd(e)
+
+      document.addEventListener('mousemove', handleMove)
+      document.addEventListener('mouseup', handleUp)
+
+      return () => {
+        document.removeEventListener('mousemove', handleMove)
+        document.removeEventListener('mouseup', handleUp)
+      }
+    }
+  }, [isResizing, handleResizeMove, handleResizeEnd])
+
   if (!bbox) return null
 
   return (
     <div
       ref={overlayRef}
-      className={`selection-overlay ${isDragging ? 'dragging' : ''}`}
+      className={`selection-overlay ${isDragging ? 'dragging' : ''} ${isResizing ? 'resizing' : ''}`}
       style={{
         left: `${bbox.x}px`,
         top: `${bbox.y}px`,
@@ -123,10 +185,22 @@ function SelectionOverlay() {
       }}
       onMouseDown={handleMouseDown}
     >
-      <div className="selection-handle top-left" />
-      <div className="selection-handle top-right" />
-      <div className="selection-handle bottom-left" />
-      <div className="selection-handle bottom-right" />
+      <div
+        className="selection-handle top-left"
+        onMouseDown={(e) => handleHandleMouseDown(e, 'top-left')}
+      />
+      <div
+        className="selection-handle top-right"
+        onMouseDown={(e) => handleHandleMouseDown(e, 'top-right')}
+      />
+      <div
+        className="selection-handle bottom-left"
+        onMouseDown={(e) => handleHandleMouseDown(e, 'bottom-left')}
+      />
+      <div
+        className="selection-handle bottom-right"
+        onMouseDown={(e) => handleHandleMouseDown(e, 'bottom-right')}
+      />
     </div>
   )
 }
