@@ -19,7 +19,7 @@ function SelectionOverlay() {
   const overlayRef = useRef<HTMLDivElement>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
-    onResize: (width, height, left, top) => {
+    onResize: (width, height, _left, _top) => {
       if (!selectedElement) return
 
       const element = selectedElement.element
