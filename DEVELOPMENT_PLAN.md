@@ -1,130 +1,146 @@
 # SVG Editor Development Plan
 
 ## Project Overview
-Create a web-based SVG editor in TypeScript that allows users to:
+Create a web-based SVG editor using **React + TypeScript** that allows users to:
 - View SVG files
 - Select individual SVG elements by clicking
 - Move/drag elements to new positions
 - Resize elements with handles
 - Change element z-ordering (bring to front/send to back)
 
+## Why React?
+React provides significant advantages for this type of interactive editor:
+- **Component-based architecture**: Easy to create reusable UI components (selection handles, toolbars, panels)
+- **State management**: Built-in state handling for selection, transforms, and editor state
+- **Event handling**: Simplified event delegation and synthetic events
+- **Performance**: Virtual DOM optimizations and React's reconciliation
+- **Developer experience**: Hot reloading, excellent TypeScript integration, rich ecosystem
+- **Testing**: Excellent testing tools (React Testing Library, Jest)
+- **Maintainability**: Clear component boundaries and data flow
+
 ## Development Iterations
 
 ### Iteration 1: Foundation & Basic Viewer 🏗️
-**Goal**: Create a working SVG viewer that can load and display SVG files
+**Goal**: Create a working SVG viewer using React that can load and display SVG files
 **Duration**: 1-2 days
 **Deliverables**:
-- TypeScript project setup with proper build configuration
-- HTML page with SVG container
-- Basic SVG file loader (drag-and-drop or file input)
-- SVG display in a viewport with pan/zoom capabilities
+- React + TypeScript project setup with Vite/Create React App
+- Main App component with SVG viewer
+- File upload component (drag-and-drop or file input)
+- SVG display component with pan/zoom capabilities
+- Basic component structure and routing
 
-**User Value**: Users can load and view SVG files in the browser
+**User Value**: Users can load and view SVG files in a React-based interface
 **Testing**: Load various SVG files (simple shapes, complex illustrations) and verify proper display
 
 **Technical Tasks**:
-- [ ] Set up package.json with TypeScript, Webpack/Vite, and dev dependencies
-- [ ] Create tsconfig.json with appropriate compiler options
-- [ ] Build HTML structure with file input and SVG container
-- [ ] Implement SVG file reading and DOM injection
-- [ ] Add basic viewport controls (pan/zoom)
+- [ ] Set up React + TypeScript project with Vite
+- [ ] Create main App component structure
+- [ ] Build FileUploader component with drag-and-drop
+- [ ] Create SVGViewer component for displaying SVGs
+- [ ] Add basic viewport controls (pan/zoom) using React hooks
+- [ ] Set up component prop types and interfaces
 
 ### Iteration 2: Element Selection System 🎯
-**Goal**: Enable clicking on SVG elements to select them with visual feedback
+**Goal**: Enable clicking on SVG elements to select them with visual feedback using React state
 **Duration**: 2-3 days
 **Deliverables**:
-- Click-to-select functionality for any SVG element
-- Visual selection indicator (outline/highlight)
-- Element information display (tag name, attributes)
-- Selection state management
+- Click-to-select functionality with React event handlers
+- SelectionOverlay component for visual indicators
+- ElementInspector component showing selected element details
+- Global selection state management (Context API or Zustand)
 
 **User Value**: Users can identify and select specific elements within complex SVGs
 **Testing**: Click on various element types (circles, paths, groups) and verify selection feedback
 
 **Technical Tasks**:
-- [ ] Implement event delegation for SVG element clicks
-- [ ] Create selection state management system
-- [ ] Add visual selection indicators (bounding box, outline)
-- [ ] Build element inspector panel showing selected element details
-- [ ] Handle nested elements and groups properly
+- [ ] Create SelectionContext for managing selected elements
+- [ ] Build SelectionOverlay component with bounding box rendering
+- [ ] Implement SVGElement wrapper components with click handlers
+- [ ] Create ElementInspector panel component
+- [ ] Add selection state hooks and utilities
+- [ ] Handle nested elements and groups with React refs
 
 ### Iteration 3: Move & Drag Functionality 🚚
-**Goal**: Allow users to drag selected elements to new positions
+**Goal**: Allow users to drag selected elements using React's event system
 **Duration**: 2-3 days
 **Deliverables**:
-- Drag-and-drop functionality for selected elements
-- Real-time position updates during drag
-- Snap-to-grid option (optional enhancement)
-- Undo/redo for move operations
+- DragHandler component for mouse/touch interactions
+- Real-time position updates using React state
+- Transform utilities for different element types
+- UndoRedoProvider for operation history
 
 **User Value**: Users can reposition elements within their SVG designs
 **Testing**: Drag various element types and verify position updates are preserved
 
 **Technical Tasks**:
-- [ ] Implement mouse/touch drag event handlers
-- [ ] Create transform calculation system for different element types
+- [ ] Create useDrag custom hook for drag interactions
+- [ ] Build DragHandler component with mouse/touch events
+- [ ] Implement transform calculation utilities
 - [ ] Add real-time visual feedback during drag operations
-- [ ] Handle coordinate system transformations
-- [ ] Implement basic undo/redo stack for moves
+- [ ] Create UndoRedoContext for move operations
+- [ ] Handle coordinate system transformations with React refs
 
 ### Iteration 4: Resize Handles & Scaling 📏
-**Goal**: Add resize handles around selected elements for scaling
+**Goal**: Add resize handles around selected elements using React components
 **Duration**: 3-4 days
 **Deliverables**:
-- Resize handles (8-point: corners + midpoints) around selected elements
-- Proportional and free-form resize options
-- Visual feedback during resize operations
-- Proper handling of different element types (circles, rectangles, paths)
+- ResizeHandles component with 8-point handles
+- useResize custom hook for scaling logic
+- Transform components for different element types
+- Constraint options component (aspect ratio, etc.)
 
 **User Value**: Users can resize elements to fit their design needs
 **Testing**: Resize various shapes and verify transforms are applied correctly
 
 **Technical Tasks**:
-- [ ] Create resize handle rendering system
-- [ ] Implement resize mathematics for different element types
-- [ ] Add constraint options (maintain aspect ratio, etc.)
-- [ ] Handle complex path elements and groups
-- [ ] Update element attributes/transforms appropriately
+- [ ] Create ResizeHandles component with positioned handles
+- [ ] Build useResize hook for resize mathematics
+- [ ] Implement constraint options (maintain aspect ratio, etc.)
+- [ ] Create element-specific transform components
+- [ ] Add visual feedback during resize operations
+- [ ] Handle complex path elements and groups with React portals
 
 ### Iteration 5: Z-Order Management 📚
-**Goal**: Provide controls to change element stacking order
+**Goal**: Provide React components for changing element stacking order
 **Duration**: 1-2 days
 **Deliverables**:
-- Bring to front / Send to back buttons
-- Move up / Move down one layer
-- Visual layer indicator
-- Layer panel showing element hierarchy
+- Toolbar component with z-order buttons
+- LayerPanel component showing element hierarchy
+- useZOrder custom hook for reordering logic
+- Keyboard shortcut hooks for common operations
 
 **User Value**: Users can control which elements appear in front of others
 **Testing**: Test z-ordering with overlapping elements and verify visual stacking
 
 **Technical Tasks**:
-- [ ] Implement DOM manipulation for element reordering
-- [ ] Create toolbar with z-order controls
-- [ ] Add keyboard shortcuts for common operations
-- [ ] Build layer panel showing element stack
-- [ ] Handle z-ordering within groups
+- [ ] Create Toolbar component with z-order controls
+- [ ] Build LayerPanel component with element tree
+- [ ] Implement useZOrder hook for DOM manipulation
+- [ ] Add useKeyboardShortcuts hook for common operations
+- [ ] Handle z-ordering within groups using React context
+- [ ] Create hierarchical element display components
 
 ### Iteration 6: Polish & User Experience ✨
-**Goal**: Enhance the interface and add professional polish
+**Goal**: Enhance the React interface with professional polish and UX
 **Duration**: 2-3 days
 **Deliverables**:
-- Professional CSS styling and layout
-- Keyboard shortcuts for common operations
-- Context menu for right-click operations
-- Export functionality (save modified SVG)
-- Error handling and user feedback
+- Styled-components or CSS modules for professional styling
+- ContextMenu component for right-click operations
+- ExportDialog component for saving modified SVGs
+- ErrorBoundary and loading components
+- Toast notification system
 
-**User Value**: Professional, intuitive interface that's pleasant to use
+**User Value**: Professional, intuitive React interface that's pleasant to use
 **Testing**: Full end-to-end user workflow testing and usability validation
 
 **Technical Tasks**:
-- [ ] Design and implement comprehensive CSS styling
-- [ ] Add keyboard shortcut system
-- [ ] Create context menus for element operations
-- [ ] Implement SVG export functionality
-- [ ] Add loading states and error handling
-- [ ] Create user documentation/help system
+- [ ] Design and implement comprehensive component styling
+- [ ] Create ContextMenu component with React Portal
+- [ ] Build ExportDialog component with download functionality
+- [ ] Add ErrorBoundary components and error handling
+- [ ] Implement Toast notification system
+- [ ] Create user documentation components and help modals
 
 ## Success Criteria
 
@@ -132,8 +148,9 @@ Create a web-based SVG editor in TypeScript that allows users to:
 - [ ] Works in modern browsers (Chrome, Firefox, Safari, Edge)
 - [ ] Handles SVGs up to reasonable complexity (1000+ elements)
 - [ ] Responsive design works on desktop and tablet
-- [ ] No external dependencies for core functionality
-- [ ] Clean, maintainable TypeScript code with proper typing
+- [ ] Leverages React ecosystem (hooks, context, components)
+- [ ] Clean, maintainable React + TypeScript code with proper typing
+- [ ] Efficient re-rendering with React.memo and useMemo optimizations
 
 ### User Experience Requirements
 - [ ] Intuitive selection and manipulation
@@ -143,18 +160,20 @@ Create a web-based SVG editor in TypeScript that allows users to:
 - [ ] Fast performance even with complex SVGs
 
 ### Quality Assurance
-- [ ] Unit tests for core functionality
-- [ ] Integration tests for user workflows
+- [ ] Unit tests for React components (React Testing Library)
+- [ ] Integration tests for user workflows (Cypress/Playwright)
+- [ ] Component testing with Storybook
 - [ ] Cross-browser compatibility testing
-- [ ] Performance testing with large SVG files
-- [ ] Accessibility compliance (keyboard navigation, screen readers)
+- [ ] Performance testing with React DevTools Profiler
+- [ ] Accessibility compliance (keyboard navigation, screen readers, ARIA)
 
 ## Risk Mitigation
 
 ### Technical Risks
-- **Complex SVG Parsing**: Start with simple shapes, gradually add support for complex paths
-- **Performance Issues**: Implement virtualization for large SVGs if needed
-- **Browser Compatibility**: Use TypeScript and modern build tools for better compatibility
+- **Complex SVG Parsing**: Use React's dangerouslySetInnerHTML carefully, implement safe SVG parsing
+- **Performance Issues**: Leverage React.memo, useMemo, and useCallback for optimization
+- **State Management Complexity**: Use Context API judiciously, consider Zustand for complex state
+- **Browser Compatibility**: Use TypeScript and modern build tools (Vite) for better compatibility
 
 ### User Experience Risks
 - **Steep Learning Curve**: Provide clear visual feedback and tooltips
@@ -163,12 +182,13 @@ Create a web-based SVG editor in TypeScript that allows users to:
 
 ## Definition of Done (Per Iteration)
 - [ ] Feature works as described in acceptance criteria
-- [ ] Code is properly tested (unit + integration tests)
-- [ ] Documentation is updated
+- [ ] React components are properly tested (React Testing Library + Jest)
+- [ ] Component documentation is updated (JSDoc + Storybook)
 - [ ] Cross-browser testing completed
-- [ ] Performance benchmarks meet requirements
+- [ ] Performance benchmarks meet requirements (React DevTools)
 - [ ] User testing conducted and feedback incorporated
 - [ ] Code review completed and approved
+- [ ] Components follow React best practices and patterns
 
 ## Post-Launch Enhancements (Future Iterations)
 - Multi-selection (Ctrl+click)
