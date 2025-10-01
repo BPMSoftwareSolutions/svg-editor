@@ -12,6 +12,8 @@ A modern, interactive SVG editor built with React and TypeScript.
 - 📚 **Z-Order Management**: Control element stacking with toolbar buttons
 - ⌨️ **Keyboard Shortcuts**: Efficient editing with keyboard commands
 - 🎨 **Element Inspector**: View and understand element properties
+- 💾 **Save/Export**: Download modified SVG files with all changes preserved
+- 🗑️ **Delete Elements**: Remove unwanted elements with visual feedback
 
 ## Getting Started
 
@@ -80,6 +82,14 @@ Use the toolbar at the bottom:
 
 #### Deleting
 - Press `Delete` key to remove the selected element
+- Click the 🗑️ delete button in the Element Inspector panel
+
+### Saving Your Work
+
+#### Export SVG
+- Click the **💾 Save SVG** button in the header
+- Press `Ctrl+S` (Windows/Linux) or `Cmd+S` (Mac)
+- The modified SVG will be downloaded with all your changes preserved
 
 ### Element Inspector
 
@@ -97,6 +107,7 @@ The inspector panel (top-left) shows:
 | `Delete` | Remove selected element |
 | `Arrow Keys` | Move element 1px |
 | `Shift + Arrow Keys` | Move element 10px |
+| `Ctrl+S` / `Cmd+S` | Save/Export SVG |
 
 ## Technology Stack
 
