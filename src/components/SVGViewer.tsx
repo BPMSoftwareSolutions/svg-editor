@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, WheelEvent, MouseEvent } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
+import { useAssets } from '../contexts/AssetContext'
 import { DeleteElementCommand, MoveElementCommand } from '../commands'
 import SelectionOverlay from './SelectionOverlay'
 import ElementInspector from './ElementInspector'
@@ -10,7 +11,8 @@ import MarqueeSelection from './MarqueeSelection'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
-  svgContent: string
+  svgContent?: string
+  useAssetMode?: boolean
 }
 
 interface ViewportState {
@@ -19,11 +21,15 @@ interface ViewportState {
   translateY: number
 }
 
-function SVGViewer({ svgContent }: SVGViewerProps) {
+function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const svgContentRef = useRef<HTMLDivElement>(null)
   const { selectedElements, selectElement, selectMultiple, toggleElement, clearSelection } = useSelection()
   const { executeCommand } = useUndoRedo()
+
+  // Always call useAssets hook (hooks must be called unconditionally)
+  const assetContext = useAssets()
+  const { assets, getSortedAssets } = useAssetMode ? assetContext : { assets: [], getSortedAssets: () => [] }
   const [viewport, setViewport] = useState<ViewportState>({
     scale: 1,
     translateX: 0,
@@ -32,10 +38,10 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
   const [isPanning, setIsPanning] = useState(false)
   const [panStart, setPanStart] = useState({ x: 0, y: 0 })
 
-  // Reset viewport when new SVG is loaded
+  // Reset viewport when new SVG is loaded or assets change
   useEffect(() => {
     setViewport({ scale: 1, translateX: 0, translateY: 0 })
-  }, [svgContent])
+  }, [svgContent, assets.length])
 
   // Add click handlers to SVG elements
   useEffect(() => {
@@ -203,6 +209,58 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
     }))
   }
 
+  /**
+   * Generate composite SVG from multiple assets
+   */
+  const generateCompositeContent = (): string => {
+    if (!useAssetMode || assets.length === 0) {
+      return svgContent || ''
+    }
+
+    const sortedAssets = getSortedAssets().filter(asset => asset.visible)
+
+    if (sortedAssets.length === 0) {
+      return '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"></svg>'
+    }
+
+    // Create a wrapper SVG that contains all assets
+    const groups = sortedAssets.map(asset => {
+      // Parse the asset's SVG content to extract its elements
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(asset.content, 'image/svg+xml')
+      const svgElement = doc.querySelector('svg')
+
+      if (!svgElement) return ''
+
+      // Get the inner content of the SVG
+      const innerContent = svgElement.innerHTML
+
+      // Create a group with transformations
+      const transform = [
+        `translate(${asset.position.x}, ${asset.position.y})`,
+        `scale(${asset.scale})`,
+        asset.rotation ? `rotate(${asset.rotation})` : '',
+      ].filter(Boolean).join(' ')
+
+      const opacity = asset.opacity !== undefined ? asset.opacity : 1
+
+      return `<g
+        data-asset-id="${asset.id}"
+        data-asset-name="${asset.name}"
+        transform="${transform}"
+        opacity="${opacity}"
+      >${innerContent}</g>`
+    }).join('\n')
+
+    // Create composite SVG
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 800 600">
+      ${groups}
+    </svg>`
+  }
+
+  // Get the content to render (either single SVG or composite)
+  const contentToRender = useAssetMode ? generateCompositeContent() : (svgContent || '')
+
   return (
     <div className="svg-viewer">
       <TreePanel />
@@ -236,7 +294,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
           style={{
             transform: `translate(${viewport.translateX}px, ${viewport.translateY}px) scale(${viewport.scale})`,
           }}
-          dangerouslySetInnerHTML={{ __html: svgContent }}
+          dangerouslySetInnerHTML={{ __html: contentToRender }}
         />
       </div>
     </div>
