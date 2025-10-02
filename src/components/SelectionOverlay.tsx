@@ -133,8 +133,8 @@ function SelectionOverlay() {
         }
       }
 
-      // Update bounding box
-      updateBbox()
+      // Don't update bbox during resize - it will be updated on resize end
+      // This prevents excessive re-renders during the drag operation
     },
     onResizeEnd: (width, height) => {
       if (!selectedElement || !resizeStartDimensionsRef.current) return
@@ -196,6 +196,9 @@ function SelectionOverlay() {
       resizeStartDimensionsRef.current = null
       resizeStartTransformRef.current = null
       resizeStartBBoxRef.current = null
+
+      // Update bbox after resize completes
+      updateBbox()
     },
   })
 
@@ -395,20 +398,33 @@ function SelectionOverlay() {
     }
   }, [isDragging, selectedElements, handleMouseMove, handleMouseUp])
 
+  // Use refs to avoid recreating event listeners during resize
+  const handleResizeMoveRef = useRef(handleResizeMove)
+  const handleResizeEndRef = useRef(handleResizeEnd)
+
+  useEffect(() => {
+    handleResizeMoveRef.current = handleResizeMove
+    handleResizeEndRef.current = handleResizeEnd
+  }, [handleResizeMove, handleResizeEnd])
+
   useEffect(() => {
     if (isResizing) {
-      const handleMove = (e: Event) => handleResizeMove(e as unknown as React.MouseEvent)
-      const handleUp = (e: Event) => handleResizeEnd(e as unknown as React.MouseEvent)
+      const handleMove = (e: Event) => handleResizeMoveRef.current(e as unknown as React.MouseEvent)
+      const handleUp = (e: Event) => handleResizeEndRef.current(e as unknown as React.MouseEvent)
 
       document.addEventListener('mousemove', handleMove)
       document.addEventListener('mouseup', handleUp)
 
+      // Set cursor during resize
+      document.body.style.cursor = 'inherit'
+
       return () => {
         document.removeEventListener('mousemove', handleMove)
         document.removeEventListener('mouseup', handleUp)
+        document.body.style.cursor = ''
       }
     }
-  }, [isResizing, handleResizeMove, handleResizeEnd])
+  }, [isResizing])
 
   if (!bbox) return null
 
