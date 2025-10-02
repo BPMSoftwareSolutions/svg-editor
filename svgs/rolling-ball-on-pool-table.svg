@@ -1,0 +1,267 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Felt gradient - green playing surface -->
+    <linearGradient id="feltGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d6a3f;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d5a3d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#254a32;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Wood rail gradient - darker brown -->
+    <linearGradient id="woodGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5c3a1f;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4a2f19;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3a2414;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Wood grain texture -->
+    <linearGradient id="woodGrain" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4a2f19;stop-opacity:0.3" />
+      <stop offset="20%" style="stop-color:#3a2414;stop-opacity:0.5" />
+      <stop offset="40%" style="stop-color:#4a2f19;stop-opacity:0.3" />
+      <stop offset="60%" style="stop-color:#3a2414;stop-opacity:0.5" />
+      <stop offset="80%" style="stop-color:#4a2f19;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#3a2414;stop-opacity:0.5" />
+    </linearGradient>
+    
+    <!-- Pocket shadow -->
+    <radialGradient id="pocketGradient">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a2a2a;stop-opacity:0.8" />
+    </radialGradient>
+    
+    <!-- Pocket leather -->
+    <radialGradient id="leatherGradient">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Rail cushion gradient -->
+    <linearGradient id="cushionGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f5a2e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a4a28;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#163a20;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Table shadow -->
+    <linearGradient id="tableShadow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.4" />
+    </linearGradient>
+    
+    <!-- Ball gradients -->
+    <radialGradient id="ballGradient" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </radialGradient>
+    
+    <radialGradient id="whiteCircleGrad" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1" />
+    </radialGradient>
+    
+    <radialGradient id="specularHighlight" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4" />
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0" />
+    </radialGradient>
+    
+    <radialGradient id="ballShadowGrad" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.5" />
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0" />
+    </radialGradient>
+    
+    <radialGradient id="aoGradient" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background - room floor -->
+  <rect width="1200" height="800" fill="#3d2f20"/>
+  
+  <!-- Table shadow on floor -->
+  <ellipse cx="600" cy="720" rx="480" ry="60" fill="url(#tableShadow)"/>
+  
+  <!-- Table legs (wooden) -->
+  <rect x="220" y="650" width="35" height="140" fill="#3a2414" rx="3"/>
+  <rect x="220" y="650" width="35" height="20" fill="#4a2f19" rx="3"/>
+  <rect x="945" y="650" width="35" height="140" fill="#3a2414" rx="3"/>
+  <rect x="945" y="650" width="35" height="20" fill="#4a2f19" rx="3"/>
+  <rect x="190" y="190" width="35" height="140" fill="#3a2414" rx="3"/>
+  <rect x="190" y="190" width="35" height="20" fill="#4a2f19" rx="3"/>
+  <rect x="975" y="190" width="35" height="140" fill="#3a2414" rx="3"/>
+  <rect x="975" y="190" width="35" height="20" fill="#4a2f19" rx="3"/>
+  
+  <!-- Main table body / apron -->
+  <rect x="160" y="620" width="880" height="40" fill="url(#woodGradient)" rx="5"/>
+  <rect x="160" y="620" width="880" height="40" fill="url(#woodGrain)" rx="5" opacity="0.3"/>
+  
+  <!-- Top rail frame - long sides -->
+  <rect x="140" y="140" width="920" height="60" fill="url(#woodGradient)" rx="8"/>
+  <rect x="140" y="140" width="920" height="60" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <rect x="140" y="600" width="920" height="60" fill="url(#woodGradient)" rx="8"/>
+  <rect x="140" y="600" width="920" height="60" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <!-- Top rail frame - short sides -->
+  <rect x="80" y="140" width="60" height="520" fill="url(#woodGradient)" rx="8"/>
+  <rect x="80" y="140" width="60" height="520" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <rect x="1060" y="140" width="60" height="520" fill="url(#woodGradient)" rx="8"/>
+  <rect x="1060" y="140" width="60" height="520" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <!-- Playing surface (green felt) -->
+  <rect x="180" y="180" width="840" height="440" fill="url(#feltGradient)"/>
+  
+  <!-- Rail cushions (rubber bumpers) -->
+  <path d="M 190 185 L 1010 185 L 1000 200 L 200 200 Z" fill="url(#cushionGradient)"/>
+  <path d="M 190 615 L 1010 615 L 1000 600 L 200 600 Z" fill="url(#cushionGradient)"/>
+  <path d="M 185 190 L 185 610 L 200 600 L 200 200 Z" fill="url(#cushionGradient)"/>
+  <path d="M 1015 190 L 1015 610 L 1000 600 L 1000 200 Z" fill="url(#cushionGradient)"/>
+  
+  <!-- Corner pockets -->
+  <circle cx="190" cy="190" r="25" fill="url(#pocketGradient)"/>
+  <circle cx="190" cy="190" r="20" fill="url(#leatherGradient)"/>
+  <circle cx="185" cy="185" r="5" fill="#000000" opacity="0.8"/>
+  
+  <circle cx="1010" cy="190" r="25" fill="url(#pocketGradient)"/>
+  <circle cx="1010" cy="190" r="20" fill="url(#leatherGradient)"/>
+  <circle cx="1005" cy="185" r="5" fill="#000000" opacity="0.8"/>
+  
+  <circle cx="190" cy="610" r="25" fill="url(#pocketGradient)"/>
+  <circle cx="190" cy="610" r="20" fill="url(#leatherGradient)"/>
+  <circle cx="185" cy="605" r="5" fill="#000000" opacity="0.8"/>
+  
+  <circle cx="1010" cy="610" r="25" fill="url(#pocketGradient)"/>
+  <circle cx="1010" cy="610" r="20" fill="url(#leatherGradient)"/>
+  <circle cx="1005" cy="605" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Side pockets -->
+  <ellipse cx="600" cy="185" rx="28" ry="22" fill="url(#pocketGradient)"/>
+  <ellipse cx="600" cy="185" rx="23" ry="18" fill="url(#leatherGradient)"/>
+  <circle cx="600" cy="182" r="5" fill="#000000" opacity="0.8"/>
+  
+  <ellipse cx="600" cy="615" rx="28" ry="22" fill="url(#pocketGradient)"/>
+  <ellipse cx="600" cy="615" rx="23" ry="18" fill="url(#leatherGradient)"/>
+  <circle cx="600" cy="612" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Head and foot spots -->
+  <circle cx="450" cy="400" r="3" fill="#ffffff" opacity="0.6"/>
+  <circle cx="750" cy="400" r="3" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Side diamonds/markers -->
+  <circle cx="310" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="450" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="600" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="750" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="890" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <circle cx="310" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="450" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="600" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="750" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="890" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <circle cx="175" cy="290" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="175" cy="400" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="175" cy="510" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <circle cx="1025" cy="290" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="1025" cy="400" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle cx="1025" cy="510" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <!-- Shine on rails -->
+  <rect x="140" y="145" width="920" height="15" fill="#8b6f47" opacity="0.2" rx="8"/>
+  <rect x="140" y="605" width="920" height="15" fill="#8b6f47" opacity="0.2" rx="8"/>
+  
+  <!-- Shadows on felt near rails -->
+  <rect x="180" y="180" width="840" height="30" fill="#000000" opacity="0.1"/>
+  <rect x="180" y="590" width="840" height="30" fill="#000000" opacity="0.1"/>
+  <rect x="180" y="180" width="30" height="440" fill="#000000" opacity="0.08"/>
+  <rect x="990" y="180" width="30" height="440" fill="#000000" opacity="0.08"/>
+  
+  <!-- Rolling 8-Ball (pocket-sized) -->
+  <g>
+    <!-- Ball shadow that moves with ball -->
+    <ellipse cx="400" cy="420" rx="20" ry="6" fill="url(#ballShadowGrad)">
+      <animate attributeName="cx" values="250;950;250" dur="6s" repeatCount="indefinite"/>
+    </ellipse>
+    
+    <!-- Ball group with horizontal movement -->
+    <g>
+      <animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        values="0 0; 700 0; 0 0"
+        dur="6s"
+        repeatCount="indefinite"
+      />
+      
+      <!-- Ball container that rotates -->
+      <g transform="translate(250, 400)">
+        <animateTransform
+          attributeName="transform"
+          attributeType="XML"
+          type="rotate"
+          values="0 0 0; 720 0 0; 1440 0 0"
+          dur="6s"
+          repeatCount="indefinite"
+          additive="sum"
+        />
+        
+        <!-- Main ball sphere (radius 20 to match pocket size) -->
+        <circle cx="0" cy="0" r="20" fill="url(#ballGradient)"/>
+        
+        <!-- Ambient occlusion -->
+        <circle cx="0" cy="0" r="20" fill="url(#aoGradient)"/>
+        
+        <!-- White circle for number -->
+        <circle cx="0" cy="0" r="9" fill="url(#whiteCircleGrad)"/>
+        
+        <!-- Subtle inner shadow on white circle -->
+        <circle cx="0" cy="0" r="9" fill="none" stroke="#d0d0d0" stroke-width="0.5" opacity="0.5"/>
+        
+        <!-- Number "8" -->
+        <text 
+          x="0" 
+          y="6" 
+          text-anchor="middle" 
+          font-family="Arial Black, Arial, sans-serif" 
+          font-size="14" 
+          font-weight="900" 
+          fill="#000000"
+        >8</text>
+        
+        <!-- Specular highlight -->
+        <ellipse cx="-8" cy="-8" rx="8" ry="7" fill="url(#specularHighlight)"/>
+        
+        <!-- Secondary highlight -->
+        <ellipse cx="-10" cy="-10" rx="4" ry="3" fill="#ffffff" opacity="0.6"/>
+        
+        <!-- Tiny bright spot -->
+        <circle cx="-11" cy="-11" r="1.5" fill="#ffffff" opacity="0.9"/>
+        
+        <!-- Edge reflection -->
+        <path 
+          d="M 13 -10 Q 16 -3 15 3 Q 13 8 10 12" 
+          fill="none" 
+          stroke="#4a4a4a" 
+          stroke-width="0.5" 
+          opacity="0.4"
+          stroke-linecap="round"
+        />
+        
+        <!-- Rim highlight -->
+        <circle cx="0" cy="0" r="19.5" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.6"/>
+      </g>
+    </g>
+  </g>
+</svg>
