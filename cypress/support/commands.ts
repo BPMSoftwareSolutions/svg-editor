@@ -30,7 +30,7 @@ Cypress.Commands.add('uploadSVG', (fileName: string) => {
       contents: Cypress.Buffer.from(fileContent),
       fileName: fileName,
       mimeType: 'image/svg+xml',
-    })
+    }, { force: true }) // Force because input is hidden
   })
 })
 
