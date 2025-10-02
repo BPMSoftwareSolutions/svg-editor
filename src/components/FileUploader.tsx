@@ -42,7 +42,10 @@ function FileUploader({
 
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
-      if (multiple) {
+      // If only one file and onFileLoad is provided, use single-file mode
+      if (files.length === 1 && onFileLoad) {
+        processFile(files[0])
+      } else if (multiple && onFilesLoad) {
         processFiles(files)
       } else {
         processFile(files[0])
@@ -53,7 +56,10 @@ function FileUploader({
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files && files.length > 0) {
-      if (multiple) {
+      // If only one file and onFileLoad is provided, use single-file mode
+      if (files.length === 1 && onFileLoad) {
+        processFile(files[0])
+      } else if (multiple && onFilesLoad) {
         processFiles(Array.from(files))
       } else {
         processFile(files[0])
