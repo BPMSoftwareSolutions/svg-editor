@@ -33,13 +33,19 @@ export function serializeElement(element: SVGElement): SerializedElement {
  * Deserialize a serialized element back to an SVG element
  */
 export function deserializeElement(serialized: SerializedElement): SVGElement {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(serialized.outerHTML, 'image/svg+xml')
-  const element = doc.documentElement as unknown as SVGElement
-  
+  // Create a temporary SVG container
+  const tempSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  tempSvg.innerHTML = serialized.outerHTML
+
+  // Get the first child element
+  const element = tempSvg.firstElementChild as SVGElement
+
   if (!element) {
     throw new Error('Failed to deserialize element')
   }
+
+  // Remove from temp container so it can be appended elsewhere
+  element.remove()
 
   return element
 }
