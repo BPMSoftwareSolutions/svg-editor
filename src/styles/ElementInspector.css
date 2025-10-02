@@ -322,3 +322,99 @@
     border-color: #4338ca;
   }
 }
+
+/* Multi-selection styles */
+.element-inspector.multi-selection {
+  border: 2px solid #10b981;
+}
+
+.selection-count {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #10b981;
+  margin: 0;
+}
+
+.type-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.type-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: rgba(100, 108, 255, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.type-name {
+  font-family: 'Courier New', monospace;
+  color: #646cff;
+  font-weight: 600;
+}
+
+.type-count {
+  color: #aaa;
+  font-weight: 500;
+}
+
+.clear-selection-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 4px;
+  color: #ef4444;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.clear-selection-button:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+.clear-selection-button:active {
+  transform: translateY(0);
+}
+
+@media (prefers-color-scheme: light) {
+  .element-inspector.multi-selection {
+    border-color: #059669;
+  }
+
+  .selection-count {
+    color: #059669;
+  }
+
+  .type-item {
+    background-color: rgba(67, 56, 202, 0.1);
+    border-color: rgba(67, 56, 202, 0.2);
+  }
+
+  .type-name {
+    color: #4338ca;
+  }
+
+  .type-count {
+    color: #666;
+  }
+
+  .clear-selection-button {
+    background-color: rgba(220, 38, 38, 0.1);
+    border-color: rgba(220, 38, 38, 0.3);
+    color: #dc2626;
+  }
+
+  .clear-selection-button:hover {
+    background-color: rgba(220, 38, 38, 0.2);
+    border-color: #dc2626;
+  }
+}

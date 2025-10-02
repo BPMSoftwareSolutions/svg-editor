@@ -72,6 +72,26 @@
   cursor: nwse-resize;
 }
 
+/* Multi-selection styles */
+.multi-selection-outline {
+  position: absolute;
+  border: 1.5px dashed #646cff;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.7;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.selection-overlay.multi-selection {
+  border: 2px solid #10b981;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3);
+  cursor: grab;
+}
+
+.selection-overlay.multi-selection.dragging {
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5);
+}
+
 @media (prefers-color-scheme: light) {
   .selection-overlay {
     border-color: #4338ca;
@@ -80,6 +100,15 @@
 
   .selection-handle {
     background-color: #4338ca;
+  }
+
+  .multi-selection-outline {
+    border-color: #4338ca;
+  }
+
+  .selection-overlay.multi-selection {
+    border-color: #059669;
+    box-shadow: 0 0 0 1px rgba(5, 150, 105, 0.3);
   }
 }
 

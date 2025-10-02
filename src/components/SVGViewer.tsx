@@ -19,7 +19,7 @@ interface ViewportState {
 function SVGViewer({ svgContent }: SVGViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const svgContentRef = useRef<HTMLDivElement>(null)
-  const { selectedElement, selectElement, clearSelection } = useSelection()
+  const { selectedElement, selectedElements, selectElement, toggleElement, clearSelection, isSelected } = useSelection()
   const [viewport, setViewport] = useState<ViewportState>({
     scale: 1,
     translateX: 0,
@@ -39,17 +39,31 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
     if (!svgElement) return
 
     const handleElementClick = (e: Event) => {
+      const mouseEvent = e as MouseEvent
       const target = e.target as SVGElement
 
       // Don't select the root SVG element
       if (target.tagName.toLowerCase() === 'svg') {
-        selectElement(null)
+        // Clear selection only if not holding Ctrl/Cmd
+        if (!mouseEvent.ctrlKey && !mouseEvent.metaKey) {
+          selectElement(null)
+        }
         return
       }
 
-      // Select the clicked element
+      // Stop propagation to prevent parent elements from being selected
       e.stopPropagation()
-      selectElement(target)
+
+      // Check if Ctrl (Windows/Linux) or Cmd (Mac) is pressed for multi-selection
+      const isMultiSelect = mouseEvent.ctrlKey || mouseEvent.metaKey
+
+      if (isMultiSelect) {
+        // Toggle element in selection
+        toggleElement(target)
+      } else {
+        // Single selection (replace existing)
+        selectElement(target, false)
+      }
     }
 
     // Add click listeners to all SVG child elements
@@ -67,14 +81,75 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
       })
       svgElement.removeEventListener('click', handleElementClick)
     }
-  }, [svgContent, selectElement])
+  }, [svgContent, selectElement, toggleElement])
+
+  // Helper function to move an element
+  const moveElement = (element: SVGElement, deltaX: number, deltaY: number) => {
+    const tagName = element.tagName.toLowerCase()
+
+    // Update position based on element type
+    switch (tagName) {
+      case 'circle':
+      case 'ellipse':
+        const cx = Number(element.getAttribute('cx')) || 0
+        const cy = Number(element.getAttribute('cy')) || 0
+        element.setAttribute('cx', (cx + deltaX).toString())
+        element.setAttribute('cy', (cy + deltaY).toString())
+        break
+      case 'rect':
+      case 'image':
+      case 'use':
+        const x = Number(element.getAttribute('x')) || 0
+        const y = Number(element.getAttribute('y')) || 0
+        element.setAttribute('x', (x + deltaX).toString())
+        element.setAttribute('y', (y + deltaY).toString())
+        break
+      case 'line':
+        const x1 = Number(element.getAttribute('x1')) || 0
+        const y1 = Number(element.getAttribute('y1')) || 0
+        const x2 = Number(element.getAttribute('x2')) || 0
+        const y2 = Number(element.getAttribute('y2')) || 0
+        element.setAttribute('x1', (x1 + deltaX).toString())
+        element.setAttribute('y1', (y1 + deltaY).toString())
+        element.setAttribute('x2', (x2 + deltaX).toString())
+        element.setAttribute('y2', (y2 + deltaY).toString())
+        break
+      default:
+        // For paths, groups, and other elements, use transform
+        const currentTransform = element.getAttribute('transform') || ''
+        const translateMatch = currentTransform.match(/translate\(([^)]+)\)/)
+        let tx = 0
+        let ty = 0
+
+        if (translateMatch) {
+          const values = translateMatch[1].split(/[\s,]+/).map(Number)
+          tx = values[0] || 0
+          ty = values[1] || 0
+        }
+
+        tx += deltaX
+        ty += deltaY
+
+        const newTransform = currentTransform.replace(
+          /translate\([^)]+\)/,
+          `translate(${tx}, ${ty})`
+        )
+
+        if (newTransform === currentTransform) {
+          element.setAttribute('transform', `translate(${tx}, ${ty})`)
+        } else {
+          element.setAttribute('transform', newTransform)
+        }
+        break
+    }
+  }
 
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Delete key - remove selected element
-      if (e.key === 'Delete' && selectedElement) {
-        selectedElement.element.remove()
+      // Delete key - remove selected elements
+      if (e.key === 'Delete' && selectedElements.length > 0) {
+        selectedElements.forEach(sel => sel.element.remove())
         clearSelection()
       }
 
@@ -83,8 +158,8 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
         clearSelection()
       }
 
-      // Arrow keys - move selected element
-      if (selectedElement && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      // Arrow keys - move selected elements
+      if (selectedElements.length > 0 && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         e.preventDefault()
         const step = e.shiftKey ? 10 : 1
         let deltaX = 0
@@ -105,70 +180,16 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
             break
         }
 
-        const element = selectedElement.element
-        const tagName = element.tagName.toLowerCase()
-
-        // Update position based on element type
-        switch (tagName) {
-          case 'circle':
-          case 'ellipse':
-            const cx = Number(element.getAttribute('cx')) || 0
-            const cy = Number(element.getAttribute('cy')) || 0
-            element.setAttribute('cx', (cx + deltaX).toString())
-            element.setAttribute('cy', (cy + deltaY).toString())
-            break
-          case 'rect':
-          case 'image':
-          case 'use':
-            const x = Number(element.getAttribute('x')) || 0
-            const y = Number(element.getAttribute('y')) || 0
-            element.setAttribute('x', (x + deltaX).toString())
-            element.setAttribute('y', (y + deltaY).toString())
-            break
-          case 'line':
-            const x1 = Number(element.getAttribute('x1')) || 0
-            const y1 = Number(element.getAttribute('y1')) || 0
-            const x2 = Number(element.getAttribute('x2')) || 0
-            const y2 = Number(element.getAttribute('y2')) || 0
-            element.setAttribute('x1', (x1 + deltaX).toString())
-            element.setAttribute('y1', (y1 + deltaY).toString())
-            element.setAttribute('x2', (x2 + deltaX).toString())
-            element.setAttribute('y2', (y2 + deltaY).toString())
-            break
-          default:
-            // For paths, groups, and other elements, use transform
-            const currentTransform = element.getAttribute('transform') || ''
-            const translateMatch = currentTransform.match(/translate\(([^)]+)\)/)
-            let tx = 0
-            let ty = 0
-
-            if (translateMatch) {
-              const values = translateMatch[1].split(/[\s,]+/).map(Number)
-              tx = values[0] || 0
-              ty = values[1] || 0
-            }
-
-            tx += deltaX
-            ty += deltaY
-
-            const newTransform = currentTransform.replace(
-              /translate\([^)]+\)/,
-              `translate(${tx}, ${ty})`
-            )
-
-            if (newTransform === currentTransform) {
-              element.setAttribute('transform', `translate(${tx}, ${ty})`)
-            } else {
-              element.setAttribute('transform', newTransform)
-            }
-            break
-        }
+        // Move all selected elements
+        selectedElements.forEach(sel => {
+          moveElement(sel.element, deltaX, deltaY)
+        })
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedElement, clearSelection])
+  }, [selectedElements, clearSelection])
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault()

@@ -9,10 +9,11 @@ interface TreeNodeData {
 interface TreeNodeProps {
   node: TreeNodeData
   selectedElement?: SVGElement
+  selectedElements?: SVGElement[]
   onNodeClick: (element: SVGElement) => void
 }
 
-function TreeNode({ node, selectedElement, onNodeClick }: TreeNodeProps) {
+function TreeNode({ node, selectedElement, selectedElements = [], onNodeClick }: TreeNodeProps) {
   const [isExpanded, setIsExpanded] = useState(true)
   const { element, children, level } = node
 
@@ -20,7 +21,7 @@ function TreeNode({ node, selectedElement, onNodeClick }: TreeNodeProps) {
   const id = element.getAttribute('id')
   const className = element.getAttribute('class')
   const hasChildren = children.length > 0
-  const isSelected = selectedElement === element
+  const isSelected = selectedElement === element || selectedElements.includes(element)
 
   const getElementIcon = (tag: string): string => {
     switch (tag) {
@@ -97,6 +98,7 @@ function TreeNode({ node, selectedElement, onNodeClick }: TreeNodeProps) {
               key={index}
               node={child}
               selectedElement={selectedElement}
+              selectedElements={selectedElements}
               onNodeClick={onNodeClick}
             />
           ))}

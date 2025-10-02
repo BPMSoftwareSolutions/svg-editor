@@ -3,7 +3,7 @@ import { useSelection } from '../contexts/SelectionContext'
 import '../styles/ElementInspector.css'
 
 function ElementInspector() {
-  const { selectedElement, clearSelection } = useSelection()
+  const { selectedElement, selectedElements, clearSelection } = useSelection()
   const [textContent, setTextContent] = useState('')
 
   // Update text content when selection changes
@@ -16,10 +16,10 @@ function ElementInspector() {
   }, [selectedElement])
 
   const handleDelete = () => {
-    if (!selectedElement) return
+    if (selectedElements.length === 0) return
 
-    // Remove element from DOM
-    selectedElement.element.remove()
+    // Remove all selected elements from DOM
+    selectedElements.forEach(sel => sel.element.remove())
 
     // Clear selection
     clearSelection()
@@ -42,47 +42,126 @@ function ElementInspector() {
   }
 
   const bringToFront = () => {
-    if (!selectedElement) return
-    const parent = selectedElement.element.parentElement
-    if (parent) {
-      parent.appendChild(selectedElement.element)
-    }
+    if (selectedElements.length === 0) return
+    selectedElements.forEach(sel => {
+      const parent = sel.element.parentElement
+      if (parent) {
+        parent.appendChild(sel.element)
+      }
+    })
   }
 
   const sendToBack = () => {
-    if (!selectedElement) return
-    const parent = selectedElement.element.parentElement
-    if (parent && parent.firstChild) {
-      parent.insertBefore(selectedElement.element, parent.firstChild)
-    }
+    if (selectedElements.length === 0) return
+    // Reverse order to maintain relative ordering
+    [...selectedElements].reverse().forEach(sel => {
+      const parent = sel.element.parentElement
+      if (parent && parent.firstChild) {
+        parent.insertBefore(sel.element, parent.firstChild)
+      }
+    })
   }
 
   const bringForward = () => {
-    if (!selectedElement) return
-    const element = selectedElement.element
-    const nextSibling = element.nextElementSibling
-    if (nextSibling) {
-      element.parentElement?.insertBefore(nextSibling, element)
-    }
+    if (selectedElements.length === 0) return
+    selectedElements.forEach(sel => {
+      const element = sel.element
+      const nextSibling = element.nextElementSibling
+      if (nextSibling) {
+        element.parentElement?.insertBefore(nextSibling, element)
+      }
+    })
   }
 
   const sendBackward = () => {
-    if (!selectedElement) return
-    const element = selectedElement.element
-    const prevSibling = element.previousElementSibling
-    if (prevSibling) {
-      element.parentElement?.insertBefore(element, prevSibling)
-    }
+    if (selectedElements.length === 0) return
+    selectedElements.forEach(sel => {
+      const element = sel.element
+      const prevSibling = element.previousElementSibling
+      if (prevSibling) {
+        element.parentElement?.insertBefore(element, prevSibling)
+      }
+    })
   }
 
-  if (!selectedElement) {
+  if (selectedElements.length === 0) {
     return (
       <div className="element-inspector empty">
         <p>No element selected</p>
         <p className="hint">Click on an SVG element to inspect it</p>
+        <p className="hint">Hold Ctrl/Cmd to select multiple</p>
       </div>
     )
   }
+
+  // Multi-selection view
+  if (selectedElements.length > 1) {
+    // Calculate type breakdown
+    const typeCounts: Record<string, number> = {}
+    selectedElements.forEach(sel => {
+      typeCounts[sel.type] = (typeCounts[sel.type] || 0) + 1
+    })
+
+    return (
+      <div className="element-inspector multi-selection">
+        <div className="inspector-header">
+          <h3>Multi-Selection</h3>
+          <div className="inspector-actions">
+            <button onClick={handleDelete} className="delete-button" title="Delete all selected (Del)">
+              🗑️
+            </button>
+            <button onClick={clearSelection} className="close-button" title="Clear Selection">
+              ×
+            </button>
+          </div>
+        </div>
+
+        <div className="inspector-section">
+          <h4>Selection Count</h4>
+          <p className="selection-count">{selectedElements.length} elements selected</p>
+        </div>
+
+        <div className="inspector-section">
+          <h4>Type Breakdown</h4>
+          <div className="type-breakdown">
+            {Object.entries(typeCounts).map(([type, count]) => (
+              <div key={type} className="type-item">
+                <span className="type-name">&lt;{type}&gt;</span>
+                <span className="type-count">× {count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="inspector-section">
+          <h4>Z-Order</h4>
+          <div className="z-order-controls">
+            <button onClick={bringToFront} className="z-order-button" title="Bring all to Front">
+              ⬆️ To Front
+            </button>
+            <button onClick={bringForward} className="z-order-button" title="Bring all Forward">
+              ⬆ Forward
+            </button>
+            <button onClick={sendBackward} className="z-order-button" title="Send all Backward">
+              ⬇ Backward
+            </button>
+            <button onClick={sendToBack} className="z-order-button" title="Send all to Back">
+              ⬇️ To Back
+            </button>
+          </div>
+        </div>
+
+        <div className="inspector-section">
+          <button onClick={clearSelection} className="clear-selection-button">
+            Clear Selection
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Single selection view (existing code)
+  if (!selectedElement) return null
 
   const { element, id, type, bbox } = selectedElement
   const className = element.getAttribute('class')
