@@ -157,7 +157,7 @@ function SelectionOverlay() {
   })
 
   // Calculate combined bounding box for all selected elements
-  const getCombinedBoundingBox = (): BoundingBox | null => {
+  const getCombinedBoundingBox = useCallback((): BoundingBox | null => {
     if (selectedElements.length === 0) return null
 
     const viewerContainer = document.querySelector('.viewer-container')
@@ -184,7 +184,7 @@ function SelectionOverlay() {
       width: maxX - minX,
       height: maxY - minY,
     }
-  }
+  }, [selectedElements])
 
   const updateBbox = useCallback(() => {
     if (selectedElements.length === 0) {
