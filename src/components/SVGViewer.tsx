@@ -5,6 +5,7 @@ import ElementInspector from './ElementInspector'
 import Toolbar from './Toolbar'
 import TreePanel from './TreePanel'
 import MarqueeSelection from './MarqueeSelection'
+import { getElementsInRect } from '../utils/selectionUtils'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
@@ -20,7 +21,7 @@ interface ViewportState {
 function SVGViewer({ svgContent }: SVGViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const svgContentRef = useRef<HTMLDivElement>(null)
-  const { selectedElement, selectedElements, selectElement, toggleElement, clearSelection, isSelected } = useSelection()
+  const { selectedElement, selectedElements, selectElement, selectMultiple, toggleElement, clearSelection, isSelected } = useSelection()
   const [viewport, setViewport] = useState<ViewportState>({
     scale: 1,
     translateX: 0,
@@ -148,6 +149,18 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+A - select all elements
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault()
+        const svgElement = svgContentRef.current?.querySelector('svg')
+        if (svgElement) {
+          const allElements = Array.from(svgElement.querySelectorAll(':scope > *'))
+            .filter(el => el.tagName.toLowerCase() !== 'svg') as SVGElement[]
+          selectMultiple(allElements)
+        }
+        return
+      }
+
       // Delete key - remove selected elements
       if (e.key === 'Delete' && selectedElements.length > 0) {
         selectedElements.forEach(sel => sel.element.remove())
@@ -190,7 +203,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedElements, clearSelection])
+  }, [selectedElements, clearSelection, selectMultiple])
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -257,6 +270,11 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
         <button onClick={handleZoomOut} title="Zoom Out">-</button>
         <button onClick={handleReset} title="Reset View">Reset</button>
         <span className="zoom-level">{Math.round(viewport.scale * 100)}%</span>
+        {selectedElements.length > 0 && (
+          <span className="selection-count" title={`${selectedElements.length} element${selectedElements.length > 1 ? 's' : ''} selected`}>
+            ✓ {selectedElements.length}
+          </span>
+        )}
       </div>
       <div
         ref={containerRef}
