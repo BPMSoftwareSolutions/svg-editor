@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { SelectionProvider } from './contexts/SelectionContext'
+import { UndoRedoProvider } from './contexts/UndoRedoContext'
 import FileUploader from './components/FileUploader'
 import SVGViewer from './components/SVGViewer'
+import HeaderToolbar from './components/HeaderToolbar'
 import './styles/App.css'
 
 function App() {
@@ -54,29 +56,28 @@ function App() {
 
   return (
     <SelectionProvider>
-      <div className="app">
-        <header className="app-header">
-          <h1>SVG Editor</h1>
-          {fileName && (
-            <div className="file-info">
-              <span className="file-name">{fileName}</span>
-              <button onClick={handleExport} className="export-button" title="Save SVG (Ctrl+S)">
-                💾 Save SVG
-              </button>
-              <button onClick={handleClear} className="clear-button">
-                Clear
-              </button>
+      <UndoRedoProvider>
+        <div className="app">
+          <header className="app-header">
+            <div className="header-top">
+              <h1>SVG Editor</h1>
+              {fileName && (
+                <span className="file-name">{fileName}</span>
+              )}
             </div>
-          )}
-        </header>
-        <main className="app-main">
-          {!svgContent ? (
-            <FileUploader onFileLoad={handleFileLoad} />
-          ) : (
-            <SVGViewer svgContent={svgContent} />
-          )}
-        </main>
-      </div>
+            {fileName && (
+              <HeaderToolbar onSave={handleExport} onClear={handleClear} />
+            )}
+          </header>
+          <main className="app-main">
+            {!svgContent ? (
+              <FileUploader onFileLoad={handleFileLoad} />
+            ) : (
+              <SVGViewer svgContent={svgContent} />
+            )}
+          </main>
+        </div>
+      </UndoRedoProvider>
     </SelectionProvider>
   )
 }

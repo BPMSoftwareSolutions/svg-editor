@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1100" viewBox="0 0 1400 1100">
+<defs>
+<symbol id="base-card" overflow="visible"><g>
+          <!-- card container -->
+          <rect x="-200" y="-130" width="400" height="260" rx="16" ry="16" fill="#ffffff" stroke="#E9D5FF" stroke-width="2"/>
+          <!-- header band -->
+          <rect x="-200" y="-130" width="400" height="50" rx="16" ry="16" fill="#F5F3FF"/>
+          <!-- faint divider -->
+          <line x1="-200" y1="-80" x2="200" y2="-80" stroke="#E9D5FF" stroke-width="1"/>
+        </g></symbol>
+<filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#7C3AED" flood-opacity="0.10"/>
+    </filter>
+</defs>
+<rect x="0" y="0" width="1400" height="1100" fill="#ffffff"/>
+<text x="700" y="60" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="28" fill="#4C1D95" font-weight="900">AI Concepts — Patternized Cards (4-element layout)</text>
+<g transform="translate(280,270)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🧠</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">LLM</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Large Language Model</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Advanced AI systems trained on vast text</tspan>
+<tspan x="-170" dy="18">datasets to understand and generate human-like</tspan>
+<tspan x="-170" dy="18">text, forming the foundation for conversational</tspan>
+<tspan x="-170" dy="18">AI and content generation.</tspan>
+</text>
+</g>
+<g transform="translate(740,270)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🔀</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Transformers</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Transformer Architecture</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Neural networks using self‑attention to process</tspan>
+<tspan x="-170" dy="18">sequences in parallel, enabling long‑range</tspan>
+<tspan x="-170" dy="18">dependencies and state‑of‑the‑art performance in</tspan>
+<tspan x="-170" dy="18">language and vision.</tspan>
+</text>
+</g>
+<g transform="translate(1200,270)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">✍️</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Prompt Engineering</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">AI Instruction Design</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Crafting inputs, context, and constraints so</tspan>
+<tspan x="-170" dy="18">models produce accurate, controllable outputs</tspan>
+<tspan x="-170" dy="18">aligned with user intent and safety guidelines.</tspan>
+</text>
+</g>
+<g transform="translate(280,570)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🎯</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Fine‑tuning</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Model Specialization</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Adapting a pre‑trained model to a domain or task</tspan>
+<tspan x="-170" dy="18">using curated examples; improves accuracy and</tspan>
+<tspan x="-170" dy="18">tone for targeted applications.</tspan>
+</text>
+</g>
+<g transform="translate(740,570)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🧭</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Embeddings</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Vector Representations</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Numeric vectors that capture meaning of text or</tspan>
+<tspan x="-170" dy="18">images; power search, clustering, retrieval, and</tspan>
+<tspan x="-170" dy="18">recommendation systems.</tspan>
+</text>
+</g>
+<g transform="translate(1200,570)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">📚</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">RAG</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Retrieval Augmented Generation</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Combines search with generation so models can</tspan>
+<tspan x="-170" dy="18">ground answers in external sources, boosting</tspan>
+<tspan x="-170" dy="18">factuality and freshness.</tspan>
+</text>
+</g>
+<g transform="translate(280,870)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🔡</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Tokens</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Units of Text</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Subword pieces or characters that models read</tspan>
+<tspan x="-170" dy="18">and produce; tokenization affects cost, latency,</tspan>
+<tspan x="-170" dy="18">and context length.</tspan>
+</text>
+</g>
+<g transform="translate(740,870)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🌀</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Hallucination</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">AI Fabrication</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">When a model produces plausible‑sounding but</tspan>
+<tspan x="-170" dy="18">incorrect statements; mitigated with grounding,</tspan>
+<tspan x="-170" dy="18">verification, and better prompts.</tspan>
+</text>
+</g>
+<g transform="translate(1200,870)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🚀</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Zero‑shot</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Zero‑shot Learning</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Model performs a task it wasn't explicitly</tspan>
+<tspan x="-170" dy="18">trained on by relying on generalization and</tspan>
+<tspan x="-170" dy="18">instruction‑following capabilities.</tspan>
+</text>
+</g>
+<g transform="translate(280,1170)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🔗</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Chain‑of‑Thought</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Reasoning Process</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Technique to elicit intermediate reasoning steps</tspan>
+<tspan x="-170" dy="18">for complex problems; helps with accuracy and</tspan>
+<tspan x="-170" dy="18">transparency.</tspan>
+</text>
+</g>
+<g transform="translate(740,1170)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🪟</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Context Window</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Input Capacity</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Maximum amount of input a model can consider at</tspan>
+<tspan x="-170" dy="18">once; larger windows allow more instructions and</tspan>
+<tspan x="-170" dy="18">references.</tspan>
+</text>
+</g>
+<g transform="translate(1200,1170)" filter="url(#cardShadow)">
+<use href="#base-card"></use>
+<circle cx="-170" cy="-100" r="14" fill="#7C3AED" stroke="none"></circle>
+<text x="-170" y="-96" text-anchor="middle" font-size="14" font-family="Inter, system-ui, sans-serif" fill="#ffffff" font-weight="800">🌡️</text>
+<text x="-140" y="-98" font-size="22" font-family="Inter, system-ui, sans-serif" fill="#6D28D9" font-weight="900">Temperature</text>
+<text x="-170" y="-60" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#6B7280" font-weight="700">Randomness Parameter</text>
+<text x="-170" y="-30" font-size="13" font-family="Inter, system-ui, sans-serif" fill="#111827" font-weight="400">
+<tspan x="-170" dy="0">Controls output variability: lower values yield</tspan>
+<tspan x="-170" dy="18">deterministic responses; higher values increase</tspan>
+<tspan x="-170" dy="18">creativity and diversity.</tspan>
+</text>
+</g>
+</svg>

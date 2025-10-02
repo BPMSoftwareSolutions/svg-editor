@@ -1,0 +1,83 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Base symbol definition -->
+    <symbol id="base-square">
+      <rect x="-10" y="-10" width="20" height="20" rx="2" ry="2" fill="#111"/>
+    </symbol>
+    
+    <!-- Clip path for constraining the pattern -->
+    <clipPath id="pattern-clip">
+      <rect x="80" y="80" width="640" height="440" rx="6" ry="6"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="white"/>
+  
+  <!-- Clipped pattern group -->
+  <g clip-path="url(#pattern-clip)">
+    <!-- Pattern iterations -->
+    <!-- i=0 -->
+    <use href="#base-square" x="100" y="500" transform="translate(0, 0) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="1" fill="none"/>
+    
+    <!-- i=1 -->
+    <use href="#base-square" x="100" y="500" transform="translate(24, -24) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.95" fill="none"/>
+    
+    <!-- i=2 -->
+    <use href="#base-square" x="100" y="500" transform="translate(48, -48) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.9" fill="none"/>
+    
+    <!-- i=3 -->
+    <use href="#base-square" x="100" y="500" transform="translate(72, -72) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.85" fill="none"/>
+    
+    <!-- i=4 -->
+    <use href="#base-square" x="100" y="500" transform="translate(96, -96) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.8" fill="none"/>
+    
+    <!-- i=5 -->
+    <use href="#base-square" x="100" y="500" transform="translate(120, -120) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.75" fill="none"/>
+    
+    <!-- i=6 -->
+    <use href="#base-square" x="100" y="500" transform="translate(144, -144) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.7" fill="none"/>
+    
+    <!-- i=7 -->
+    <use href="#base-square" x="100" y="500" transform="translate(168, -168) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.65" fill="none"/>
+    
+    <!-- i=8 -->
+    <use href="#base-square" x="100" y="500" transform="translate(192, -192) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.6" fill="none"/>
+    
+    <!-- i=9 -->
+    <use href="#base-square" x="100" y="500" transform="translate(216, -216) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.55" fill="none"/>
+    
+    <!-- i=10 -->
+    <use href="#base-square" x="100" y="500" transform="translate(240, -240) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.5" fill="none"/>
+    
+    <!-- i=11 -->
+    <use href="#base-square" x="100" y="500" transform="translate(264, -264) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.45" fill="none"/>
+    
+    <!-- i=12 -->
+    <use href="#base-square" x="100" y="500" transform="translate(288, -288) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.4" fill="none"/>
+    
+    <!-- i=13 -->
+    <use href="#base-square" x="100" y="500" transform="translate(312, -312) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.35" fill="none"/>
+    
+    <!-- i=14 -->
+    <use href="#base-square" x="100" y="500" transform="translate(336, -336) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.3" fill="none"/>
+    
+    <!-- i=15 -->
+    <use href="#base-square" x="100" y="500" transform="translate(360, -360) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.25" fill="none"/>
+    
+    <!-- i=16 -->
+    <use href="#base-square" x="100" y="500" transform="translate(384, -384) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.2" fill="none"/>
+    
+    <!-- i=17 -->
+    <use href="#base-square" x="100" y="500" transform="translate(408, -408) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.15" fill="none"/>
+    
+    <!-- i=18 -->
+    <use href="#base-square" x="100" y="500" transform="translate(432, -432) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.1" fill="none"/>
+    
+    <!-- i=19 -->
+    <use href="#base-square" x="100" y="500" transform="translate(456, -456) rotate(0) scale(1)" stroke="#333" stroke-width="1" opacity="0.05" fill="none"/>
+  </g>
+  
+  <!-- Optional: Show the clip boundary -->
+  <rect x="80" y="80" width="640" height="440" rx="6" ry="6" fill="none" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="10,5" opacity="0.5"/>
+</svg>
