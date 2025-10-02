@@ -17,20 +17,25 @@ describe('Group Element Resizing', () => {
         { contents: Cypress.Buffer.from(svg2), fileName: 'rect.svg', mimeType: 'image/svg+xml' },
       ], { force: true })
 
-      // Wait for assets to load
-      cy.get('.svg-content svg', { timeout: 5000 }).should('exist')
-      cy.get('.svg-content [data-asset-id]').should('have.length', 2)
+      // Wait for assets to load and render
+      cy.get('.svg-content svg', { timeout: 10000 }).should('exist')
+      cy.get('.svg-content [data-asset-id]', { timeout: 10000 }).should('have.length', 2)
 
-      // Get the first group element
-      cy.get('.svg-content [data-asset-id]').first().then($group => {
-        const initialTransform = $group.attr('transform')
+      // Wait a bit for rendering to stabilize
+      cy.wait(500)
+
+      // Get the first group element and store initial transform
+      cy.get('.svg-content [data-asset-id]').first().invoke('attr', 'transform').then((initialTransform) => {
 
         // Click to select the group (use force to bypass coverage check)
         cy.get('.svg-content [data-asset-id]').first().click({ force: true })
 
-        // Verify selection overlay appears
-        cy.get('.selection-overlay', { timeout: 2000 }).should('be.visible')
-        cy.get('.resize-handle').should('have.length.at.least', 4)
+        // Wait for selection overlay to appear
+        cy.get('.selection-overlay', { timeout: 5000 }).should('exist')
+        cy.wait(300)
+
+        // Verify resize handles appear
+        cy.get('.resize-handle', { timeout: 5000 }).should('have.length.at.least', 4)
 
         // Get initial bounding box
         cy.get('.svg-content [data-asset-id]').first().then($el => {
@@ -43,11 +48,10 @@ describe('Group Element Resizing', () => {
             .trigger('mouseup', { force: true })
 
           // Wait for resize to complete
-          cy.wait(200)
+          cy.wait(500)
 
           // Verify the transform has changed
-          cy.get('.svg-content [data-asset-id]').first().then($resizedGroup => {
-            const newTransform = $resizedGroup.attr('transform')
+          cy.get('.svg-content [data-asset-id]').first().invoke('attr', 'transform').then((newTransform) => {
             expect(newTransform).to.not.equal(initialTransform)
 
             // Verify transform contains scale

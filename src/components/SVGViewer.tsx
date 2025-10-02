@@ -2,7 +2,8 @@ import { useRef, useState, useEffect, WheelEvent, MouseEvent } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
 import { useAssets } from '../contexts/AssetContext'
-import { DeleteElementCommand, MoveElementCommand } from '../commands'
+import { useClipboard } from '../contexts/ClipboardContext'
+import { DeleteElementCommand, MoveElementCommand, PasteElementCommand } from '../commands'
 import SelectionOverlay from './SelectionOverlay'
 import ElementInspector from './ElementInspector'
 import Toolbar from './Toolbar'
@@ -26,6 +27,7 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
   const svgContentRef = useRef<HTMLDivElement>(null)
   const { selectedElements, selectElement, selectMultiple, toggleElement, clearSelection } = useSelection()
   const { executeCommand } = useUndoRedo()
+  const { copyElements, getCopiedElements, hasCopiedElements, pasteCount, incrementPasteCount } = useClipboard()
 
   // Always call useAssets hook (hooks must be called unconditionally)
   const assetContext = useAssets()
@@ -121,6 +123,30 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
         clearSelection()
       }
 
+      // Copy (Ctrl+C / Cmd+C) - copy selected elements
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c' && selectedElements.length > 0) {
+        e.preventDefault()
+        const elements = selectedElements.map(sel => sel.element)
+        copyElements(elements)
+        console.log('[SVGViewer] Copied elements:', elements.length)
+        return
+      }
+
+      // Paste (Ctrl+V / Cmd+V) - paste copied elements
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v' && hasCopiedElements) {
+        e.preventDefault()
+        const svgElement = svgContentRef.current?.querySelector('svg')
+        if (!svgElement) return
+
+        const copiedData = getCopiedElements()
+        const command = new PasteElementCommand(svgElement, copiedData, pasteCount)
+        executeCommand(command)
+        incrementPasteCount()
+
+        console.log('[SVGViewer] Pasted elements:', copiedData.length)
+        return
+      }
+
       // Arrow keys - move selected elements
       if (selectedElements.length > 0 && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         e.preventDefault()
@@ -152,7 +178,7 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedElements, clearSelection, selectMultiple, executeCommand, viewport.scale])
+  }, [selectedElements, clearSelection, selectMultiple, executeCommand, viewport.scale, copyElements, getCopiedElements, hasCopiedElements, pasteCount, incrementPasteCount])
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
