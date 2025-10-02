@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
 import { useAssets } from '../contexts/AssetContext'
@@ -26,20 +26,29 @@ function SelectionOverlay() {
   const dragStartTransformsRef = useRef<string[]>([])
   const overlayRef = useRef<HTMLDivElement>(null)
   const resizeStartDimensionsRef = useRef<{ width: number; height: number } | null>(null)
+  const resizeStartTransformRef = useRef<string | null>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
     onResizeStart: () => {
       if (!selectedElement) return
 
+      const element = selectedElement.element
+
       // Store original dimensions
-      const rect = selectedElement.element.getBoundingClientRect()
+      const rect = element.getBoundingClientRect()
       resizeStartDimensionsRef.current = {
         width: rect.width,
         height: rect.height,
       }
+
+      // Store original transform for groups and other transform-based elements
+      const tagName = element.tagName.toLowerCase()
+      if (!['rect', 'circle', 'ellipse', 'image', 'line'].includes(tagName)) {
+        resizeStartTransformRef.current = element.getAttribute('transform') || ''
+      }
     },
     onResize: (width, height, _left, _top) => {
-      if (!selectedElement) return
+      if (!selectedElement || !resizeStartDimensionsRef.current) return
 
       const element = selectedElement.element
       const tagName = element.tagName.toLowerCase()
@@ -66,6 +75,27 @@ function SelectionOverlay() {
           element.setAttribute('rx', (width / (2 * scale)).toString())
           element.setAttribute('ry', (height / (2 * scale)).toString())
           break
+        default: {
+          // For groups and other elements, apply transform scale
+          const startDimensions = resizeStartDimensionsRef.current
+          const startTransform = resizeStartTransformRef.current || ''
+
+          // Calculate scale ratio relative to original dimensions
+          const scaleXRatio = width / startDimensions.width
+          const scaleYRatio = height / startDimensions.height
+
+          // Parse the original transform
+          const transformData = parseTransform(startTransform)
+
+          // Apply the scale ratio to the original scale
+          const newScaleX = transformData.scaleX * scaleXRatio
+          const newScaleY = transformData.scaleY * scaleYRatio
+
+          // Serialize and apply
+          const newTransform = `translate(${transformData.translateX}, ${transformData.translateY}) scale(${newScaleX}, ${newScaleY})${transformData.rotate ? ` rotate(${transformData.rotate})` : ''}`
+          element.setAttribute('transform', newTransform)
+          break
+        }
       }
 
       // Update bounding box
@@ -122,6 +152,7 @@ function SelectionOverlay() {
       }
 
       resizeStartDimensionsRef.current = null
+      resizeStartTransformRef.current = null
     },
   })
 
@@ -155,7 +186,7 @@ function SelectionOverlay() {
     }
   }
 
-  const updateBbox = () => {
+  const updateBbox = useCallback(() => {
     if (selectedElements.length === 0) {
       setBbox(null)
       setMultiSelectionBoxes([])
@@ -194,7 +225,7 @@ function SelectionOverlay() {
       })
       setMultiSelectionBoxes(boxes)
     }
-  }
+  }, [selectedElements, getCombinedBoundingBox])
 
   useEffect(() => {
     if (selectedElements.length === 0) {
@@ -213,7 +244,7 @@ function SelectionOverlay() {
       window.removeEventListener('resize', updateBbox)
       window.removeEventListener('scroll', updateBbox, true)
     }
-  }, [selectedElements])
+  }, [selectedElements, updateBbox])
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (selectedElements.length === 0 || isResizing) return
@@ -242,7 +273,7 @@ function SelectionOverlay() {
     handleResizeStart(e, handle, rect)
   }
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || selectedElements.length === 0) return
 
     const deltaX = e.clientX - dragStartRef.current.x
@@ -268,9 +299,9 @@ function SelectionOverlay() {
 
     // Update bounding boxes
     updateBbox()
-  }
+  }, [isDragging, selectedElements, updateBbox])
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (isDragging && selectedElements.length > 0) {
       // Get viewport scale
       const viewerContainer = document.querySelector('.svg-content') as HTMLElement
@@ -307,7 +338,7 @@ function SelectionOverlay() {
     setIsDragging(false)
     dragStartTransformsRef.current = []
     document.body.style.cursor = ''
-  }
+  }, [isDragging, selectedElements, addToHistory])
 
   useEffect(() => {
     if (isDragging) {
@@ -319,7 +350,7 @@ function SelectionOverlay() {
         document.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [isDragging, selectedElements])
+  }, [isDragging, selectedElements, handleMouseMove, handleMouseUp])
 
   useEffect(() => {
     if (isResizing) {

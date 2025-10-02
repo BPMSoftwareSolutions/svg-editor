@@ -152,7 +152,7 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedElements, clearSelection, selectMultiple])
+  }, [selectedElements, clearSelection, selectMultiple, executeCommand, viewport.scale])
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault()

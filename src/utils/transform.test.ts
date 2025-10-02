@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseTransform, serializeTransform, applyScale, updateScale } from './transform'
+import { parseTransform, serializeTransform, updateScale } from './transform'
 
 describe('Transform Utilities', () => {
   describe('parseTransform', () => {

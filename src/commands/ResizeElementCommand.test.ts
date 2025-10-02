@@ -1,16 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { ResizeElementCommand } from './ResizeElementCommand'
 import { parseTransform } from '../utils/transform'
 
 describe('ResizeElementCommand', () => {
-  let svgElement: SVGElement
-
-  beforeEach(() => {
-    // Create a fresh SVG element for each test
-    const parser = new DOMParser()
-    const doc = parser.parseFromString('<svg xmlns="http://www.w3.org/2000/svg"></svg>', 'image/svg+xml')
-    svgElement = doc.documentElement as unknown as SVGElement
-  })
+  // Tests create their own elements as needed
 
   describe('Basic Element Resizing', () => {
     it('should resize a rect element', () => {
