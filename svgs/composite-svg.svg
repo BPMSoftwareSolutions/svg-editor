@@ -1,0 +1,638 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 800 600">
+      <g data-asset-id="12ca0893-8aa9-4e6c-8d38-af8f2362d3db" data-asset-name="pool-table.svg" transform="translate(0, 0) scale(1)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Felt gradient - green playing surface -->
+    <linearGradient id="feltGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d6a3f;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#2d5a3d;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#254a32;stop-opacity:1"/>
+    </linearGradient>
+    
+    <!-- Wood rail gradient - darker brown -->
+    <linearGradient id="woodGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5c3a1f;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#4a2f19;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#3a2414;stop-opacity:1"/>
+    </linearGradient>
+    
+    <!-- Wood grain texture -->
+    <linearGradient id="woodGrain" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4a2f19;stop-opacity:0.3"/>
+      <stop offset="20%" style="stop-color:#3a2414;stop-opacity:0.5"/>
+      <stop offset="40%" style="stop-color:#4a2f19;stop-opacity:0.3"/>
+      <stop offset="60%" style="stop-color:#3a2414;stop-opacity:0.5"/>
+      <stop offset="80%" style="stop-color:#4a2f19;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#3a2414;stop-opacity:0.5"/>
+    </linearGradient>
+    
+    <!-- Pocket shadow -->
+    <radialGradient id="pocketGradient">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#1a1a1a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#2a2a2a;stop-opacity:0.8"/>
+    </radialGradient>
+    
+    <!-- Pocket leather -->
+    <radialGradient id="leatherGradient">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Rail cushion gradient -->
+    <linearGradient id="cushionGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f5a2e;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#1a4a28;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#163a20;stop-opacity:1"/>
+    </linearGradient>
+    
+    <!-- Table shadow -->
+    <linearGradient id="tableShadow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.4"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background - room floor -->
+  <rect xmlns="http://www.w3.org/2000/svg" width="1200" height="800" fill="#3d2f20"/>
+  
+  <!-- Table shadow on floor -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="600" cy="720" rx="480" ry="60" fill="url(#tableShadow)"/>
+  
+  <!-- Table legs (wooden) -->
+  <!-- Front left leg -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="220" y="650" width="35" height="140" fill="#3a2414" rx="3"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="220" y="650" width="35" height="20" fill="#4a2f19" rx="3"/>
+  
+  <!-- Front right leg -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="945" y="650" width="35" height="140" fill="#3a2414" rx="3"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="945" y="650" width="35" height="20" fill="#4a2f19" rx="3"/>
+  
+  <!-- Back left leg -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="220" y="650" width="35" height="140" fill="#3a2414" rx="3" transform="translate(-30, -460)"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="220" y="650" width="35" height="20" fill="#4a2f19" rx="3" transform="translate(-30, -460)"/>
+  
+  <!-- Back right leg -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="945" y="650" width="35" height="140" fill="#3a2414" rx="3" transform="translate(30, -460)"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="945" y="650" width="35" height="20" fill="#4a2f19" rx="3" transform="translate(30, -460)"/>
+  
+  <!-- Main table body / apron (wooden frame under playing surface) -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="160" y="620" width="880" height="40" fill="url(#woodGradient)" rx="5"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="160" y="620" width="880" height="40" fill="url(#woodGrain)" rx="5" opacity="0.3"/>
+  
+  <!-- Top rail frame - long sides -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="140" y="140" width="920" height="60" fill="url(#woodGradient)" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="140" y="140" width="920" height="60" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <rect xmlns="http://www.w3.org/2000/svg" x="140" y="600" width="920" height="60" fill="url(#woodGradient)" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="140" y="600" width="920" height="60" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <!-- Top rail frame - short sides -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="80" y="140" width="60" height="520" fill="url(#woodGradient)" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="80" y="140" width="60" height="520" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <rect xmlns="http://www.w3.org/2000/svg" x="1060" y="140" width="60" height="520" fill="url(#woodGradient)" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="1060" y="140" width="60" height="520" fill="url(#woodGrain)" rx="8" opacity="0.2"/>
+  
+  <!-- Playing surface (green felt) -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="180" y="180" width="840" height="440" fill="url(#feltGradient)"/>
+  
+  <!-- Felt texture overlay -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="180" y="180" width="840" height="440" fill="#2d5a3d" opacity="0.05"/>
+  
+  <!-- Rail cushions (rubber bumpers) -->
+  <!-- Top cushion -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 190 185 L 1010 185 L 1000 200 L 200 200 Z" fill="url(#cushionGradient)"/>
+  
+  <!-- Bottom cushion -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 190 615 L 1010 615 L 1000 600 L 200 600 Z" fill="url(#cushionGradient)"/>
+  
+  <!-- Left cushion -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 185 190 L 185 610 L 200 600 L 200 200 Z" fill="url(#cushionGradient)"/>
+  
+  <!-- Right cushion -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 1015 190 L 1015 610 L 1000 600 L 1000 200 Z" fill="url(#cushionGradient)"/>
+  
+  <!-- Corner pockets (6 total) -->
+  <!-- Top-left corner -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="190" cy="190" r="25" fill="url(#pocketGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="190" cy="190" r="20" fill="url(#leatherGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="185" cy="185" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Top-right corner -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1010" cy="190" r="25" fill="url(#pocketGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1010" cy="190" r="20" fill="url(#leatherGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1005" cy="185" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Bottom-left corner -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="190" cy="610" r="25" fill="url(#pocketGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="190" cy="610" r="20" fill="url(#leatherGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="185" cy="605" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Bottom-right corner -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1010" cy="610" r="25" fill="url(#pocketGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1010" cy="610" r="20" fill="url(#leatherGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1005" cy="605" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Side pockets (middle of long rails) -->
+  <!-- Top side -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="600" cy="185" rx="28" ry="22" fill="url(#pocketGradient)"/>
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="600" cy="185" rx="23" ry="18" fill="url(#leatherGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="600" cy="182" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Bottom side -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="600" cy="615" rx="28" ry="22" fill="url(#pocketGradient)"/>
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="600" cy="615" rx="23" ry="18" fill="url(#leatherGradient)"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="600" cy="612" r="5" fill="#000000" opacity="0.8"/>
+  
+  <!-- Head spot (where cue ball is placed for break) -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="450" cy="400" r="3" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Foot spot (where front ball of rack is placed) -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="750" cy="400" r="3" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Head string (line across table at head spot) -->
+  <line xmlns="http://www.w3.org/2000/svg" x1="180" y1="400" x2="1020" y2="400" stroke="#ffffff" stroke-width="0.5" opacity="0.2" stroke-dasharray="10,10"/>
+  
+  <!-- Side diamonds/markers for aiming -->
+  <!-- Top rail diamonds -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="310" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="450" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="600" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="750" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="890" cy="175" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <!-- Bottom rail diamonds -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="310" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="450" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="600" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="750" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="890" cy="625" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <!-- Left rail diamonds -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="175" cy="290" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="175" cy="400" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="175" cy="510" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <!-- Right rail diamonds -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1025" cy="290" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1025" cy="400" r="4" fill="#f0f0f0" opacity="0.7"/>
+  <circle xmlns="http://www.w3.org/2000/svg" cx="1025" cy="510" r="4" fill="#f0f0f0" opacity="0.7"/>
+  
+  <!-- Shine/reflection on rails (polished wood effect) -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="140" y="145" width="920" height="15" fill="#8b6f47" opacity="0.2" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="140" y="605" width="920" height="15" fill="#8b6f47" opacity="0.2" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="85" y="145" width="50" height="15" fill="#8b6f47" opacity="0.2" rx="8"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="1065" y="145" width="50" height="15" fill="#8b6f47" opacity="0.2" rx="8"/>
+  
+  <!-- Subtle shadow on felt near rails -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="180" y="180" width="840" height="30" fill="#000000" opacity="0.1"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="180" y="590" width="840" height="30" fill="#000000" opacity="0.1"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="180" y="180" width="30" height="440" fill="#000000" opacity="0.08"/>
+  <rect xmlns="http://www.w3.org/2000/svg" x="990" y="180" width="30" height="440" fill="#000000" opacity="0.08"/>
+</g>
+<g data-asset-id="a62191d3-f8c8-4251-9925-5b0e525d0817" data-asset-name="8-ball-no-background.svg" transform="translate(548, 258) scale(0.18043209774332858, 0.18043209774332858)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Main ball gradient - black with highlights -->
+    <radialGradient id="ballGradient" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- White circle gradient for the number -->
+    <radialGradient id="whiteCircleGrad" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Specular highlight -->
+    <radialGradient id="specularHighlight" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="shadowGrad" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4"/>
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Ambient occlusion at bottom -->
+    <radialGradient id="aoGradient" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  
+  
+  <!-- Shadow under ball -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="200" cy="340" rx="85" ry="25" fill="url(#shadowGrad)"/>
+  
+  <!-- Main ball sphere -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#ballGradient)"/>
+  
+  <!-- Ambient occlusion on bottom -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#aoGradient)"/>
+  
+  <!-- White circle for number -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="url(#whiteCircleGrad)"/>
+  
+  <!-- Subtle inner shadow on white circle -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="none" stroke="#d0d0d0" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Number "8" -->
+  <text xmlns="http://www.w3.org/2000/svg" x="200" y="235" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="85" font-weight="900" fill="#000000" stroke="#1a1a1a" stroke-width="1">8</text>
+  
+  <!-- Specular highlight (shiny spot) -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="150" cy="150" rx="50" ry="45" fill="url(#specularHighlight)"/>
+  
+  <!-- Secondary smaller highlight -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="140" cy="140" rx="25" ry="20" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Tiny bright highlight point -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="135" cy="135" r="8" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Edge reflection on right side -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 280 140 Q 300 180 290 220 Q 280 250 260 270" fill="none" stroke="#4a4a4a" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+  
+  <!-- Subtle rim highlight -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="119" fill="none" stroke="#333333" stroke-width="1" opacity="0.6"/>
+</g>
+    <g data-asset-id="a62191d3-f8c8-4251-9925-5b0e525d0817" data-asset-name="8-ball-no-background.svg" transform="translate(558, 268) scale(0.18043209774332858, 0.18043209774332858)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Main ball gradient - black with highlights -->
+    <radialGradient id="pasted-7244573a-65e9-4d8c-ba44-5a48d6ed3298" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- White circle gradient for the number -->
+    <radialGradient id="pasted-4ed556db-dcac-4c42-9a3f-e998574dbd16" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Specular highlight -->
+    <radialGradient id="pasted-ca8119c9-5d08-4cf3-8689-8ac81f49eff5" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="pasted-2afa2f02-f400-44ea-b042-be6eae8732a4" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4"/>
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Ambient occlusion at bottom -->
+    <radialGradient id="pasted-b8ced565-7f7b-48dc-a1ea-d7421f9e27cc" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  
+  
+  <!-- Shadow under ball -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="200" cy="340" rx="85" ry="25" fill="url(#pasted-2afa2f02-f400-44ea-b042-be6eae8732a4)"/>
+  
+  <!-- Main ball sphere -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-7244573a-65e9-4d8c-ba44-5a48d6ed3298)"/>
+  
+  <!-- Ambient occlusion on bottom -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-b8ced565-7f7b-48dc-a1ea-d7421f9e27cc)"/>
+  
+  <!-- White circle for number -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="url(#pasted-4ed556db-dcac-4c42-9a3f-e998574dbd16)"/>
+  
+  <!-- Subtle inner shadow on white circle -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="none" stroke="#d0d0d0" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Number "8" -->
+  <text xmlns="http://www.w3.org/2000/svg" x="200" y="235" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="85" font-weight="900" fill="#000000" stroke="#1a1a1a" stroke-width="1">8</text>
+  
+  <!-- Specular highlight (shiny spot) -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="150" cy="150" rx="50" ry="45" fill="url(#pasted-ca8119c9-5d08-4cf3-8689-8ac81f49eff5)"/>
+  
+  <!-- Secondary smaller highlight -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="140" cy="140" rx="25" ry="20" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Tiny bright highlight point -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="135" cy="135" r="8" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Edge reflection on right side -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 280 140 Q 300 180 290 220 Q 280 250 260 270" fill="none" stroke="#4a4a4a" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+  
+  <!-- Subtle rim highlight -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="119" fill="none" stroke="#333333" stroke-width="1" opacity="0.6"/>
+</g><g data-asset-id="a62191d3-f8c8-4251-9925-5b0e525d0817" data-asset-name="8-ball-no-background.svg" transform="translate(563, 273) scale(0.18043209774332858, 0.18043209774332858)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Main ball gradient - black with highlights -->
+    <radialGradient id="pasted-49cc4155-c02b-4d3c-8c63-d9d85b308d94" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- White circle gradient for the number -->
+    <radialGradient id="pasted-2ef8e243-1331-4448-b0b4-757fdc25d430" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Specular highlight -->
+    <radialGradient id="pasted-5db1f134-368e-44b3-b6ef-2f554b9f23de" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="pasted-25159cc9-89a7-4402-9711-99829746584c" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4"/>
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Ambient occlusion at bottom -->
+    <radialGradient id="pasted-f9bf7c21-d932-48e8-9cf8-30a52beb561e" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  
+  
+  <!-- Shadow under ball -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="200" cy="340" rx="85" ry="25" fill="url(#pasted-25159cc9-89a7-4402-9711-99829746584c)"/>
+  
+  <!-- Main ball sphere -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-49cc4155-c02b-4d3c-8c63-d9d85b308d94)"/>
+  
+  <!-- Ambient occlusion on bottom -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-f9bf7c21-d932-48e8-9cf8-30a52beb561e)"/>
+  
+  <!-- White circle for number -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="url(#pasted-2ef8e243-1331-4448-b0b4-757fdc25d430)"/>
+  
+  <!-- Subtle inner shadow on white circle -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="none" stroke="#d0d0d0" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Number "8" -->
+  <text xmlns="http://www.w3.org/2000/svg" x="200" y="235" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="85" font-weight="900" fill="#000000" stroke="#1a1a1a" stroke-width="1">8</text>
+  
+  <!-- Specular highlight (shiny spot) -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="150" cy="150" rx="50" ry="45" fill="url(#pasted-5db1f134-368e-44b3-b6ef-2f554b9f23de)"/>
+  
+  <!-- Secondary smaller highlight -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="140" cy="140" rx="25" ry="20" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Tiny bright highlight point -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="135" cy="135" r="8" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Edge reflection on right side -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 280 140 Q 300 180 290 220 Q 280 250 260 270" fill="none" stroke="#4a4a4a" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+  
+  <!-- Subtle rim highlight -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="119" fill="none" stroke="#333333" stroke-width="1" opacity="0.6"/>
+</g><g data-asset-id="a62191d3-f8c8-4251-9925-5b0e525d0817" data-asset-name="8-ball-no-background.svg" transform="translate(568, 278) scale(0.18043209774332858, 0.18043209774332858)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Main ball gradient - black with highlights -->
+    <radialGradient id="pasted-587d7460-4b48-4548-8194-b05778068e00" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- White circle gradient for the number -->
+    <radialGradient id="pasted-11f70433-a583-4037-8c41-adc6c9afa751" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Specular highlight -->
+    <radialGradient id="pasted-c9c46e2f-ca78-46c6-b32c-6658cd033abc" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="pasted-270e2b05-c3e7-41c2-b03b-1998dbae22ed" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4"/>
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Ambient occlusion at bottom -->
+    <radialGradient id="pasted-692a55fe-421d-4274-a005-9320600b60bf" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  
+  
+  <!-- Shadow under ball -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="200" cy="340" rx="85" ry="25" fill="url(#pasted-270e2b05-c3e7-41c2-b03b-1998dbae22ed)"/>
+  
+  <!-- Main ball sphere -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-587d7460-4b48-4548-8194-b05778068e00)"/>
+  
+  <!-- Ambient occlusion on bottom -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-692a55fe-421d-4274-a005-9320600b60bf)"/>
+  
+  <!-- White circle for number -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="url(#pasted-11f70433-a583-4037-8c41-adc6c9afa751)"/>
+  
+  <!-- Subtle inner shadow on white circle -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="none" stroke="#d0d0d0" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Number "8" -->
+  <text xmlns="http://www.w3.org/2000/svg" x="200" y="235" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="85" font-weight="900" fill="#000000" stroke="#1a1a1a" stroke-width="1">8</text>
+  
+  <!-- Specular highlight (shiny spot) -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="150" cy="150" rx="50" ry="45" fill="url(#pasted-c9c46e2f-ca78-46c6-b32c-6658cd033abc)"/>
+  
+  <!-- Secondary smaller highlight -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="140" cy="140" rx="25" ry="20" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Tiny bright highlight point -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="135" cy="135" r="8" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Edge reflection on right side -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 280 140 Q 300 180 290 220 Q 280 250 260 270" fill="none" stroke="#4a4a4a" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+  
+  <!-- Subtle rim highlight -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="119" fill="none" stroke="#333333" stroke-width="1" opacity="0.6"/>
+</g><g data-asset-id="a62191d3-f8c8-4251-9925-5b0e525d0817" data-asset-name="8-ball-no-background.svg" transform="translate(573, 283) scale(0.18043209774332858, 0.18043209774332858)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Main ball gradient - black with highlights -->
+    <radialGradient id="pasted-6ee6e585-b73c-4036-beb0-978f6ed1038f" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- White circle gradient for the number -->
+    <radialGradient id="pasted-76ebff38-f481-4732-a4ce-d11f13558fe2" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Specular highlight -->
+    <radialGradient id="pasted-67d30331-b609-4696-ad8e-07bec129b927" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="pasted-469a840e-50d9-411f-8b1b-0d670f303646" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4"/>
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Ambient occlusion at bottom -->
+    <radialGradient id="pasted-4b341588-41c8-4ee0-bee4-78a7329b17f9" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  
+  
+  <!-- Shadow under ball -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="200" cy="340" rx="85" ry="25" fill="url(#pasted-469a840e-50d9-411f-8b1b-0d670f303646)"/>
+  
+  <!-- Main ball sphere -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-6ee6e585-b73c-4036-beb0-978f6ed1038f)"/>
+  
+  <!-- Ambient occlusion on bottom -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-4b341588-41c8-4ee0-bee4-78a7329b17f9)"/>
+  
+  <!-- White circle for number -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="url(#pasted-76ebff38-f481-4732-a4ce-d11f13558fe2)"/>
+  
+  <!-- Subtle inner shadow on white circle -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="none" stroke="#d0d0d0" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Number "8" -->
+  <text xmlns="http://www.w3.org/2000/svg" x="200" y="235" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="85" font-weight="900" fill="#000000" stroke="#1a1a1a" stroke-width="1">8</text>
+  
+  <!-- Specular highlight (shiny spot) -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="150" cy="150" rx="50" ry="45" fill="url(#pasted-67d30331-b609-4696-ad8e-07bec129b927)"/>
+  
+  <!-- Secondary smaller highlight -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="140" cy="140" rx="25" ry="20" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Tiny bright highlight point -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="135" cy="135" r="8" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Edge reflection on right side -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 280 140 Q 300 180 290 220 Q 280 250 260 270" fill="none" stroke="#4a4a4a" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+  
+  <!-- Subtle rim highlight -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="119" fill="none" stroke="#333333" stroke-width="1" opacity="0.6"/>
+</g><g data-asset-id="a62191d3-f8c8-4251-9925-5b0e525d0817" data-asset-name="8-ball-no-background.svg" transform="translate(578, 288) scale(0.18043209774332858, 0.18043209774332858)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Main ball gradient - black with highlights -->
+    <radialGradient id="pasted-04f20735-fbff-4804-8b99-91f83de623fc" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- White circle gradient for the number -->
+    <radialGradient id="pasted-b7f0db5a-8154-4c85-a613-a4e23983254c" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="70%" style="stop-color:#f5f5f5;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d0d0;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- Specular highlight -->
+    <radialGradient id="pasted-c842250d-a5f4-47d0-8199-17c4705e1fbc" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="60%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Shadow gradient -->
+    <radialGradient id="pasted-9c6acd2d-0713-48a0-8ba4-0b8ade369d17" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4"/>
+      <stop offset="70%" style="stop-color:#000000;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Ambient occlusion at bottom -->
+    <radialGradient id="pasted-db9fbeb1-ff3e-4ed5-b75e-433fb106751a" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#000000;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  
+  
+  <!-- Shadow under ball -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="200" cy="340" rx="85" ry="25" fill="url(#pasted-9c6acd2d-0713-48a0-8ba4-0b8ade369d17)"/>
+  
+  <!-- Main ball sphere -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-04f20735-fbff-4804-8b99-91f83de623fc)"/>
+  
+  <!-- Ambient occlusion on bottom -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="120" fill="url(#pasted-db9fbeb1-ff3e-4ed5-b75e-433fb106751a)"/>
+  
+  <!-- White circle for number -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="url(#pasted-b7f0db5a-8154-4c85-a613-a4e23983254c)"/>
+  
+  <!-- Subtle inner shadow on white circle -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="55" fill="none" stroke="#d0d0d0" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Number "8" -->
+  <text xmlns="http://www.w3.org/2000/svg" x="200" y="235" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="85" font-weight="900" fill="#000000" stroke="#1a1a1a" stroke-width="1">8</text>
+  
+  <!-- Specular highlight (shiny spot) -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="150" cy="150" rx="50" ry="45" fill="url(#pasted-c842250d-a5f4-47d0-8199-17c4705e1fbc)"/>
+  
+  <!-- Secondary smaller highlight -->
+  <ellipse xmlns="http://www.w3.org/2000/svg" cx="140" cy="140" rx="25" ry="20" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Tiny bright highlight point -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="135" cy="135" r="8" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Edge reflection on right side -->
+  <path xmlns="http://www.w3.org/2000/svg" d="M 280 140 Q 300 180 290 220 Q 280 250 260 270" fill="none" stroke="#4a4a4a" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+  
+  <!-- Subtle rim highlight -->
+  <circle xmlns="http://www.w3.org/2000/svg" cx="200" cy="200" r="119" fill="none" stroke="#333333" stroke-width="1" opacity="0.6"/>
+</g></svg>

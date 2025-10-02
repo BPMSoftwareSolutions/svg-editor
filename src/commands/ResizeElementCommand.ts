@@ -21,7 +21,8 @@ export class ResizeElementCommand implements Command {
     originalHeight: number,
     newWidth: number,
     newHeight: number,
-    scale: number = 1
+    scale: number = 1,
+    originalTransform?: string
   ) {
     const tagName = element.tagName.toLowerCase()
     
@@ -81,23 +82,13 @@ export class ResizeElementCommand implements Command {
 
       default: {
         // For other elements (path, polygon, groups, etc.), use transform scale
+        // Store the original transform (before resize started)
+        const startTransform = originalTransform !== undefined ? originalTransform : element.getAttribute('transform') || ''
+        originalAttributes.set('transform', startTransform)
+
+        // Store the current transform (after resize completed with position correction)
         const currentTransform = element.getAttribute('transform') || ''
-        const scaleXRatio = adjustedNewWidth / adjustedOriginalWidth
-        const scaleYRatio = adjustedNewHeight / adjustedOriginalHeight
-
-        originalAttributes.set('transform', currentTransform)
-
-        // Parse existing transform and compose the new scale
-        const transform = parseTransform(currentTransform)
-
-        // Multiply the new scale ratio with existing scale
-        transform.scaleX *= scaleXRatio
-        transform.scaleY *= scaleYRatio
-
-        // Serialize back to transform string
-        const newTransform = serializeTransform(transform)
-
-        newAttributes.set('transform', newTransform)
+        newAttributes.set('transform', currentTransform)
         break
       }
     }

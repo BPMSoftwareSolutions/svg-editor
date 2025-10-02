@@ -27,6 +27,7 @@ function SelectionOverlay() {
   const overlayRef = useRef<HTMLDivElement>(null)
   const resizeStartDimensionsRef = useRef<{ width: number; height: number } | null>(null)
   const resizeStartTransformRef = useRef<string | null>(null)
+  const resizeStartBBoxRef = useRef<DOMRect | null>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
     onResizeStart: () => {
@@ -34,12 +35,13 @@ function SelectionOverlay() {
 
       const element = selectedElement.element
 
-      // Store original dimensions
+      // Store original dimensions and bounding box
       const rect = element.getBoundingClientRect()
       resizeStartDimensionsRef.current = {
         width: rect.width,
         height: rect.height,
       }
+      resizeStartBBoxRef.current = rect
 
       // Store original transform for groups and other transform-based elements
       const tagName = element.tagName.toLowerCase()
@@ -79,6 +81,19 @@ function SelectionOverlay() {
           // For groups and other elements, apply transform scale
           const startDimensions = resizeStartDimensionsRef.current
           const startTransform = resizeStartTransformRef.current || ''
+          const startBBox = resizeStartBBoxRef.current
+
+          if (!startBBox) break
+
+          // Get the viewer container to account for viewport transforms
+          const viewerContainer = document.querySelector('.viewer-container')
+          if (!viewerContainer) break
+
+          const containerRect = viewerContainer.getBoundingClientRect()
+
+          // Calculate the original top-left position in container coordinates
+          const originalLeft = startBBox.left - containerRect.left
+          const originalTop = startBBox.top - containerRect.top
 
           // Calculate scale ratio relative to original dimensions
           const scaleXRatio = width / startDimensions.width
@@ -91,9 +106,29 @@ function SelectionOverlay() {
           transformData.scaleX *= scaleXRatio
           transformData.scaleY *= scaleYRatio
 
-          // Serialize and apply using the proper serialization function
+          // Serialize and apply the new transform
           const newTransform = serializeTransform(transformData)
           element.setAttribute('transform', newTransform)
+
+          // Now get the new bounding box after scale is applied
+          const newBBox = element.getBoundingClientRect()
+          const newLeft = newBBox.left - containerRect.left
+          const newTop = newBBox.top - containerRect.top
+
+          // Calculate the offset needed to restore original position
+          const offsetX = originalLeft - newLeft
+          const offsetY = originalTop - newTop
+
+          // Apply the offset to the translate values
+          if (offsetX !== 0 || offsetY !== 0) {
+            // Adjust by viewport scale
+            transformData.translateX += offsetX / scale
+            transformData.translateY += offsetY / scale
+
+            // Apply the corrected transform
+            element.setAttribute('transform', serializeTransform(transformData))
+          }
+
           break
         }
       }
@@ -121,6 +156,12 @@ function SelectionOverlay() {
         scale
       })
 
+      // Get the original transform for groups/paths (before resize started)
+      const tagName = element.tagName.toLowerCase()
+      const originalTransform = !['rect', 'circle', 'ellipse', 'image', 'line'].includes(tagName)
+        ? resizeStartTransformRef.current || ''
+        : undefined
+
       // Create resize command
       const command = new ResizeElementCommand(
         element,
@@ -128,7 +169,8 @@ function SelectionOverlay() {
         startDimensions.height,
         width,
         height,
-        scale
+        scale,
+        originalTransform
       )
 
       // IMPORTANT: Use addToHistory instead of executeCommand because the resize
@@ -153,6 +195,7 @@ function SelectionOverlay() {
 
       resizeStartDimensionsRef.current = null
       resizeStartTransformRef.current = null
+      resizeStartBBoxRef.current = null
     },
   })
 
