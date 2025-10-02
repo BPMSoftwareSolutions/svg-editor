@@ -1,4 +1,5 @@
 import { Command } from '../types/command'
+import { parseTransform, serializeTransform } from '../utils/transform'
 
 interface ElementSize {
   element: SVGElement
@@ -81,13 +82,32 @@ export class ResizeElementCommand implements Command {
 
       default: {
         // For other elements (path, polygon, groups, etc.), use transform scale
-        // Store the original transform (before resize started)
-        const startTransform = originalTransform !== undefined ? originalTransform : element.getAttribute('transform') || ''
-        originalAttributes.set('transform', startTransform)
+        if (originalTransform !== undefined) {
+          // When called from SelectionOverlay with originalTransform:
+          // Store the original transform (before resize started)
+          originalAttributes.set('transform', originalTransform)
 
-        // Store the current transform (after resize completed with position correction)
-        const currentTransform = element.getAttribute('transform') || ''
-        newAttributes.set('transform', currentTransform)
+          // Store the current transform (after resize completed with position correction)
+          const currentTransform = element.getAttribute('transform') || ''
+          newAttributes.set('transform', currentTransform)
+        } else {
+          // When called directly (e.g., from tests):
+          // Calculate and apply the scale transform
+          const currentTransform = element.getAttribute('transform') || ''
+          originalAttributes.set('transform', currentTransform)
+
+          const parsed = parseTransform(currentTransform)
+          const scaleX = newWidth / originalWidth
+          const scaleY = newHeight / originalHeight
+
+          // Compose the new scale with existing scale
+          parsed.scaleX *= scaleX
+          parsed.scaleY *= scaleY
+
+          const newTransform = serializeTransform(parsed)
+          newAttributes.set('transform', newTransform)
+          element.setAttribute('transform', newTransform)
+        }
         break
       }
     }
