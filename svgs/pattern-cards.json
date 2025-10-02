@@ -1,0 +1,170 @@
+{
+  "canvas": {
+    "width": 1400,
+    "height": 1100,
+    "viewBox": "0 0 1400 1100",
+    "background": "#ffffff"
+  },
+  "defs": {
+    "symbolId": "base-card",
+    "svg": "<g>\n          <!-- card container -->\n          <rect x=\"-200\" y=\"-130\" width=\"400\" height=\"260\" rx=\"16\" ry=\"16\" fill=\"#ffffff\" stroke=\"#E9D5FF\" stroke-width=\"2\"/>\n          <!-- header band -->\n          <rect x=\"-200\" y=\"-130\" width=\"400\" height=\"50\" rx=\"16\" ry=\"16\" fill=\"#F5F3FF\"/>\n          <!-- faint divider -->\n          <line x1=\"-200\" y1=\"-80\" x2=\"200\" y2=\"-80\" stroke=\"#E9D5FF\" stroke-width=\"1\"/>\n        </g>"
+  },
+  "pattern": {
+    "iterations": 12,
+    "origin": {
+      "x": 280,
+      "y": 270
+    },
+    "grid": {
+      "columns": 3,
+      "rows": 4,
+      "cell": {
+        "dx": 460,
+        "dy": 300
+      }
+    },
+    "transformPerIteration": {
+      "translate": {
+        "x": "(i % grid.columns) * grid.cell.dx",
+        "y": "Math.floor(i / grid.columns) * grid.cell.dy"
+      }
+    },
+    "stylePerIteration": {
+      "opacity": "1"
+    },
+    "clip": {
+      "enabled": false
+    },
+    "overlaysPerIteration": [
+      {
+        "kind": "icon",
+        "x": -170,
+        "y": -100,
+        "r": 14,
+        "style": {
+          "fill": "#7C3AED",
+          "stroke": "none"
+        },
+        "textStyle": {
+          "fontSize": 14,
+          "fontFamily": "Inter, system-ui, sans-serif",
+          "fill": "#ffffff",
+          "fontWeight": 800
+        },
+        "text": "data[i].icon"
+      },
+      {
+        "kind": "text",
+        "x": -140,
+        "y": -98,
+        "text": "data[i].title",
+        "style": {
+          "fontSize": 22,
+          "fontFamily": "Inter, system-ui, sans-serif",
+          "fill": "#6D28D9",
+          "fontWeight": 900
+        }
+      },
+      {
+        "kind": "text",
+        "x": -170,
+        "y": -60,
+        "text": "data[i].subtitle",
+        "style": {
+          "fontSize": 13,
+          "fontFamily": "Inter, system-ui, sans-serif",
+          "fill": "#6B7280",
+          "fontWeight": 700
+        }
+      },
+      {
+        "kind": "body",
+        "x": -170,
+        "y": -30,
+        "width": 340,
+        "lineHeight": 18,
+        "text": "data[i].body",
+        "style": {
+          "fontSize": 13,
+          "fontFamily": "Inter, system-ui, sans-serif",
+          "fill": "#111827",
+          "fontWeight": 400
+        }
+      }
+    ]
+  },
+  "data": [
+    {
+      "title": "LLM",
+      "subtitle": "Large Language Model",
+      "icon": "\ud83e\udde0",
+      "body": "Advanced AI systems trained on vast text datasets to understand and generate human-like text, forming the foundation for conversational AI and content generation."
+    },
+    {
+      "title": "Transformers",
+      "subtitle": "Transformer Architecture",
+      "icon": "\ud83d\udd00",
+      "body": "Neural networks using self\u2011attention to process sequences in parallel, enabling long\u2011range dependencies and state\u2011of\u2011the\u2011art performance in language and vision."
+    },
+    {
+      "title": "Prompt Engineering",
+      "subtitle": "AI Instruction Design",
+      "icon": "\u270d\ufe0f",
+      "body": "Crafting inputs, context, and constraints so models produce accurate, controllable outputs aligned with user intent and safety guidelines."
+    },
+    {
+      "title": "Fine\u2011tuning",
+      "subtitle": "Model Specialization",
+      "icon": "\ud83c\udfaf",
+      "body": "Adapting a pre\u2011trained model to a domain or task using curated examples; improves accuracy and tone for targeted applications."
+    },
+    {
+      "title": "Embeddings",
+      "subtitle": "Vector Representations",
+      "icon": "\ud83e\udded",
+      "body": "Numeric vectors that capture meaning of text or images; power search, clustering, retrieval, and recommendation systems."
+    },
+    {
+      "title": "RAG",
+      "subtitle": "Retrieval Augmented Generation",
+      "icon": "\ud83d\udcda",
+      "body": "Combines search with generation so models can ground answers in external sources, boosting factuality and freshness."
+    },
+    {
+      "title": "Tokens",
+      "subtitle": "Units of Text",
+      "icon": "\ud83d\udd21",
+      "body": "Subword pieces or characters that models read and produce; tokenization affects cost, latency, and context length."
+    },
+    {
+      "title": "Hallucination",
+      "subtitle": "AI Fabrication",
+      "icon": "\ud83c\udf00",
+      "body": "When a model produces plausible\u2011sounding but incorrect statements; mitigated with grounding, verification, and better prompts."
+    },
+    {
+      "title": "Zero\u2011shot",
+      "subtitle": "Zero\u2011shot Learning",
+      "icon": "\ud83d\ude80",
+      "body": "Model performs a task it wasn't explicitly trained on by relying on generalization and instruction\u2011following capabilities."
+    },
+    {
+      "title": "Chain\u2011of\u2011Thought",
+      "subtitle": "Reasoning Process",
+      "icon": "\ud83d\udd17",
+      "body": "Technique to elicit intermediate reasoning steps for complex problems; helps with accuracy and transparency."
+    },
+    {
+      "title": "Context Window",
+      "subtitle": "Input Capacity",
+      "icon": "\ud83e\ude9f",
+      "body": "Maximum amount of input a model can consider at once; larger windows allow more instructions and references."
+    },
+    {
+      "title": "Temperature",
+      "subtitle": "Randomness Parameter",
+      "icon": "\ud83c\udf21\ufe0f",
+      "body": "Controls output variability: lower values yield deterministic responses; higher values increase creativity and diversity."
+    }
+  ]
+}

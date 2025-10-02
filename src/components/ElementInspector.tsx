@@ -1,25 +1,34 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
+import { useUndoRedo } from '../contexts/UndoRedoContext'
+import { DeleteElementCommand, TextEditCommand, ZOrderCommand } from '../commands'
 import '../styles/ElementInspector.css'
 
 function ElementInspector() {
   const { selectedElement, selectedElements, clearSelection } = useSelection()
+  const { executeCommand } = useUndoRedo()
   const [textContent, setTextContent] = useState('')
+  const originalTextRef = useRef('')
 
   // Update text content when selection changes
   useEffect(() => {
     if (selectedElement && selectedElement.type === 'text') {
-      setTextContent(selectedElement.element.textContent || '')
+      const text = selectedElement.element.textContent || ''
+      setTextContent(text)
+      originalTextRef.current = text
     } else {
       setTextContent('')
+      originalTextRef.current = ''
     }
   }, [selectedElement])
 
   const handleDelete = () => {
     if (selectedElements.length === 0) return
 
-    // Remove all selected elements from DOM
-    selectedElements.forEach(sel => sel.element.remove())
+    // Create delete command
+    const elements = selectedElements.map(sel => sel.element)
+    const command = new DeleteElementCommand(elements)
+    executeCommand(command)
 
     // Clear selection
     clearSelection()
@@ -31,7 +40,17 @@ function ElementInspector() {
 
   const handleTextBlur = () => {
     if (!selectedElement || selectedElement.type !== 'text') return
-    selectedElement.element.textContent = textContent
+
+    // Only create command if text actually changed
+    if (textContent !== originalTextRef.current) {
+      const command = new TextEditCommand(
+        selectedElement.element,
+        originalTextRef.current,
+        textContent
+      )
+      executeCommand(command)
+      originalTextRef.current = textContent
+    }
   }
 
   const handleTextKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -44,10 +63,8 @@ function ElementInspector() {
   const bringToFront = () => {
     if (selectedElements.length === 0) return
     selectedElements.forEach(sel => {
-      const parent = sel.element.parentElement
-      if (parent) {
-        parent.appendChild(sel.element)
-      }
+      const command = new ZOrderCommand(sel.element, 'toFront')
+      executeCommand(command)
     })
   }
 
@@ -55,32 +72,24 @@ function ElementInspector() {
     if (selectedElements.length === 0) return
     // Reverse order to maintain relative ordering
     [...selectedElements].reverse().forEach(sel => {
-      const parent = sel.element.parentElement
-      if (parent && parent.firstChild) {
-        parent.insertBefore(sel.element, parent.firstChild)
-      }
+      const command = new ZOrderCommand(sel.element, 'toBack')
+      executeCommand(command)
     })
   }
 
   const bringForward = () => {
     if (selectedElements.length === 0) return
     selectedElements.forEach(sel => {
-      const element = sel.element
-      const nextSibling = element.nextElementSibling
-      if (nextSibling) {
-        element.parentElement?.insertBefore(nextSibling, element)
-      }
+      const command = new ZOrderCommand(sel.element, 'forward')
+      executeCommand(command)
     })
   }
 
   const sendBackward = () => {
     if (selectedElements.length === 0) return
     selectedElements.forEach(sel => {
-      const element = sel.element
-      const prevSibling = element.previousElementSibling
-      if (prevSibling) {
-        element.parentElement?.insertBefore(element, prevSibling)
-      }
+      const command = new ZOrderCommand(sel.element, 'backward')
+      executeCommand(command)
     })
   }
 

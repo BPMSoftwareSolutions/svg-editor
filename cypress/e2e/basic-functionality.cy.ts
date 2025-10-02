@@ -130,25 +130,29 @@ describe('Basic SVG Editor Functionality', () => {
 
   it('should move element with arrow keys', () => {
     cy.visit('/')
-    
+
     // Upload test SVG
     cy.uploadSVG('test.svg')
     cy.get('svg').should('be.visible')
-    
+
     // Select rect1
     cy.get('#rect1').click()
-    
-    // Get initial position
+
+    // Get initial transform
     cy.get('#rect1').then(($el) => {
-      const initialX = parseFloat($el.attr('x') || '0')
-      
+      const initialTransform = $el.attr('transform') || ''
+
       // Press arrow key
       cy.get('body').type('{rightarrow}')
-      
-      // Verify position changed
+
+      // Wait a bit for the command to be processed
+      cy.wait(100)
+
+      // Verify transform changed (arrow keys now use transform)
       cy.get('#rect1').should(($newEl) => {
-        const newX = parseFloat($newEl.attr('x') || '0')
-        expect(newX).to.be.greaterThan(initialX)
+        const newTransform = $newEl.attr('transform') || ''
+        expect(newTransform).to.not.equal(initialTransform)
+        expect(newTransform).to.include('translate')
       })
     })
   })

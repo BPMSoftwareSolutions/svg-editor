@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
+import { useUndoRedo } from '../contexts/UndoRedoContext'
 import { applyTranslation } from '../utils/transform'
 import { useResize, ResizeHandle } from '../hooks/useResize'
+import { MoveElementCommand, ResizeElementCommand } from '../commands'
 import '../styles/SelectionOverlay.css'
 
 interface BoundingBox {
@@ -13,13 +15,27 @@ interface BoundingBox {
 
 function SelectionOverlay() {
   const { selectedElement, selectedElements } = useSelection()
+  const { addToHistory } = useUndoRedo()
   const [bbox, setBbox] = useState<BoundingBox | null>(null)
   const [multiSelectionBoxes, setMultiSelectionBoxes] = useState<BoundingBox[]>([])
   const [isDragging, setIsDragging] = useState(false)
   const dragStartRef = useRef({ x: 0, y: 0 })
+  const dragTotalDeltaRef = useRef({ x: 0, y: 0 })
+  const dragStartTransformsRef = useRef<string[]>([])
   const overlayRef = useRef<HTMLDivElement>(null)
+  const resizeStartDimensionsRef = useRef<{ width: number; height: number } | null>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
+    onResizeStart: () => {
+      if (!selectedElement) return
+
+      // Store original dimensions
+      const rect = selectedElement.element.getBoundingClientRect()
+      resizeStartDimensionsRef.current = {
+        width: rect.width,
+        height: rect.height,
+      }
+    },
     onResize: (width, height, _left, _top) => {
       if (!selectedElement) return
 
@@ -52,6 +68,42 @@ function SelectionOverlay() {
 
       // Update bounding box
       updateBbox()
+    },
+    onResizeEnd: (width, height) => {
+      if (!selectedElement || !resizeStartDimensionsRef.current) return
+
+      const element = selectedElement.element
+      const startDimensions = resizeStartDimensionsRef.current
+
+      // Get viewport scale
+      const viewerContainer = document.querySelector('.svg-content') as HTMLElement
+      const transform = viewerContainer?.style.transform || ''
+      const scaleMatch = transform.match(/scale\(([^)]+)\)/)
+      const scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1
+
+      console.log('[SelectionOverlay] Creating ResizeElementCommand:', {
+        originalWidth: startDimensions.width,
+        originalHeight: startDimensions.height,
+        newWidth: width,
+        newHeight: height,
+        scale
+      })
+
+      // Create resize command
+      const command = new ResizeElementCommand(
+        element,
+        startDimensions.width,
+        startDimensions.height,
+        width,
+        height,
+        scale
+      )
+
+      // IMPORTANT: Use addToHistory instead of executeCommand because the resize
+      // has already been applied during the resize operation
+      addToHistory(command)
+
+      resizeStartDimensionsRef.current = null
     },
   })
 
@@ -151,6 +203,14 @@ function SelectionOverlay() {
     e.stopPropagation()
     setIsDragging(true)
     dragStartRef.current = { x: e.clientX, y: e.clientY }
+    dragTotalDeltaRef.current = { x: 0, y: 0 }
+
+    // Capture original transforms before drag starts
+    dragStartTransformsRef.current = selectedElements.map(sel =>
+      sel.element.getAttribute('transform') || ''
+    )
+
+    console.log('[SelectionOverlay] Starting drag, captured original transforms:', dragStartTransformsRef.current)
 
     document.body.style.cursor = 'grabbing'
   }
@@ -169,6 +229,10 @@ function SelectionOverlay() {
 
     const deltaX = e.clientX - dragStartRef.current.x
     const deltaY = e.clientY - dragStartRef.current.y
+
+    // Accumulate total delta for command
+    dragTotalDeltaRef.current.x += deltaX
+    dragTotalDeltaRef.current.y += deltaY
 
     // Get viewport scale from the viewer container
     const viewerContainer = document.querySelector('.svg-content') as HTMLElement
@@ -189,7 +253,41 @@ function SelectionOverlay() {
   }
 
   const handleMouseUp = () => {
+    if (isDragging && selectedElements.length > 0) {
+      // Get viewport scale
+      const viewerContainer = document.querySelector('.svg-content') as HTMLElement
+      const transform = viewerContainer?.style.transform || ''
+      const scaleMatch = transform.match(/scale\(([^)]+)\)/)
+      const scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1
+
+      // Create move command with total delta
+      const totalDelta = dragTotalDeltaRef.current
+      if (totalDelta.x !== 0 || totalDelta.y !== 0) {
+        console.log('[SelectionOverlay] Creating MoveElementCommand:', {
+          deltaX: totalDelta.x,
+          deltaY: totalDelta.y,
+          scale,
+          elementCount: selectedElements.length,
+          originalTransforms: dragStartTransformsRef.current
+        })
+
+        const elements = selectedElements.map(sel => sel.element)
+        const command = new MoveElementCommand(
+          elements,
+          totalDelta.x,
+          totalDelta.y,
+          scale,
+          dragStartTransformsRef.current
+        )
+
+        // IMPORTANT: Use addToHistory instead of executeCommand because the move
+        // has already been applied during drag. We just need to add it to history for undo/redo
+        addToHistory(command)
+      }
+    }
+
     setIsDragging(false)
+    dragStartTransformsRef.current = []
     document.body.style.cursor = ''
   }
 

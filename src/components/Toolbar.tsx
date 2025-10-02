@@ -1,59 +1,34 @@
 import { useSelection } from '../contexts/SelectionContext'
+import { useUndoRedo } from '../contexts/UndoRedoContext'
+import { ZOrderCommand } from '../commands'
 import '../styles/Toolbar.css'
 
 function Toolbar() {
   const { selectedElement } = useSelection()
+  const { executeCommand } = useUndoRedo()
 
   const bringToFront = () => {
     if (!selectedElement) return
-    
-    const element = selectedElement.element
-    const parent = element.parentNode
-    
-    if (parent) {
-      parent.appendChild(element)
-    }
+    const command = new ZOrderCommand(selectedElement.element, 'toFront')
+    executeCommand(command)
   }
 
   const sendToBack = () => {
     if (!selectedElement) return
-    
-    const element = selectedElement.element
-    const parent = element.parentNode
-    
-    if (parent && parent.firstChild) {
-      parent.insertBefore(element, parent.firstChild)
-    }
+    const command = new ZOrderCommand(selectedElement.element, 'toBack')
+    executeCommand(command)
   }
 
   const bringForward = () => {
     if (!selectedElement) return
-    
-    const element = selectedElement.element
-    const nextSibling = element.nextSibling
-    
-    if (nextSibling) {
-      const parent = element.parentNode
-      if (parent && nextSibling.nextSibling) {
-        parent.insertBefore(element, nextSibling.nextSibling)
-      } else if (parent) {
-        parent.appendChild(element)
-      }
-    }
+    const command = new ZOrderCommand(selectedElement.element, 'forward')
+    executeCommand(command)
   }
 
   const sendBackward = () => {
     if (!selectedElement) return
-    
-    const element = selectedElement.element
-    const previousSibling = element.previousSibling
-    
-    if (previousSibling) {
-      const parent = element.parentNode
-      if (parent) {
-        parent.insertBefore(element, previousSibling)
-      }
-    }
+    const command = new ZOrderCommand(selectedElement.element, 'backward')
+    executeCommand(command)
   }
 
   return (

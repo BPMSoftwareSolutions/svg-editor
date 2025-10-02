@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect, WheelEvent, MouseEvent } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
+import { useUndoRedo } from '../contexts/UndoRedoContext'
+import { DeleteElementCommand, MoveElementCommand } from '../commands'
 import SelectionOverlay from './SelectionOverlay'
 import ElementInspector from './ElementInspector'
 import Toolbar from './Toolbar'
@@ -21,6 +23,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const svgContentRef = useRef<HTMLDivElement>(null)
   const { selectedElements, selectElement, selectMultiple, toggleElement, clearSelection } = useSelection()
+  const { executeCommand } = useUndoRedo()
   const [viewport, setViewport] = useState<ViewportState>({
     scale: 1,
     translateX: 0,
@@ -84,71 +87,6 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
     }
   }, [svgContent, selectElement, toggleElement])
 
-  // Helper function to move an element
-  const moveElement = (element: SVGElement, deltaX: number, deltaY: number) => {
-    const tagName = element.tagName.toLowerCase()
-
-    // Update position based on element type
-    switch (tagName) {
-      case 'circle':
-      case 'ellipse': {
-        const cx = Number(element.getAttribute('cx')) || 0
-        const cy = Number(element.getAttribute('cy')) || 0
-        element.setAttribute('cx', (cx + deltaX).toString())
-        element.setAttribute('cy', (cy + deltaY).toString())
-        break
-      }
-      case 'rect':
-      case 'image':
-      case 'use': {
-        const x = Number(element.getAttribute('x')) || 0
-        const y = Number(element.getAttribute('y')) || 0
-        element.setAttribute('x', (x + deltaX).toString())
-        element.setAttribute('y', (y + deltaY).toString())
-        break
-      }
-      case 'line': {
-        const x1 = Number(element.getAttribute('x1')) || 0
-        const y1 = Number(element.getAttribute('y1')) || 0
-        const x2 = Number(element.getAttribute('x2')) || 0
-        const y2 = Number(element.getAttribute('y2')) || 0
-        element.setAttribute('x1', (x1 + deltaX).toString())
-        element.setAttribute('y1', (y1 + deltaY).toString())
-        element.setAttribute('x2', (x2 + deltaX).toString())
-        element.setAttribute('y2', (y2 + deltaY).toString())
-        break
-      }
-      default: {
-        // For paths, groups, and other elements, use transform
-        const currentTransform = element.getAttribute('transform') || ''
-        const translateMatch = currentTransform.match(/translate\(([^)]+)\)/)
-        let tx = 0
-        let ty = 0
-
-        if (translateMatch) {
-          const values = translateMatch[1].split(/[\s,]+/).map(Number)
-          tx = values[0] || 0
-          ty = values[1] || 0
-        }
-
-        tx += deltaX
-        ty += deltaY
-
-        const newTransform = currentTransform.replace(
-          /translate\([^)]+\)/,
-          `translate(${tx}, ${ty})`
-        )
-
-        if (newTransform === currentTransform) {
-          element.setAttribute('transform', `translate(${tx}, ${ty})`)
-        } else {
-          element.setAttribute('transform', newTransform)
-        }
-        break
-      }
-    }
-  }
-
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -166,7 +104,9 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
 
       // Delete key - remove selected elements
       if (e.key === 'Delete' && selectedElements.length > 0) {
-        selectedElements.forEach(sel => sel.element.remove())
+        const elements = selectedElements.map(sel => sel.element)
+        const command = new DeleteElementCommand(elements)
+        executeCommand(command)
         clearSelection()
       }
 
@@ -197,10 +137,10 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
             break
         }
 
-        // Move all selected elements
-        selectedElements.forEach(sel => {
-          moveElement(sel.element, deltaX, deltaY)
-        })
+        // Move all selected elements using command
+        const elements = selectedElements.map(sel => sel.element)
+        const command = new MoveElementCommand(elements, deltaX, deltaY, viewport.scale)
+        executeCommand(command)
       }
     }
 
