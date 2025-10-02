@@ -19,20 +19,25 @@ export class MoveElementCommand implements Command {
     elements: SVGElement | SVGElement[],
     deltaX: number,
     deltaY: number,
-    scale: number = 1
+    scale: number = 1,
+    originalTransforms?: string[]
   ) {
     const elementArray = Array.isArray(elements) ? elements : [elements]
-    
-    this.positions = elementArray.map(element => {
-      const originalTransform = element.getAttribute('transform') || ''
+
+    this.positions = elementArray.map((element, index) => {
+      // Use provided original transform if available, otherwise read from element
+      const originalTransform = originalTransforms
+        ? (originalTransforms[index] || '')
+        : (element.getAttribute('transform') || '')
+
       const transform = parseTransform(originalTransform)
-      
+
       // Apply movement with scale adjustment
       transform.translateX += deltaX / scale
       transform.translateY += deltaY / scale
-      
+
       const newTransform = serializeTransform(transform)
-      
+
       return {
         element,
         originalTransform,
@@ -41,24 +46,32 @@ export class MoveElementCommand implements Command {
     })
 
     const count = elementArray.length
-    this.description = count === 1 
-      ? `Move ${elementArray[0].tagName.toLowerCase()}` 
+    this.description = count === 1
+      ? `Move ${elementArray[0].tagName.toLowerCase()}`
       : `Move ${count} elements`
   }
 
   execute(): void {
-    this.positions.forEach(({ element, newTransform }) => {
+    console.log('[MoveElementCommand] Executing move')
+    this.positions.forEach(({ element, newTransform }, index) => {
+      const before = element.getAttribute('transform')
+      console.log(`  Element ${index} before:`, before)
       element.setAttribute('transform', newTransform)
+      console.log(`  Element ${index} after:`, newTransform)
     })
   }
 
   undo(): void {
-    this.positions.forEach(({ element, originalTransform }) => {
+    console.log('[MoveElementCommand] Undoing move')
+    this.positions.forEach(({ element, originalTransform }, index) => {
+      const before = element.getAttribute('transform')
+      console.log(`  Element ${index} before undo:`, before)
       if (originalTransform) {
         element.setAttribute('transform', originalTransform)
       } else {
         element.removeAttribute('transform')
       }
+      console.log(`  Element ${index} after undo:`, originalTransform || '(removed)')
     })
   }
 }

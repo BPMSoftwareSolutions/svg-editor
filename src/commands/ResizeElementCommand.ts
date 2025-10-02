@@ -56,42 +56,44 @@ export class ResizeElementCommand implements Command {
         newAttributes.set('ry', (adjustedNewHeight / 2).toString())
         break
 
-      case 'line':
+      case 'line': {
         const x1 = Number(element.getAttribute('x1')) || 0
         const y1 = Number(element.getAttribute('y1')) || 0
         const x2 = Number(element.getAttribute('x2')) || 0
         const y2 = Number(element.getAttribute('y2')) || 0
-        
+
         originalAttributes.set('x1', x1.toString())
         originalAttributes.set('y1', y1.toString())
         originalAttributes.set('x2', x2.toString())
         originalAttributes.set('y2', y2.toString())
-        
+
         // Scale the line proportionally
         const scaleX = adjustedNewWidth / adjustedOriginalWidth
         const scaleY = adjustedNewHeight / adjustedOriginalHeight
-        
+
         newAttributes.set('x1', x1.toString())
         newAttributes.set('y1', y1.toString())
         newAttributes.set('x2', (x1 + (x2 - x1) * scaleX).toString())
         newAttributes.set('y2', (y1 + (y2 - y1) * scaleY).toString())
         break
+      }
 
-      default:
+      default: {
         // For other elements (path, polygon, etc.), use transform scale
         const currentTransform = element.getAttribute('transform') || ''
         const scaleXRatio = adjustedNewWidth / adjustedOriginalWidth
         const scaleYRatio = adjustedNewHeight / adjustedOriginalHeight
-        
+
         originalAttributes.set('transform', currentTransform)
-        
+
         // Append scale to existing transform
-        const newTransform = currentTransform 
+        const newTransform = currentTransform
           ? `${currentTransform} scale(${scaleXRatio}, ${scaleYRatio})`
           : `scale(${scaleXRatio}, ${scaleYRatio})`
-        
+
         newAttributes.set('transform', newTransform)
         break
+      }
     }
 
     this.sizes = [{

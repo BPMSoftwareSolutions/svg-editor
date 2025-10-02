@@ -23,13 +23,15 @@ export function UndoRedoProvider({ children, maxHistorySize = 50 }: UndoRedoProv
    * Execute a new command and add it to history
    */
   const executeCommand = useCallback((command: Command) => {
+    console.log('[UndoRedo] Executing command:', command.description)
+
     // Execute the command
     command.execute()
 
     setState(prevState => {
       // Remove any commands after current index (they become invalid after new command)
       const newHistory = prevState.history.slice(0, prevState.currentIndex + 1)
-      
+
       // Add new command
       newHistory.push(command)
 
@@ -37,6 +39,36 @@ export function UndoRedoProvider({ children, maxHistorySize = 50 }: UndoRedoProv
       const trimmedHistory = newHistory.length > prevState.maxHistorySize
         ? newHistory.slice(newHistory.length - prevState.maxHistorySize)
         : newHistory
+
+      console.log('[UndoRedo] Command added to history. New index:', trimmedHistory.length - 1)
+
+      return {
+        ...prevState,
+        history: trimmedHistory,
+        currentIndex: trimmedHistory.length - 1,
+      }
+    })
+  }, [])
+
+  /**
+   * Add a command to history without executing it (for operations already performed)
+   */
+  const addToHistory = useCallback((command: Command) => {
+    console.log('[UndoRedo] Adding command to history (without executing):', command.description)
+
+    setState(prevState => {
+      // Remove any commands after current index (they become invalid after new command)
+      const newHistory = prevState.history.slice(0, prevState.currentIndex + 1)
+
+      // Add new command
+      newHistory.push(command)
+
+      // Trim history if it exceeds max size
+      const trimmedHistory = newHistory.length > prevState.maxHistorySize
+        ? newHistory.slice(newHistory.length - prevState.maxHistorySize)
+        : newHistory
+
+      console.log('[UndoRedo] Command added to history. New index:', trimmedHistory.length - 1)
 
       return {
         ...prevState,
@@ -51,9 +83,13 @@ export function UndoRedoProvider({ children, maxHistorySize = 50 }: UndoRedoProv
    */
   const undo = useCallback(() => {
     setState(prevState => {
-      if (prevState.currentIndex < 0) return prevState
+      if (prevState.currentIndex < 0) {
+        console.log('[UndoRedo] Cannot undo: no commands in history')
+        return prevState
+      }
 
       const command = prevState.history[prevState.currentIndex]
+      console.log('[UndoRedo] Undoing command:', command.description, 'at index:', prevState.currentIndex)
       command.undo()
 
       return {
@@ -68,9 +104,13 @@ export function UndoRedoProvider({ children, maxHistorySize = 50 }: UndoRedoProv
    */
   const redo = useCallback(() => {
     setState(prevState => {
-      if (prevState.currentIndex >= prevState.history.length - 1) return prevState
+      if (prevState.currentIndex >= prevState.history.length - 1) {
+        console.log('[UndoRedo] Cannot redo: at end of history')
+        return prevState
+      }
 
       const command = prevState.history[prevState.currentIndex + 1]
+      console.log('[UndoRedo] Redoing command:', command.description, 'at index:', prevState.currentIndex + 1)
       command.execute()
 
       return {
@@ -131,6 +171,7 @@ export function UndoRedoProvider({ children, maxHistorySize = 50 }: UndoRedoProv
         undo,
         redo,
         executeCommand,
+        addToHistory,
         clearHistory,
         getHistory,
       }}

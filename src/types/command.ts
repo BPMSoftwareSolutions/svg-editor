@@ -74,6 +74,12 @@ export interface UndoRedoContextType {
   executeCommand: (command: Command) => void
 
   /**
+   * Add a command to history without executing it
+   * (for operations that have already been performed)
+   */
+  addToHistory: (command: Command) => void
+
+  /**
    * Clear all history
    */
   clearHistory: () => void
