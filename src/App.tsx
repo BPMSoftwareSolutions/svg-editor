@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { SelectionProvider } from './contexts/SelectionContext'
 import { UndoRedoProvider } from './contexts/UndoRedoContext'
 import { AssetProvider, useAssets } from './contexts/AssetContext'
+import { ClipboardProvider } from './contexts/ClipboardContext'
 import { SVGAsset } from './types/asset'
 import FileUploader from './components/FileUploader'
 import SVGViewer from './components/SVGViewer'
@@ -118,7 +119,9 @@ function App() {
     <AssetProvider>
       <SelectionProvider>
         <UndoRedoProvider>
-          <AppContent />
+          <ClipboardProvider>
+            <AppContent />
+          </ClipboardProvider>
         </UndoRedoProvider>
       </SelectionProvider>
     </AssetProvider>

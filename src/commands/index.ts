@@ -8,6 +8,7 @@ export { MoveElementCommand } from './MoveElementCommand'
 export { ResizeElementCommand } from './ResizeElementCommand'
 export { ZOrderCommand, type ZOrderAction } from './ZOrderCommand'
 export { TextEditCommand } from './TextEditCommand'
+export { PasteElementCommand } from './PasteElementCommand'
 
 // Asset commands (for multi-SVG support)
 export { ImportAssetCommand } from './ImportAssetCommand'

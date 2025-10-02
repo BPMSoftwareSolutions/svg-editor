@@ -1,4 +1,5 @@
 import { Command } from '../types/command'
+import { parseTransform, serializeTransform } from '../utils/transform'
 
 interface ElementSize {
   element: SVGElement
@@ -20,7 +21,8 @@ export class ResizeElementCommand implements Command {
     originalHeight: number,
     newWidth: number,
     newHeight: number,
-    scale: number = 1
+    scale: number = 1,
+    originalTransform?: string
   ) {
     const tagName = element.tagName.toLowerCase()
     
@@ -79,19 +81,33 @@ export class ResizeElementCommand implements Command {
       }
 
       default: {
-        // For other elements (path, polygon, etc.), use transform scale
-        const currentTransform = element.getAttribute('transform') || ''
-        const scaleXRatio = adjustedNewWidth / adjustedOriginalWidth
-        const scaleYRatio = adjustedNewHeight / adjustedOriginalHeight
+        // For other elements (path, polygon, groups, etc.), use transform scale
+        if (originalTransform !== undefined) {
+          // When called from SelectionOverlay with originalTransform:
+          // Store the original transform (before resize started)
+          originalAttributes.set('transform', originalTransform)
 
-        originalAttributes.set('transform', currentTransform)
+          // Store the current transform (after resize completed with position correction)
+          const currentTransform = element.getAttribute('transform') || ''
+          newAttributes.set('transform', currentTransform)
+        } else {
+          // When called directly (e.g., from tests):
+          // Calculate and apply the scale transform
+          const currentTransform = element.getAttribute('transform') || ''
+          originalAttributes.set('transform', currentTransform)
 
-        // Append scale to existing transform
-        const newTransform = currentTransform
-          ? `${currentTransform} scale(${scaleXRatio}, ${scaleYRatio})`
-          : `scale(${scaleXRatio}, ${scaleYRatio})`
+          const parsed = parseTransform(currentTransform)
+          const scaleX = newWidth / originalWidth
+          const scaleY = newHeight / originalHeight
 
-        newAttributes.set('transform', newTransform)
+          // Compose the new scale with existing scale
+          parsed.scaleX *= scaleX
+          parsed.scaleY *= scaleY
+
+          const newTransform = serializeTransform(parsed)
+          newAttributes.set('transform', newTransform)
+          element.setAttribute('transform', newTransform)
+        }
         break
       }
     }

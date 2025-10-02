@@ -1,0 +1,125 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1920" viewBox="0 0 1440 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffedd5"/>
+      <stop offset="35%" stop-color="#fde68a"/>
+      <stop offset="70%" stop-color="#a7f3d0"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.12"/></feComponentTransfer>
+    </filter>
+    <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">
+      <circle cx="1.6" cy="1.6" r="1.2" fill="rgba(0,0,0,0.05)"/>
+    </pattern>
+    <pattern id="perforate" width="18" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="2" fill="#ffffff" />
+      <rect x="8" y="0" width="10" height="8" fill="transparent"/>
+    </pattern>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <symbol id="starburst" viewBox="-120 -120 240 240">
+      <path d="M0,-115 24,-77 65,-100 70,-55 110,-60 85,-22 120,0 85,22 110,60 70,55 65,100 24,77 0,115 -24,77 -65,100 -70,55 -110,60 -85,22 -120,0 -85,-22 -110,-60 -70,-55 -65,-100 -24,-77Z" fill="#111827"/>
+    </symbol>
+    <symbol id="coupon" viewBox="0 0 900 360">
+      <defs>
+        <clipPath id="couponClip">
+          <path d="M20,20 h860 a20,20 0 0 1 20,20 v80 a36,36 0 0 0 0,72 v80 a20,20 0 0 1 -20,20 h-860 a20,20 0 0 1 -20,-20 v-80 a36,36 0 0 0 0,-72 v-80 a20,20 0 0 1 20,-20 z"/>
+        </clipPath>
+      </defs>
+      <rect x="0" y="0" width="900" height="360" rx="24" ry="24" fill="#fff" stroke="#111827" stroke-width="4"/>
+      <rect x="10" y="10" width="880" height="340" rx="18" ry="18" fill="url(#dots)" opacity="0.6"/>
+      <rect x="450" y="10" width="2" height="340" fill="url(#perforate)"/>
+    </symbol>
+    <symbol id="ribbon" viewBox="0 0 600 200">
+      <path d="M20,80 L100,20 H580 V180 H100 L20,120 Z" fill="#f59e0b" stroke="#92400e" stroke-width="6"/>
+      <text x="310" y="120" text-anchor="middle" font-family="Impact, Haettenschweiler, Arial Black, sans-serif" font-size="80" fill="#111827">SEPT 17–19</text>
+    </symbol>
+    <symbol id="sticker" viewBox="-120 -120 240 240">
+      <circle r="110" fill="#fef3c7" stroke="#f59e0b" stroke-width="10"/>
+      <text x="0" y="18" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="80" fill="#111827">50%</text>
+    </symbol>
+    <symbol id="qr" viewBox="0 0 200 200">
+      <rect width="200" height="200" fill="#fff" stroke="#111827" stroke-width="8"/>
+      <g fill="#111827">
+        <rect x="16" y="16" width="60" height="60"/>
+        <rect x="124" y="16" width="60" height="60"/>
+        <rect x="16" y="124" width="60" height="60"/>
+        <rect x="84" y="84" width="32" height="32"/>
+        <rect x="120" y="120" width="20" height="20"/>
+        <rect x="88" y="24" width="20" height="20"/>
+        <rect x="44" y="96" width="20" height="20"/>
+        <rect x="156" y="92" width="20" height="20"/>
+        <rect x="92" y="156" width="36" height="20"/>
+      </g>
+    </symbol>
+  </defs>
+
+  <rect x="0" y="0" width="1440" height="1920" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1440" height="1920" filter="url(#grain)"/>
+
+  <g transform="translate(80,220)">
+    <text x="0" y="0" font-family="Impact, Haettenschweiler, 'Arial Black', sans-serif" font-size="220" fill="#ffffff" stroke="#111827" stroke-width="10" filter="url(#softShadow)">3 DAYS TO CELEBRATE</text>
+  </g>
+
+  <g transform="translate(380,620) scale(3.6)">
+    <use href="#starburst" fill="#10b981"/>
+    <text x="0" y="-10" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="56" fill="#064e3b">UP TO</text>
+    <text x="0" y="60" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="120" fill="#ffffff" stroke="#064e3b" stroke-width="6">50% OFF</text>
+  </g>
+
+  <g transform="translate(820,580) rotate(-6)"><use href="#ribbon"/></g>
+  <g transform="translate(1180,540) rotate(12)"><use href="#sticker"/></g>
+
+  <g transform="translate(80,960)">
+    <g transform="translate(0,0)">
+      <rect x="0" y="0" width="380" height="140" rx="16" ry="16" fill="#fff" stroke="#111827" stroke-width="3"/>
+      <text x="190" y="84" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="38" fill="#111827">LOGO</text>
+    </g>
+    <g transform="translate(420,0)">
+      <rect x="0" y="0" width="380" height="140" rx="16" ry="16" fill="#fff" stroke="#111827" stroke-width="3"/>
+      <text x="190" y="84" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="38" fill="#111827">LOGO</text>
+    </g>
+    <g transform="translate(840,0)">
+      <rect x="0" y="0" width="380" height="140" rx="16" ry="16" fill="#fff" stroke="#111827" stroke-width="3"/>
+      <text x="190" y="84" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="38" fill="#111827">LOGO</text>
+    </g>
+    <g transform="translate(0,170)">
+      <rect x="0" y="0" width="380" height="140" rx="16" ry="16" fill="#fff" stroke="#111827" stroke-width="3"/>
+      <text x="190" y="84" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="38" fill="#111827">LOGO</text>
+    </g>
+    <g transform="translate(420,170)">
+      <rect x="0" y="0" width="380" height="140" rx="16" ry="16" fill="#fff" stroke="#111827" stroke-width="3"/>
+      <text x="190" y="84" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="38" fill="#111827">LOGO</text>
+    </g>
+    <g transform="translate(840,170)">
+      <rect x="0" y="0" width="380" height="140" rx="16" ry="16" fill="#fff" stroke="#111827" stroke-width="3"/>
+      <text x="190" y="84" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="38" fill="#111827">LOGO</text>
+    </g>
+  </g>
+
+  <g transform="translate(270,1460)">
+    <use href="#coupon"/>
+    <g transform="translate(40,40)">
+      <text x="0" y="0" font-family="Impact, Haettenschweiler, 'Arial Black', sans-serif" font-size="120" fill="#111827">FREE PRE‑ROLL</text>
+      <text x="0" y="82" font-family="Verdana, Geneva, sans-serif" font-size="34" fill="#111827">September 17–19 • 1.2g ILL EXOTICS</text>
+      <text x="0" y="122" font-family="Verdana, Geneva, sans-serif" font-size="30" fill="#374151">“All Nug, No Shake” • Different strain each day • $20 min purchase</text>
+      <text x="0" y="162" font-family="Verdana, Geneva, sans-serif" font-size="26" fill="#6b7280">* One per customer per day • While supplies last</text>
+    </g>
+    <g transform="translate(520,60)">
+      <use href="#qr" />
+      <text x="100" y="220" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="22" fill="#111827">SCAN FOR DETAILS</text>
+    </g>
+  </g>
+
+  <g transform="translate(80,1860)">
+    <rect x="0" y="-32" width="1280" height="46" fill="#111827" opacity="0.85"/>
+    <text x="16" y="-6" font-family="Verdana, Geneva, sans-serif" font-size="18" fill="#ffffff">
+      Offers valid only on listed dates and while supplies last. Must be 21+ to purchase. See store for details.
+    </text>
+  </g>
+</svg>

@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
-import { applyTranslation } from '../utils/transform'
+import { useAssets } from '../contexts/AssetContext'
+import { applyTranslation, parseTransform, serializeTransform } from '../utils/transform'
 import { useResize, ResizeHandle } from '../hooks/useResize'
 import { MoveElementCommand, ResizeElementCommand } from '../commands'
 import '../styles/SelectionOverlay.css'
@@ -16,6 +17,7 @@ interface BoundingBox {
 function SelectionOverlay() {
   const { selectedElement, selectedElements } = useSelection()
   const { addToHistory } = useUndoRedo()
+  const { updateAsset, getAsset } = useAssets()
   const [bbox, setBbox] = useState<BoundingBox | null>(null)
   const [multiSelectionBoxes, setMultiSelectionBoxes] = useState<BoundingBox[]>([])
   const [isDragging, setIsDragging] = useState(false)
@@ -24,20 +26,31 @@ function SelectionOverlay() {
   const dragStartTransformsRef = useRef<string[]>([])
   const overlayRef = useRef<HTMLDivElement>(null)
   const resizeStartDimensionsRef = useRef<{ width: number; height: number } | null>(null)
+  const resizeStartTransformRef = useRef<string | null>(null)
+  const resizeStartBBoxRef = useRef<DOMRect | null>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
     onResizeStart: () => {
       if (!selectedElement) return
 
-      // Store original dimensions
-      const rect = selectedElement.element.getBoundingClientRect()
+      const element = selectedElement.element
+
+      // Store original dimensions and bounding box
+      const rect = element.getBoundingClientRect()
       resizeStartDimensionsRef.current = {
         width: rect.width,
         height: rect.height,
       }
+      resizeStartBBoxRef.current = rect
+
+      // Store original transform for groups and other transform-based elements
+      const tagName = element.tagName.toLowerCase()
+      if (!['rect', 'circle', 'ellipse', 'image', 'line'].includes(tagName)) {
+        resizeStartTransformRef.current = element.getAttribute('transform') || ''
+      }
     },
     onResize: (width, height, _left, _top) => {
-      if (!selectedElement) return
+      if (!selectedElement || !resizeStartDimensionsRef.current) return
 
       const element = selectedElement.element
       const tagName = element.tagName.toLowerCase()
@@ -64,10 +77,64 @@ function SelectionOverlay() {
           element.setAttribute('rx', (width / (2 * scale)).toString())
           element.setAttribute('ry', (height / (2 * scale)).toString())
           break
+        default: {
+          // For groups and other elements, apply transform scale
+          const startDimensions = resizeStartDimensionsRef.current
+          const startTransform = resizeStartTransformRef.current || ''
+          const startBBox = resizeStartBBoxRef.current
+
+          if (!startBBox) break
+
+          // Get the viewer container to account for viewport transforms
+          const viewerContainer = document.querySelector('.viewer-container')
+          if (!viewerContainer) break
+
+          const containerRect = viewerContainer.getBoundingClientRect()
+
+          // Calculate the original top-left position in container coordinates
+          const originalLeft = startBBox.left - containerRect.left
+          const originalTop = startBBox.top - containerRect.top
+
+          // Calculate scale ratio relative to original dimensions
+          const scaleXRatio = width / startDimensions.width
+          const scaleYRatio = height / startDimensions.height
+
+          // Parse the original transform
+          const transformData = parseTransform(startTransform)
+
+          // Apply the scale ratio to the original scale
+          transformData.scaleX *= scaleXRatio
+          transformData.scaleY *= scaleYRatio
+
+          // Serialize and apply the new transform
+          const newTransform = serializeTransform(transformData)
+          element.setAttribute('transform', newTransform)
+
+          // Now get the new bounding box after scale is applied
+          const newBBox = element.getBoundingClientRect()
+          const newLeft = newBBox.left - containerRect.left
+          const newTop = newBBox.top - containerRect.top
+
+          // Calculate the offset needed to restore original position
+          const offsetX = originalLeft - newLeft
+          const offsetY = originalTop - newTop
+
+          // Apply the offset to the translate values
+          if (offsetX !== 0 || offsetY !== 0) {
+            // Adjust by viewport scale
+            transformData.translateX += offsetX / scale
+            transformData.translateY += offsetY / scale
+
+            // Apply the corrected transform
+            element.setAttribute('transform', serializeTransform(transformData))
+          }
+
+          break
+        }
       }
 
-      // Update bounding box
-      updateBbox()
+      // Don't update bbox during resize - it will be updated on resize end
+      // This prevents excessive re-renders during the drag operation
     },
     onResizeEnd: (width, height) => {
       if (!selectedElement || !resizeStartDimensionsRef.current) return
@@ -89,6 +156,12 @@ function SelectionOverlay() {
         scale
       })
 
+      // Get the original transform for groups/paths (before resize started)
+      const tagName = element.tagName.toLowerCase()
+      const originalTransform = !['rect', 'circle', 'ellipse', 'image', 'line'].includes(tagName)
+        ? resizeStartTransformRef.current || ''
+        : undefined
+
       // Create resize command
       const command = new ResizeElementCommand(
         element,
@@ -96,19 +169,41 @@ function SelectionOverlay() {
         startDimensions.height,
         width,
         height,
-        scale
+        scale,
+        originalTransform
       )
 
       // IMPORTANT: Use addToHistory instead of executeCommand because the resize
       // has already been applied during the resize operation
       addToHistory(command)
 
+      // If this is an asset group, sync the scale with the asset context
+      const assetId = element.getAttribute('data-asset-id')
+      if (assetId) {
+        const asset = getAsset(assetId)
+        if (asset) {
+          // Parse the current transform to get the new scale
+          const currentTransform = element.getAttribute('transform') || ''
+          const transformData = parseTransform(currentTransform)
+
+          // Update the asset's scale property
+          updateAsset(assetId, { scale: transformData.scaleX })
+
+          console.log('[SelectionOverlay] Synced asset scale:', assetId, transformData.scaleX)
+        }
+      }
+
       resizeStartDimensionsRef.current = null
+      resizeStartTransformRef.current = null
+      resizeStartBBoxRef.current = null
+
+      // Update bbox after resize completes
+      updateBbox()
     },
   })
 
   // Calculate combined bounding box for all selected elements
-  const getCombinedBoundingBox = (): BoundingBox | null => {
+  const getCombinedBoundingBox = useCallback((): BoundingBox | null => {
     if (selectedElements.length === 0) return null
 
     const viewerContainer = document.querySelector('.viewer-container')
@@ -135,9 +230,9 @@ function SelectionOverlay() {
       width: maxX - minX,
       height: maxY - minY,
     }
-  }
+  }, [selectedElements])
 
-  const updateBbox = () => {
+  const updateBbox = useCallback(() => {
     if (selectedElements.length === 0) {
       setBbox(null)
       setMultiSelectionBoxes([])
@@ -176,7 +271,7 @@ function SelectionOverlay() {
       })
       setMultiSelectionBoxes(boxes)
     }
-  }
+  }, [selectedElements, getCombinedBoundingBox])
 
   useEffect(() => {
     if (selectedElements.length === 0) {
@@ -195,7 +290,7 @@ function SelectionOverlay() {
       window.removeEventListener('resize', updateBbox)
       window.removeEventListener('scroll', updateBbox, true)
     }
-  }, [selectedElements])
+  }, [selectedElements, updateBbox])
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (selectedElements.length === 0 || isResizing) return
@@ -224,7 +319,7 @@ function SelectionOverlay() {
     handleResizeStart(e, handle, rect)
   }
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || selectedElements.length === 0) return
 
     const deltaX = e.clientX - dragStartRef.current.x
@@ -250,9 +345,9 @@ function SelectionOverlay() {
 
     // Update bounding boxes
     updateBbox()
-  }
+  }, [isDragging, selectedElements, updateBbox])
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (isDragging && selectedElements.length > 0) {
       // Get viewport scale
       const viewerContainer = document.querySelector('.svg-content') as HTMLElement
@@ -289,7 +384,7 @@ function SelectionOverlay() {
     setIsDragging(false)
     dragStartTransformsRef.current = []
     document.body.style.cursor = ''
-  }
+  }, [isDragging, selectedElements, addToHistory])
 
   useEffect(() => {
     if (isDragging) {
@@ -301,22 +396,35 @@ function SelectionOverlay() {
         document.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [isDragging, selectedElements])
+  }, [isDragging, selectedElements, handleMouseMove, handleMouseUp])
+
+  // Use refs to avoid recreating event listeners during resize
+  const handleResizeMoveRef = useRef(handleResizeMove)
+  const handleResizeEndRef = useRef(handleResizeEnd)
+
+  useEffect(() => {
+    handleResizeMoveRef.current = handleResizeMove
+    handleResizeEndRef.current = handleResizeEnd
+  }, [handleResizeMove, handleResizeEnd])
 
   useEffect(() => {
     if (isResizing) {
-      const handleMove = (e: Event) => handleResizeMove(e as unknown as React.MouseEvent)
-      const handleUp = (e: Event) => handleResizeEnd(e as unknown as React.MouseEvent)
+      const handleMove = (e: Event) => handleResizeMoveRef.current(e as unknown as React.MouseEvent)
+      const handleUp = (e: Event) => handleResizeEndRef.current(e as unknown as React.MouseEvent)
 
       document.addEventListener('mousemove', handleMove)
       document.addEventListener('mouseup', handleUp)
 
+      // Set cursor during resize
+      document.body.style.cursor = 'inherit'
+
       return () => {
         document.removeEventListener('mousemove', handleMove)
         document.removeEventListener('mouseup', handleUp)
+        document.body.style.cursor = ''
       }
     }
-  }, [isResizing, handleResizeMove, handleResizeEnd])
+  }, [isResizing])
 
   if (!bbox) return null
 
