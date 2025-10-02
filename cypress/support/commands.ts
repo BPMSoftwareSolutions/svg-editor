@@ -10,7 +10,9 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
+// Extend Cypress Chainable interface
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       /**
