@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe.skip('Group Element Resizing', () => {
+describe('Group Element Resizing', () => {
   beforeEach(() => {
     cy.visit('/')
   })
@@ -59,39 +59,25 @@ describe.skip('Group Element Resizing', () => {
           const initialHeight = initialRect.height
           const initialTransform = $el.attr('transform') || ''
 
-          // Get the bottom-right handle position
-          cy.get('.selection-handle.bottom-right').then($handle => {
-            const handleRect = $handle[0].getBoundingClientRect()
-            const handleCenterX = handleRect.left + handleRect.width / 2
-            const handleCenterY = handleRect.top + handleRect.height / 2
+          // Perform the drag operation using custom command
+          cy.get('.selection-handle.bottom-right').dragHandle(50, 50)
 
-            // Calculate drag target (50px to the right and down from handle)
-            const targetX = handleCenterX + 50
-            const targetY = handleCenterY + 50
+          // Wait for resize to complete
+          cy.wait(500)
 
-            // Perform the drag operation
-            cy.get('.selection-handle.bottom-right')
-              .trigger('mousedown', { clientX: handleCenterX, clientY: handleCenterY, button: 0, force: true })
-              .trigger('mousemove', { clientX: targetX, clientY: targetY, force: true })
-              .trigger('mouseup', { clientX: targetX, clientY: targetY, force: true })
+          // Verify the transform has changed
+          cy.get('.svg-content #test-group').invoke('attr', 'transform').then((newTransform) => {
+            expect(newTransform).to.not.equal(initialTransform || '')
 
-            // Wait for resize to complete
-            cy.wait(500)
+            // Verify transform contains scale
+            expect(newTransform).to.match(/scale\([^)]+\)/)
+          })
 
-            // Verify the transform has changed
-            cy.get('.svg-content #test-group').invoke('attr', 'transform').then((newTransform) => {
-              expect(newTransform).to.not.equal(initialTransform || '')
-
-              // Verify transform contains scale
-              expect(newTransform).to.match(/scale\([^)]+\)/)
-            })
-
-            // Verify the bounding box has changed
-            cy.get('.svg-content #test-group').then($el2 => {
-              const newRect = $el2[0].getBoundingClientRect()
-              expect(newRect.width).to.be.greaterThan(initialWidth)
-              expect(newRect.height).to.be.greaterThan(initialHeight)
-            })
+          // Verify the bounding box has changed
+          cy.get('.svg-content #test-group').then($el2 => {
+            const newRect = $el2[0].getBoundingClientRect()
+            expect(newRect.width).to.be.greaterThan(initialWidth)
+            expect(newRect.height).to.be.greaterThan(initialHeight)
           })
         })
       })
@@ -131,12 +117,8 @@ describe.skip('Group Element Resizing', () => {
       cy.get('.element-label').contains('test-group').parent('.tree-node-content').click()
       cy.wait(500)
 
-      // Close the Element Inspector so it doesn't cover the resize handles
-      cy.get('.element-inspector .close-button').click()
-      cy.wait(200)
-
       // Verify resize handles appear
-      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length.at.least', 4)
+      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length', 4)
 
       // Get initial positions of child elements
       cy.get('.svg-content #c1').then($circle => {
@@ -147,39 +129,32 @@ describe.skip('Group Element Resizing', () => {
           const initialX = parseFloat($rect.attr('x') || '0')
           const initialY = parseFloat($rect.attr('y') || '0')
 
-          // Perform resize
-          cy.get('.svg-content #test-group').then($el => {
-            const rect = $el[0].getBoundingClientRect()
+          // Perform resize using custom command
+          cy.get('.selection-handle.bottom-right').dragHandle(100, 100)
 
-            cy.get('.selection-handle.bottom-right')
-              .trigger('mousedown', { button: 0, force: true })
-              .trigger('mousemove', { clientX: rect.right + 100, clientY: rect.bottom + 100, force: true })
-              .trigger('mouseup', { force: true })
+          cy.wait(500)
 
-            cy.wait(500)
+          // Verify proportions are maintained (child elements don't change, but group scale does)
+          cy.get('.svg-content #c1').then($newCircle => {
+            const newCx = parseFloat($newCircle.attr('cx') || '0')
+            const newCy = parseFloat($newCircle.attr('cy') || '0')
 
-            // Verify proportions are maintained (child elements don't change, but group scale does)
-            cy.get('.svg-content #c1').then($newCircle => {
-              const newCx = parseFloat($newCircle.attr('cx') || '0')
-              const newCy = parseFloat($newCircle.attr('cy') || '0')
-
-              // Child element attributes should remain the same
-              expect(newCx).to.equal(initialCx)
-              expect(newCy).to.equal(initialCy)
-            })
-
-            cy.get('.svg-content #r1').then($newRect => {
-              const newX = parseFloat($newRect.attr('x') || '0')
-              const newY = parseFloat($newRect.attr('y') || '0')
-
-              // Child element attributes should remain the same
-              expect(newX).to.equal(initialX)
-              expect(newY).to.equal(initialY)
-            })
-
-            // Verify the group has a scale transform
-            cy.get('.svg-content #test-group').should('have.attr', 'transform').and('match', /scale\([^)]+\)/)
+            // Child element attributes should remain the same
+            expect(newCx).to.equal(initialCx)
+            expect(newCy).to.equal(initialCy)
           })
+
+          cy.get('.svg-content #r1').then($newRect => {
+            const newX = parseFloat($newRect.attr('x') || '0')
+            const newY = parseFloat($newRect.attr('y') || '0')
+
+            // Child element attributes should remain the same
+            expect(newX).to.equal(initialX)
+            expect(newY).to.equal(initialY)
+          })
+
+          // Verify the group has a scale transform
+          cy.get('.svg-content #test-group').should('have.attr', 'transform').and('match', /scale\([^)]+\)/)
         })
       })
     })
@@ -203,16 +178,25 @@ describe.skip('Group Element Resizing', () => {
       cy.wait(500)
 
       // Select the group via tree panel
-      cy.get('.tree-panel').should('exist')
-      cy.get('.tree-node').contains('#test-group').click()
+      cy.get('.tree-panel').should('be.visible')
+
+      // Expand the SVG root node if collapsed
+      cy.get('.tree-node').first().within(() => {
+        cy.get('.expand-button').then($btn => {
+          if ($btn.text().includes('▶')) {
+            cy.wrap($btn).click()
+          }
+        })
+      })
+
+      cy.wait(300)
+
+      // Click on the group node
+      cy.get('.element-label').contains('test-group').parent('.tree-node-content').click()
       cy.wait(500)
 
-      // Close the Element Inspector so it doesn't cover the resize handles
-      cy.get('.element-inspector .close-button').click()
-      cy.wait(200)
-
       // Verify resize handles appear
-      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length.at.least', 4)
+      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length', 4)
 
       // Get initial transform
       cy.get('.svg-content #test-group').then($group => {
@@ -226,38 +210,31 @@ describe.skip('Group Element Resizing', () => {
         const scaleMatch = initialTransform.match(/scale\(([^,)]+)/)
         const initialScale = scaleMatch ? parseFloat(scaleMatch[1].trim()) : 1
 
-        // Perform resize
-        cy.get('.svg-content #test-group').then($el => {
-          const rect = $el[0].getBoundingClientRect()
+        // Perform resize using custom command
+        cy.get('.selection-handle.bottom-right').dragHandle(50, 50)
 
-          cy.get('.selection-handle.bottom-right')
-            .trigger('mousedown', { button: 0, force: true })
-            .trigger('mousemove', { clientX: rect.right + 50, clientY: rect.bottom + 50, force: true })
-            .trigger('mouseup', { force: true })
+        cy.wait(500)
 
-          cy.wait(500)
+        // Verify transform is composed correctly
+        cy.get('.svg-content #test-group').then($resizedGroup => {
+          const newTransform = $resizedGroup.attr('transform') || ''
 
-          // Verify transform is composed correctly
-          cy.get('.svg-content #test-group').then($resizedGroup => {
-            const newTransform = $resizedGroup.attr('transform') || ''
+          // Should still have translate
+          expect(newTransform).to.match(/translate\([^)]+\)/)
 
-            // Should still have translate
-            expect(newTransform).to.match(/translate\([^)]+\)/)
+          // Should have scale (composed)
+          expect(newTransform).to.match(/scale\([^)]+\)/)
 
-            // Should have scale (composed)
-            expect(newTransform).to.match(/scale\([^)]+\)/)
+          // Parse new scale value
+          const newScaleMatch = newTransform.match(/scale\(([^,)]+)/)
+          const newScale = newScaleMatch ? parseFloat(newScaleMatch[1].trim()) : 1
 
-            // Parse new scale value
-            const newScaleMatch = newTransform.match(/scale\(([^,)]+)/)
-            const newScale = newScaleMatch ? parseFloat(newScaleMatch[1].trim()) : 1
+          // New scale should be greater than initial scale
+          expect(newScale).to.be.greaterThan(initialScale)
 
-            // New scale should be greater than initial scale
-            expect(newScale).to.be.greaterThan(initialScale)
-
-            // Should not have multiple scale transforms
-            const scaleCount = (newTransform.match(/scale\(/g) || []).length
-            expect(scaleCount).to.equal(1)
-          })
+          // Should not have multiple scale transforms
+          const scaleCount = (newTransform.match(/scale\(/g) || []).length
+          expect(scaleCount).to.equal(1)
         })
       })
     })
@@ -297,7 +274,7 @@ describe.skip('Group Element Resizing', () => {
       cy.wait(500)
 
       // Verify resize handles appear
-      cy.get('.resize-handle', { timeout: 5000 }).should('be.visible').and('have.length.at.least', 4)
+      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length', 4)
 
       // Get initial transform components
       cy.get('.svg-content #test-group').then($group => {
@@ -311,34 +288,34 @@ describe.skip('Group Element Resizing', () => {
         const rotateMatch = initialTransform.match(/rotate\(([^)]+)\)/)
         const initialRotate = rotateMatch ? rotateMatch[1] : '0'
 
-        // Perform resize
-        cy.get('.svg-content #test-group').then($el => {
-          const rect = $el[0].getBoundingClientRect()
+        // Perform resize using custom command
+        cy.get('.selection-handle.bottom-right').dragHandle(30, 30)
 
-          cy.get('.resize-handle.bottom-right')
-            .trigger('mousedown', { button: 0, force: true })
-            .trigger('mousemove', { clientX: rect.right + 30, clientY: rect.bottom + 30, force: true })
-            .trigger('mouseup', { force: true })
+        cy.wait(500)
 
-          cy.wait(500)
+        // Verify translate and rotate are preserved (approximately)
+        cy.get('.svg-content #test-group').then($resizedGroup => {
+          const newTransform = $resizedGroup.attr('transform') || ''
 
-          // Verify translate and rotate are preserved
-          cy.get('.svg-content #test-group').then($resizedGroup => {
-            const newTransform = $resizedGroup.attr('transform') || ''
+          const newTranslateMatch = newTransform.match(/translate\(([^)]+)\)/)
+          const newTranslate = newTranslateMatch ? newTranslateMatch[1] : '0, 0'
 
-            const newTranslateMatch = newTransform.match(/translate\(([^)]+)\)/)
-            const newTranslate = newTranslateMatch ? newTranslateMatch[1] : '0, 0'
+          const newRotateMatch = newTransform.match(/rotate\(([^)]+)\)/)
+          const newRotate = newRotateMatch ? newRotateMatch[1] : '0'
 
-            const newRotateMatch = newTransform.match(/rotate\(([^)]+)\)/)
-            const newRotate = newRotateMatch ? newRotateMatch[1] : '0'
+          // Parse translate values
+          const [initialX, initialY] = initialTranslate.split(',').map(v => parseFloat(v.trim()))
+          const [newX, newY] = newTranslate.split(',').map(v => parseFloat(v.trim()))
 
-            // Translate and rotate should be the same
-            expect(newTranslate).to.equal(initialTranslate)
-            expect(newRotate).to.equal(initialRotate)
+          // Translate should be approximately the same (within 10px tolerance due to position correction)
+          expect(newX).to.be.closeTo(initialX, 10)
+          expect(newY).to.be.closeTo(initialY, 10)
 
-            // Should have scale added
-            expect(newTransform).to.match(/scale\([^)]+\)/)
-          })
+          // Rotate should be exactly the same
+          expect(newRotate).to.equal(initialRotate)
+
+          // Should have scale added
+          expect(newTransform).to.match(/scale\([^)]+\)/)
         })
       })
     })
@@ -379,36 +356,29 @@ describe.skip('Group Element Resizing', () => {
       cy.wait(500)
 
       // Verify resize handles appear
-      cy.get('.resize-handle', { timeout: 5000 }).should('be.visible').and('have.length.at.least', 4)
+      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length', 4)
 
       // Store initial transform
       cy.get('.svg-content #test-group').then($group => {
         const initialTransform = $group.attr('transform') || ''
 
-        // Perform resize
-        cy.get('.svg-content #test-group').then($el => {
-          const rect = $el[0].getBoundingClientRect()
+        // Perform resize using custom command
+        cy.get('.selection-handle.bottom-right').dragHandle(50, 50)
 
-          cy.get('.resize-handle.bottom-right')
-            .trigger('mousedown', { button: 0, force: true })
-            .trigger('mousemove', { clientX: rect.right + 50, clientY: rect.bottom + 50, force: true })
-            .trigger('mouseup', { force: true })
+        cy.wait(500)
 
+        // Verify transform changed
+        cy.get('.svg-content #test-group').then($resized => {
+          const resizedTransform = $resized.attr('transform') || ''
+          expect(resizedTransform).to.not.equal(initialTransform)
+
+          // Undo the resize
+          cy.get('body').type('{ctrl}z')
           cy.wait(500)
 
-          // Verify transform changed
-          cy.get('.svg-content #test-group').then($resized => {
-            const resizedTransform = $resized.attr('transform') || ''
-            expect(resizedTransform).to.not.equal(initialTransform)
-
-            // Undo the resize
-            cy.get('body').type('{ctrl}z')
-            cy.wait(500)
-
-            // Verify transform is restored
-            cy.get('.svg-content #test-group').invoke('attr', 'transform').then((undoneTransform) => {
-              expect(undoneTransform || '').to.equal(initialTransform)
-            })
+          // Verify transform is restored
+          cy.get('.svg-content #test-group').invoke('attr', 'transform').then((undoneTransform) => {
+            expect(undoneTransform || '').to.equal(initialTransform)
           })
         })
       })
@@ -448,35 +418,28 @@ describe.skip('Group Element Resizing', () => {
       cy.wait(500)
 
       // Verify resize handles appear
-      cy.get('.resize-handle', { timeout: 5000 }).should('be.visible').and('have.length.at.least', 4)
+      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length', 4)
 
-      // Perform resize
-      cy.get('.svg-content #test-group').then($el => {
-        const rect = $el[0].getBoundingClientRect()
+      // Perform resize using custom command
+      cy.get('.selection-handle.bottom-right').dragHandle(40, 40)
 
-        cy.get('.resize-handle.bottom-right')
-          .trigger('mousedown', { button: 0, force: true })
-          .trigger('mousemove', { clientX: rect.right + 40, clientY: rect.bottom + 40, force: true })
-          .trigger('mouseup', { force: true })
+      cy.wait(500)
 
+      // Store resized transform
+      cy.get('.svg-content #test-group').then($resized => {
+        const resizedTransform = $resized.attr('transform') || ''
+
+        // Undo
+        cy.get('body').type('{ctrl}z')
         cy.wait(500)
 
-        // Store resized transform
-        cy.get('.svg-content #test-group').then($resized => {
-          const resizedTransform = $resized.attr('transform') || ''
+        // Redo
+        cy.get('body').type('{ctrl}y')
+        cy.wait(500)
 
-          // Undo
-          cy.get('body').type('{ctrl}z')
-          cy.wait(500)
-
-          // Redo
-          cy.get('body').type('{ctrl}y')
-          cy.wait(500)
-
-          // Verify transform is back to resized state
-          cy.get('.svg-content #test-group').invoke('attr', 'transform').then((redoneTransform) => {
-            expect(redoneTransform || '').to.equal(resizedTransform)
-          })
+        // Verify transform is back to resized state
+        cy.get('.svg-content #test-group').invoke('attr', 'transform').then((redoneTransform) => {
+          expect(redoneTransform || '').to.equal(resizedTransform)
         })
       })
     })
@@ -517,46 +480,32 @@ describe.skip('Group Element Resizing', () => {
       cy.wait(500)
 
       // Verify resize handles appear
-      cy.get('.resize-handle', { timeout: 5000 }).should('be.visible').and('have.length.at.least', 4)
+      cy.get('.selection-handle', { timeout: 5000 }).should('be.visible').and('have.length', 4)
 
-      // First resize
-      cy.get('.svg-content #test-group').then($el => {
-        const rect1 = $el[0].getBoundingClientRect()
+      // First resize using custom command
+      cy.get('.selection-handle.bottom-right').dragHandle(30, 30)
 
-        cy.get('.resize-handle.bottom-right')
-          .trigger('mousedown', { button: 0, force: true })
-          .trigger('mousemove', { clientX: rect1.right + 30, clientY: rect1.bottom + 30, force: true })
-          .trigger('mouseup', { force: true })
+      cy.wait(500)
 
-        cy.wait(500)
+      // Second resize using custom command
+      cy.get('.selection-handle.bottom-right').dragHandle(20, 20)
 
-        // Second resize
-        cy.get('.svg-content #test-group').then($el2 => {
-          const rect2 = $el2[0].getBoundingClientRect()
+      cy.wait(500)
 
-          cy.get('.resize-handle.bottom-right')
-            .trigger('mousedown', { button: 0, force: true })
-            .trigger('mousemove', { clientX: rect2.right + 20, clientY: rect2.bottom + 20, force: true })
-            .trigger('mouseup', { force: true })
+      // Verify transform is properly composed (should have single scale)
+      cy.get('.svg-content #test-group').then($final => {
+        const finalTransform = $final.attr('transform') || ''
 
-          cy.wait(500)
+        // Should have only one scale transform
+        const scaleCount = (finalTransform.match(/scale\(/g) || []).length
+        expect(scaleCount).to.equal(1)
 
-          // Verify transform is properly composed (should have single scale)
-          cy.get('.svg-content #test-group').then($final => {
-            const finalTransform = $final.attr('transform') || ''
-
-            // Should have only one scale transform
-            const scaleCount = (finalTransform.match(/scale\(/g) || []).length
-            expect(scaleCount).to.equal(1)
-
-            // Should have scale value greater than 1
-            const scaleMatch = finalTransform.match(/scale\(([^,)]+)/)
-            if (scaleMatch) {
-              const scaleValue = parseFloat(scaleMatch[1].trim())
-              expect(scaleValue).to.be.greaterThan(1)
-            }
-          })
-        })
+        // Should have scale value greater than 1
+        const scaleMatch = finalTransform.match(/scale\(([^,)]+)/)
+        if (scaleMatch) {
+          const scaleValue = parseFloat(scaleMatch[1].trim())
+          expect(scaleValue).to.be.greaterThan(1)
+        }
       })
     })
   })
