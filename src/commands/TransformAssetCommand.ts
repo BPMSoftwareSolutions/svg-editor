@@ -12,20 +12,22 @@ export class TransformAssetCommand implements Command {
 
   constructor(
     private assetId: string,
-    private updates: Partial<SVGAsset>,
+    updates: Partial<SVGAsset>,
     private getAssetFn: (id: string) => SVGAsset | undefined,
     private updateAssetFn: (id: string, updates: Partial<SVGAsset>) => void
   ) {
     const asset = this.getAssetFn(assetId)
-    
+
     // Store original state
     this.originalState = {}
     this.newState = updates
-    
+
     if (asset) {
       // Only store properties that are being changed
       Object.keys(updates).forEach(key => {
-        this.originalState[key as keyof SVGAsset] = asset[key as keyof SVGAsset]
+        const assetKey = key as keyof SVGAsset
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (this.originalState as any)[assetKey] = asset[assetKey]
       })
     }
 
@@ -35,7 +37,7 @@ export class TransformAssetCommand implements Command {
     if (updates.scale) transformTypes.push('scale')
     if (updates.rotation !== undefined) transformTypes.push('rotation')
     if (updates.opacity !== undefined) transformTypes.push('opacity')
-    
+
     this.description = `Transform asset: ${transformTypes.join(', ')}`
   }
 
