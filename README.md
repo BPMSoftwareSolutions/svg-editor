@@ -35,8 +35,50 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ### Testing
 
+#### Unit Tests
+
+Run unit tests with Vitest:
+
 ```bash
 npm test
+```
+
+Run tests in watch mode:
+
+```bash
+npm test -- --watch
+```
+
+Run tests with UI:
+
+```bash
+npm run test:ui
+```
+
+#### E2E Tests
+
+Run E2E tests with Playwright:
+
+```bash
+npm run test:e2e
+```
+
+Run E2E tests with UI mode:
+
+```bash
+npm run test:e2e:ui
+```
+
+Run E2E tests in headed mode (see browser):
+
+```bash
+npm run test:e2e:headed
+```
+
+Debug E2E tests:
+
+```bash
+npm run test:e2e:debug
 ```
 
 ### Build
@@ -146,8 +188,36 @@ The inspector panel (top-left) shows:
 - **React 18**: UI framework
 - **TypeScript**: Type safety
 - **Vite**: Build tool and dev server
-- **Vitest**: Testing framework
+- **Vitest**: Unit testing framework
 - **React Testing Library**: Component testing
+- **Playwright**: E2E testing framework
+
+## CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+### Workflow Triggers
+- **Push to main**: Runs full CI pipeline
+- **Push to feature branches**: Runs full CI pipeline
+- **Pull requests to main**: Runs full CI pipeline
+
+### CI Jobs
+
+1. **Lint**: Runs ESLint to check code quality
+2. **Unit Tests**: Runs Vitest unit tests with coverage
+3. **E2E Tests**: Runs Playwright E2E tests in headless Chromium
+4. **Build**: Builds the application for production
+5. **Test Summary**: Aggregates results from all jobs
+
+### Artifacts
+
+The CI pipeline uploads the following artifacts:
+- **Unit test coverage**: Code coverage reports
+- **Playwright report**: E2E test results with screenshots
+- **Playwright results**: Detailed test execution data
+- **Build artifacts**: Production build output
+
+All artifacts are retained for 30 days.
 
 ## Project Structure
 
