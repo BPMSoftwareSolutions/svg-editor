@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
 import { useAssets } from '../contexts/AssetContext'
-import { applyTranslation, parseTransform } from '../utils/transform'
+import { applyTranslation, parseTransform, serializeTransform } from '../utils/transform'
 import { useResize, ResizeHandle } from '../hooks/useResize'
 import { MoveElementCommand, ResizeElementCommand } from '../commands'
 import '../styles/SelectionOverlay.css'
@@ -88,11 +88,11 @@ function SelectionOverlay() {
           const transformData = parseTransform(startTransform)
 
           // Apply the scale ratio to the original scale
-          const newScaleX = transformData.scaleX * scaleXRatio
-          const newScaleY = transformData.scaleY * scaleYRatio
+          transformData.scaleX *= scaleXRatio
+          transformData.scaleY *= scaleYRatio
 
-          // Serialize and apply
-          const newTransform = `translate(${transformData.translateX}, ${transformData.translateY}) scale(${newScaleX}, ${newScaleY})${transformData.rotate ? ` rotate(${transformData.rotate})` : ''}`
+          // Serialize and apply using the proper serialization function
+          const newTransform = serializeTransform(transformData)
           element.setAttribute('transform', newTransform)
           break
         }
