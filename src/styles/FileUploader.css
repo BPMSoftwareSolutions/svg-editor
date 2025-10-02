@@ -47,6 +47,27 @@
   color: #aaa;
 }
 
+.file-uploader.processing {
+  cursor: default;
+  pointer-events: none;
+}
+
+.progress-bar {
+  width: 80%;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #646cff;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
 @media (prefers-color-scheme: light) {
   .file-uploader {
     border-color: #ccc;
@@ -71,6 +92,10 @@
 
   .file-uploader p {
     color: #666;
+  }
+
+  .progress-bar {
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 
