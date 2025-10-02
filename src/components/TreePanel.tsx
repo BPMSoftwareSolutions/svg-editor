@@ -10,7 +10,7 @@ interface TreeNodeData {
 }
 
 function TreePanel() {
-  const { selectedElement, selectElement } = useSelection()
+  const { selectedElement, selectedElements, selectElement, toggleElement } = useSelection()
   const [treeData, setTreeData] = useState<TreeNodeData[]>([])
   const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -62,13 +62,19 @@ function TreePanel() {
     return () => observer.disconnect()
   }, [])
 
-  const handleNodeClick = (element: SVGElement) => {
+  const handleNodeClick = (element: SVGElement, e?: React.MouseEvent) => {
     // Don't select the root SVG element
     if (element.tagName.toLowerCase() === 'svg') {
       selectElement(null)
       return
     }
-    selectElement(element)
+
+    // Check if Ctrl/Cmd is pressed for multi-selection
+    if (e && (e.ctrlKey || e.metaKey)) {
+      toggleElement(element)
+    } else {
+      selectElement(element)
+    }
   }
 
   const toggleCollapse = () => {
@@ -102,6 +108,7 @@ function TreePanel() {
               key={index}
               node={node}
               selectedElement={selectedElement?.element}
+              selectedElements={selectedElements.map(sel => sel.element)}
               onNodeClick={handleNodeClick}
             />
           ))

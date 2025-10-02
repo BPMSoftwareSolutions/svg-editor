@@ -12,14 +12,15 @@ interface BoundingBox {
 }
 
 function SelectionOverlay() {
-  const { selectedElement } = useSelection()
+  const { selectedElement, selectedElements } = useSelection()
   const [bbox, setBbox] = useState<BoundingBox | null>(null)
+  const [multiSelectionBoxes, setMultiSelectionBoxes] = useState<BoundingBox[]>([])
   const [isDragging, setIsDragging] = useState(false)
   const dragStartRef = useRef({ x: 0, y: 0 })
   const overlayRef = useRef<HTMLDivElement>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
-    onResize: (width, height, left, top) => {
+    onResize: (width, height, _left, _top) => {
       if (!selectedElement) return
 
       const element = selectedElement.element
@@ -53,26 +54,81 @@ function SelectionOverlay() {
     },
   })
 
-  const updateBbox = () => {
-    if (!selectedElement) return
+  // Calculate combined bounding box for all selected elements
+  const getCombinedBoundingBox = (): BoundingBox | null => {
+    if (selectedElements.length === 0) return null
 
-    const rect = selectedElement.element.getBoundingClientRect()
     const viewerContainer = document.querySelector('.viewer-container')
+    if (!viewerContainer) return null
 
-    if (viewerContainer) {
-      const containerRect = viewerContainer.getBoundingClientRect()
+    const containerRect = viewerContainer.getBoundingClientRect()
+
+    let minX = Infinity
+    let minY = Infinity
+    let maxX = -Infinity
+    let maxY = -Infinity
+
+    selectedElements.forEach(sel => {
+      const rect = sel.element.getBoundingClientRect()
+      minX = Math.min(minX, rect.left)
+      minY = Math.min(minY, rect.top)
+      maxX = Math.max(maxX, rect.right)
+      maxY = Math.max(maxY, rect.bottom)
+    })
+
+    return {
+      x: minX - containerRect.left,
+      y: minY - containerRect.top,
+      width: maxX - minX,
+      height: maxY - minY,
+    }
+  }
+
+  const updateBbox = () => {
+    if (selectedElements.length === 0) {
+      setBbox(null)
+      setMultiSelectionBoxes([])
+      return
+    }
+
+    const viewerContainer = document.querySelector('.viewer-container')
+    if (!viewerContainer) return
+
+    const containerRect = viewerContainer.getBoundingClientRect()
+
+    // For single selection, show resize handles
+    if (selectedElements.length === 1) {
+      const rect = selectedElements[0].element.getBoundingClientRect()
       setBbox({
         x: rect.left - containerRect.left,
         y: rect.top - containerRect.top,
         width: rect.width,
         height: rect.height,
       })
+      setMultiSelectionBoxes([])
+    } else {
+      // For multi-selection, show combined bounding box and individual outlines
+      const combined = getCombinedBoundingBox()
+      setBbox(combined)
+
+      // Calculate individual boxes for visual feedback
+      const boxes = selectedElements.map(sel => {
+        const rect = sel.element.getBoundingClientRect()
+        return {
+          x: rect.left - containerRect.left,
+          y: rect.top - containerRect.top,
+          width: rect.width,
+          height: rect.height,
+        }
+      })
+      setMultiSelectionBoxes(boxes)
     }
   }
 
   useEffect(() => {
-    if (!selectedElement) {
+    if (selectedElements.length === 0) {
       setBbox(null)
+      setMultiSelectionBoxes([])
       return
     }
 
@@ -86,10 +142,10 @@ function SelectionOverlay() {
       window.removeEventListener('resize', updateBbox)
       window.removeEventListener('scroll', updateBbox, true)
     }
-  }, [selectedElement])
+  }, [selectedElements])
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!selectedElement || isResizing) return
+    if (selectedElements.length === 0 || isResizing) return
 
     e.stopPropagation()
     setIsDragging(true)
@@ -108,7 +164,7 @@ function SelectionOverlay() {
   }
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging || !selectedElement) return
+    if (!isDragging || selectedElements.length === 0) return
 
     const deltaX = e.clientX - dragStartRef.current.x
     const deltaY = e.clientY - dragStartRef.current.y
@@ -119,24 +175,16 @@ function SelectionOverlay() {
     const scaleMatch = transform.match(/scale\(([^)]+)\)/)
     const scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1
 
-    // Apply translation to the element
-    applyTranslation(selectedElement.element, deltaX, deltaY, scale)
+    // Apply translation to all selected elements
+    selectedElements.forEach(sel => {
+      applyTranslation(sel.element, deltaX, deltaY, scale)
+    })
 
     // Update drag start position
     dragStartRef.current = { x: e.clientX, y: e.clientY }
 
-    // Update bounding box
-    const rect = selectedElement.element.getBoundingClientRect()
-    const containerRect = document.querySelector('.viewer-container')?.getBoundingClientRect()
-
-    if (containerRect) {
-      setBbox({
-        x: rect.left - containerRect.left,
-        y: rect.top - containerRect.top,
-        width: rect.width,
-        height: rect.height,
-      })
-    }
+    // Update bounding boxes
+    updateBbox()
   }
 
   const handleMouseUp = () => {
@@ -154,7 +202,7 @@ function SelectionOverlay() {
         document.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [isDragging, selectedElement])
+  }, [isDragging, selectedElements])
 
   useEffect(() => {
     if (isResizing) {
@@ -173,35 +221,59 @@ function SelectionOverlay() {
 
   if (!bbox) return null
 
+  const isMultiSelection = selectedElements.length > 1
+
   return (
-    <div
-      ref={overlayRef}
-      className={`selection-overlay ${isDragging ? 'dragging' : ''} ${isResizing ? 'resizing' : ''}`}
-      style={{
-        left: `${bbox.x}px`,
-        top: `${bbox.y}px`,
-        width: `${bbox.width}px`,
-        height: `${bbox.height}px`,
-      }}
-      onMouseDown={handleMouseDown}
-    >
+    <>
+      {/* Show individual element outlines for multi-selection */}
+      {isMultiSelection && multiSelectionBoxes.map((box, index) => (
+        <div
+          key={index}
+          className="multi-selection-outline"
+          style={{
+            left: `${box.x}px`,
+            top: `${box.y}px`,
+            width: `${box.width}px`,
+            height: `${box.height}px`,
+          }}
+        />
+      ))}
+
+      {/* Main selection overlay */}
       <div
-        className="selection-handle top-left"
-        onMouseDown={(e) => handleHandleMouseDown(e, 'top-left')}
-      />
-      <div
-        className="selection-handle top-right"
-        onMouseDown={(e) => handleHandleMouseDown(e, 'top-right')}
-      />
-      <div
-        className="selection-handle bottom-left"
-        onMouseDown={(e) => handleHandleMouseDown(e, 'bottom-left')}
-      />
-      <div
-        className="selection-handle bottom-right"
-        onMouseDown={(e) => handleHandleMouseDown(e, 'bottom-right')}
-      />
-    </div>
+        ref={overlayRef}
+        className={`selection-overlay ${isDragging ? 'dragging' : ''} ${isResizing ? 'resizing' : ''} ${isMultiSelection ? 'multi-selection' : ''}`}
+        style={{
+          left: `${bbox.x}px`,
+          top: `${bbox.y}px`,
+          width: `${bbox.width}px`,
+          height: `${bbox.height}px`,
+        }}
+        onMouseDown={handleMouseDown}
+      >
+        {/* Only show resize handles for single selection */}
+        {!isMultiSelection && (
+          <>
+            <div
+              className="selection-handle top-left"
+              onMouseDown={(e) => handleHandleMouseDown(e, 'top-left')}
+            />
+            <div
+              className="selection-handle top-right"
+              onMouseDown={(e) => handleHandleMouseDown(e, 'top-right')}
+            />
+            <div
+              className="selection-handle bottom-left"
+              onMouseDown={(e) => handleHandleMouseDown(e, 'bottom-left')}
+            />
+            <div
+              className="selection-handle bottom-right"
+              onMouseDown={(e) => handleHandleMouseDown(e, 'bottom-right')}
+            />
+          </>
+        )}
+      </div>
+    </>
   )
 }
 

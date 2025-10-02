@@ -6,7 +6,9 @@ A modern, interactive SVG editor built with React and TypeScript.
 
 - 📁 **File Upload**: Drag and drop SVG files or click to browse
 - 🔍 **Pan & Zoom**: Navigate large SVG files with mouse controls
-- 🎯 **Element Selection**: Click on any SVG element to select it
+- 🌳 **Tree View Panel**: Hierarchical view of SVG structure with z-order visualization
+- 🎯 **Element Selection**: Click on any SVG element to select it (tree or canvas)
+- ✨ **Multi-Selection**: Select multiple elements with Ctrl+Click or drag selection
 - 🖱️ **Drag & Move**: Drag selected elements to reposition them
 - 📏 **Resize**: Use corner handles to resize elements
 - 📚 **Z-Order Management**: Control element stacking with toolbar buttons
@@ -57,17 +59,36 @@ npm run build
 - **Zoom Out**: Scroll down or click the - button
 - **Reset View**: Click the Reset button
 
+### Tree View Panel
+
+The left sidebar shows a hierarchical tree view of your SVG structure:
+
+- **Element Icons**: Visual indicators for different element types (📄 svg, 📁 group, ▭ rect, ⭕ circle, etc.)
+- **Element Labels**: Shows tag name, ID (with `#`), and class (with `.`)
+- **Child Count**: Groups show the number of children in parentheses
+- **Expand/Collapse**: Click the ▶/▼ button to show/hide children
+- **Selection**: Click any element in the tree to select it on the canvas
+- **Z-Order Visualization**: Elements are listed top-to-bottom (front-to-back)
+- **Toggle Panel**: Click the ◀ button to hide the panel, ▶ to show it
+
 ### Editing Elements
 
 #### Selection
-- Click on any element to select it
-- Selected elements show a blue outline with corner handles
+- **Single Selection**: Click on any element to select it
+- **Multi-Selection (Ctrl+Click)**: Hold `Ctrl` (Windows/Linux) or `Cmd` (Mac) and click elements to add/remove from selection
+- **Marquee Selection**: Click and drag on empty canvas to select all elements in the rectangle
+- **Select All**: Press `Ctrl+A` / `Cmd+A` to select all elements
+- **Visual Feedback**:
+  - Single selection shows blue outline with resize handles
+  - Multi-selection shows green combined bounding box with individual element outlines
+  - Selection count indicator appears in top-right corner
 - Press `Escape` to clear selection
 
 #### Moving Elements
-- **Drag**: Click and drag the selected element
+- **Drag**: Click and drag the selected element(s)
 - **Arrow Keys**: Move 1px at a time
 - **Shift + Arrow Keys**: Move 10px at a time
+- **Multi-Selection**: All selected elements move together
 
 #### Resizing
 - Drag the corner handles to resize
@@ -75,14 +96,16 @@ npm run build
 
 #### Z-Order (Stacking)
 Use the toolbar at the bottom:
-- **To Front**: Bring element to the very front
-- **Forward**: Move element one layer forward
-- **Backward**: Move element one layer backward
-- **To Back**: Send element to the very back
+- **To Front**: Bring element(s) to the very front
+- **Forward**: Move element(s) one layer forward
+- **Backward**: Move element(s) one layer backward
+- **To Back**: Send element(s) to the very back
+- **Multi-Selection**: Z-order operations apply to all selected elements
 
 #### Deleting
-- Press `Delete` key to remove the selected element
+- Press `Delete` key to remove the selected element(s)
 - Click the 🗑️ delete button in the Element Inspector panel
+- **Multi-Selection**: Deletes all selected elements at once
 
 ### Saving Your Work
 
@@ -94,19 +117,28 @@ Use the toolbar at the bottom:
 ### Element Inspector
 
 The inspector panel (top-left) shows:
+
+**Single Selection:**
 - Element type (rect, circle, path, etc.)
 - Element ID (if present)
 - Dimensions (width, height, position)
 - All attributes and their values
 
+**Multi-Selection:**
+- Total count of selected elements
+- Type breakdown (e.g., "3× rect, 2× circle")
+- Batch operations (delete all, z-order all)
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
+| `Ctrl+A` / `Cmd+A` | Select all elements |
+| `Ctrl+Click` / `Cmd+Click` | Add/remove element from selection |
 | `Escape` | Clear selection |
-| `Delete` | Remove selected element |
-| `Arrow Keys` | Move element 1px |
-| `Shift + Arrow Keys` | Move element 10px |
+| `Delete` | Remove selected element(s) |
+| `Arrow Keys` | Move element(s) 1px |
+| `Shift + Arrow Keys` | Move element(s) 10px |
 | `Ctrl+S` / `Cmd+S` | Save/Export SVG |
 
 ## Technology Stack
