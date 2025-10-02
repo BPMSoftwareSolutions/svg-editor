@@ -8,6 +8,7 @@ export interface Transform {
 
 /**
  * Parse transform attribute from SVG element
+ * Handles multiple transforms of the same type by composing them
  */
 export function parseTransform(transformStr: string): Transform {
   const transform: Transform = {
@@ -20,26 +21,28 @@ export function parseTransform(transformStr: string): Transform {
 
   if (!transformStr) return transform
 
-  // Parse translate
-  const translateMatch = transformStr.match(/translate\(([^)]+)\)/)
-  if (translateMatch) {
-    const values = translateMatch[1].split(/[\s,]+/).map(Number)
-    transform.translateX = values[0] || 0
-    transform.translateY = values[1] || 0
+  // Parse all translate transforms and sum them
+  const translateMatches = transformStr.matchAll(/translate\(([^)]+)\)/g)
+  for (const match of translateMatches) {
+    const values = match[1].split(/[\s,]+/).map(Number)
+    transform.translateX += values[0] || 0
+    transform.translateY += values[1] || 0
   }
 
-  // Parse scale
-  const scaleMatch = transformStr.match(/scale\(([^)]+)\)/)
-  if (scaleMatch) {
-    const values = scaleMatch[1].split(/[\s,]+/).map(Number)
-    transform.scaleX = values[0] || 1
-    transform.scaleY = values[1] || values[0] || 1
+  // Parse all scale transforms and multiply them
+  const scaleMatches = transformStr.matchAll(/scale\(([^)]+)\)/g)
+  for (const match of scaleMatches) {
+    const values = match[1].split(/[\s,]+/).map(Number)
+    const scaleX = values[0] || 1
+    const scaleY = values[1] || scaleX
+    transform.scaleX *= scaleX
+    transform.scaleY *= scaleY
   }
 
-  // Parse rotate
-  const rotateMatch = transformStr.match(/rotate\(([^)]+)\)/)
-  if (rotateMatch) {
-    transform.rotate = Number(rotateMatch[1]) || 0
+  // Parse all rotate transforms and sum them
+  const rotateMatches = transformStr.matchAll(/rotate\(([^)]+)\)/g)
+  for (const match of rotateMatches) {
+    transform.rotate += Number(match[1]) || 0
   }
 
   return transform
@@ -175,5 +178,42 @@ export function setElementPosition(
       applyTranslation(element, adjustedX, adjustedY, 1)
       break
   }
+}
+
+/**
+ * Apply scale to an SVG element's transform
+ * Properly composes with existing transforms by multiplying scale values
+ */
+export function applyScale(
+  element: SVGElement,
+  scaleX: number,
+  scaleY: number
+): void {
+  const currentTransform = element.getAttribute('transform') || ''
+  const transform = parseTransform(currentTransform)
+
+  // Multiply the new scale with existing scale
+  transform.scaleX *= scaleX
+  transform.scaleY *= scaleY
+
+  element.setAttribute('transform', serializeTransform(transform))
+}
+
+/**
+ * Update the scale component of a transform while preserving other transforms
+ * This replaces the existing scale rather than multiplying it
+ */
+export function updateScale(
+  transformStr: string,
+  newScaleX: number,
+  newScaleY: number
+): string {
+  const transform = parseTransform(transformStr)
+
+  // Replace scale values
+  transform.scaleX = newScaleX
+  transform.scaleY = newScaleY
+
+  return serializeTransform(transform)
 }
 

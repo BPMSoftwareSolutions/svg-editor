@@ -1,4 +1,5 @@
 import { Command } from '../types/command'
+import { parseTransform, serializeTransform } from '../utils/transform'
 
 interface ElementSize {
   element: SVGElement
@@ -79,17 +80,22 @@ export class ResizeElementCommand implements Command {
       }
 
       default: {
-        // For other elements (path, polygon, etc.), use transform scale
+        // For other elements (path, polygon, groups, etc.), use transform scale
         const currentTransform = element.getAttribute('transform') || ''
         const scaleXRatio = adjustedNewWidth / adjustedOriginalWidth
         const scaleYRatio = adjustedNewHeight / adjustedOriginalHeight
 
         originalAttributes.set('transform', currentTransform)
 
-        // Append scale to existing transform
-        const newTransform = currentTransform
-          ? `${currentTransform} scale(${scaleXRatio}, ${scaleYRatio})`
-          : `scale(${scaleXRatio}, ${scaleYRatio})`
+        // Parse existing transform and compose the new scale
+        const transform = parseTransform(currentTransform)
+
+        // Multiply the new scale ratio with existing scale
+        transform.scaleX *= scaleXRatio
+        transform.scaleY *= scaleYRatio
+
+        // Serialize back to transform string
+        const newTransform = serializeTransform(transform)
 
         newAttributes.set('transform', newTransform)
         break

@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
-import { applyTranslation } from '../utils/transform'
+import { useAssets } from '../contexts/AssetContext'
+import { applyTranslation, parseTransform } from '../utils/transform'
 import { useResize, ResizeHandle } from '../hooks/useResize'
 import { MoveElementCommand, ResizeElementCommand } from '../commands'
 import '../styles/SelectionOverlay.css'
@@ -16,6 +17,7 @@ interface BoundingBox {
 function SelectionOverlay() {
   const { selectedElement, selectedElements } = useSelection()
   const { addToHistory } = useUndoRedo()
+  const { updateAsset, getAsset } = useAssets()
   const [bbox, setBbox] = useState<BoundingBox | null>(null)
   const [multiSelectionBoxes, setMultiSelectionBoxes] = useState<BoundingBox[]>([])
   const [isDragging, setIsDragging] = useState(false)
@@ -102,6 +104,22 @@ function SelectionOverlay() {
       // IMPORTANT: Use addToHistory instead of executeCommand because the resize
       // has already been applied during the resize operation
       addToHistory(command)
+
+      // If this is an asset group, sync the scale with the asset context
+      const assetId = element.getAttribute('data-asset-id')
+      if (assetId) {
+        const asset = getAsset(assetId)
+        if (asset) {
+          // Parse the current transform to get the new scale
+          const currentTransform = element.getAttribute('transform') || ''
+          const transformData = parseTransform(currentTransform)
+
+          // Update the asset's scale property
+          updateAsset(assetId, { scale: transformData.scaleX })
+
+          console.log('[SelectionOverlay] Synced asset scale:', assetId, transformData.scaleX)
+        }
+      }
 
       resizeStartDimensionsRef.current = null
     },
