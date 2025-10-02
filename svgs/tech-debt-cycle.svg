@@ -1,0 +1,121 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Central spiral representing growing tech debt -->
+  <defs>
+    <radialGradient id="debtGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#ff4444;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#cc0000;stop-opacity:0.8" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Growing spiral ball of tech debt -->
+  <circle cx="400" cy="400" r="120" fill="url(#debtGradient)" stroke="#990000" stroke-width="3"/>
+  <path d="M 400 280 Q 480 280 480 360 Q 480 440 400 440 Q 320 440 320 360 Q 320 320 360 300" 
+        fill="none" stroke="#660000" stroke-width="2" opacity="0.6"/>
+  <path d="M 400 300 Q 460 300 460 360 Q 460 420 400 420 Q 340 420 340 360 Q 340 330 370 315" 
+        fill="none" stroke="#660000" stroke-width="2" opacity="0.6"/>
+  
+  <text x="400" y="395" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff">
+    TECH
+  </text>
+  <text x="400" y="420" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff">
+    DEBT
+  </text>
+  
+  <!-- Circular arrows showing the cycle -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+    <marker id="conflictArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#ff0000" />
+    </marker>
+  </defs>
+  
+  <!-- Top: PO/PM adding features -->
+  <g>
+    <rect x="280" y="80" width="240" height="80" rx="10" fill="#4CAF50" stroke="#2E7D32" stroke-width="2"/>
+    <text x="400" y="110" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">
+      PO/PM Get Bonuses
+    </text>
+    <text x="400" y="135" text-anchor="middle" font-size="14" fill="#fff">
+      Add New Features
+    </text>
+    <path d="M 400 160 L 400 260" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- Right: Features create debt -->
+  <g>
+    <rect x="580" y="320" width="180" height="80" rx="10" fill="#FF9800" stroke="#E65100" stroke-width="2"/>
+    <text x="670" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">
+      Every Feature
+    </text>
+    <text x="670" y="365" text-anchor="middle" font-size="14" fill="#fff">
+      Adds Technical
+    </text>
+    <text x="670" y="385" text-anchor="middle" font-size="14" fill="#fff">
+      Debt
+    </text>
+    <path d="M 520 360 Q 570 360 570 360" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- Bottom: Programmers pressured -->
+  <g>
+    <rect x="280" y="620" width="240" height="80" rx="10" fill="#2196F3" stroke="#0D47A1" stroke-width="2"/>
+    <text x="400" y="645" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">
+      Programmers Pressured
+    </text>
+    <text x="400" y="665" text-anchor="middle" font-size="14" fill="#fff">
+      to Improve
+    </text>
+    <text x="400" y="685" text-anchor="middle" font-size="14" fill="#fff">
+      Architecture
+    </text>
+    <path d="M 400 540 L 400 610" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- Left: Pressure for more features -->
+  <g>
+    <rect x="40" y="320" width="180" height="80" rx="10" fill="#9C27B0" stroke="#4A148C" stroke-width="2"/>
+    <text x="130" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">
+      Push for More
+    </text>
+    <text x="130" y="365" text-anchor="middle" font-size="14" fill="#fff">
+      Features!
+    </text>
+    <text x="130" y="385" text-anchor="middle" font-size="14" fill="#fff">
+      (Repeat Cycle)
+    </text>
+    <path d="M 280 360 Q 230 360 230 360" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- CONFLICT ZONE - Left side between programmers wanting to refactor and PMs wanting features -->
+  <g>
+    <!-- Explosion/starburst background -->
+    <polygon points="130,480 145,520 130,560 90,560 75,520 90,480" fill="#FFD700" opacity="0.3" stroke="#FF0000" stroke-width="2"/>
+    <polygon points="110,500 150,520 110,540 90,520" fill="#FFD700" opacity="0.4"/>
+    
+    <!-- Conflict label -->
+    <rect x="35" y="495" width="190" height="50" rx="8" fill="#FF0000" stroke="#8B0000" stroke-width="2"/>
+    <text x="130" y="515" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">
+      ⚡ CONFLICT ⚡
+    </text>
+    <text x="130" y="533" text-anchor="middle" font-size="11" fill="#fff">
+      Refactor vs Features
+    </text>
+    
+    <!-- Opposing arrows showing the tension -->
+    <path d="M 130 480 L 130 410" stroke="#ff0000" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#conflictArrow)"/>
+    <path d="M 130 560 L 130 610" stroke="#ff0000" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#conflictArrow)"/>
+  </g>
+  
+  <!-- Connecting arrows to complete the cycle -->
+  <path d="M 130 320 Q 130 120 270 100" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 530 100 Q 670 120 670 310" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 670 400 Q 670 660 530 660" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 270 660 Q 130 660 130 560" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" font-size="28" font-weight="bold" fill="#333">
+    The Technical Debt Spiral
+  </text>
+</svg>
