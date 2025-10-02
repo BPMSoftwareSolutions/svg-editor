@@ -8,7 +8,7 @@ const RollingBallPoolTable = () => {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let ballX = 200;
-    let ballY = 400;
+    const ballY = 400;
     let rotation = 0;
     let direction = 1; // 1 for right, -1 for left
 

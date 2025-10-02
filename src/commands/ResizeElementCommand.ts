@@ -1,5 +1,4 @@
 import { Command } from '../types/command'
-import { parseTransform, serializeTransform } from '../utils/transform'
 
 interface ElementSize {
   element: SVGElement
