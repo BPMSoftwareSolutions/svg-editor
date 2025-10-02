@@ -122,24 +122,31 @@ describe('Multi-Selection Features', () => {
     // Select multiple elements
     cy.get('#rect1').click()
     cy.get('#circle1').click({ ctrlKey: true })
-    
-    // Get initial positions
+
+    // Get initial transforms
     cy.get('#rect1').then(($rect) => {
-      const initialRectX = $rect.attr('x')
-      
+      const initialRectTransform = $rect.attr('transform') || ''
+
       cy.get('#circle1').then(($circle) => {
-        const initialCircleX = $circle.attr('cx')
-        
+        const initialCircleTransform = $circle.attr('transform') || ''
+
         // Press arrow key to move
         cy.get('body').type('{rightarrow}')
-        
-        // Verify both elements moved
+
+        // Wait a bit for the command to be processed
+        cy.wait(100)
+
+        // Verify both elements moved (transforms changed)
         cy.get('#rect1').should(($newRect) => {
-          expect($newRect.attr('x')).not.to.equal(initialRectX)
+          const newTransform = $newRect.attr('transform') || ''
+          expect(newTransform).to.not.equal(initialRectTransform)
+          expect(newTransform).to.include('translate')
         })
-        
+
         cy.get('#circle1').should(($newCircle) => {
-          expect($newCircle.attr('cx')).not.to.equal(initialCircleX)
+          const newTransform = $newCircle.attr('transform') || ''
+          expect(newTransform).to.not.equal(initialCircleTransform)
+          expect(newTransform).to.include('translate')
         })
       })
     })
