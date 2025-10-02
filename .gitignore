@@ -21,10 +21,11 @@ dist-ssr
 # Test coverage
 coverage
 
-# Playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
+# Cypress
+cypress/videos
+cypress/screenshots
+cypress/downloads
+.cypress-cache
 
 # Editor directories and files
 .vscode/*

@@ -115,13 +115,14 @@ export function getElementPosition(element: SVGElement): { x: number; y: number 
         x: Number(element.getAttribute('x')) || 0,
         y: Number(element.getAttribute('y')) || 0,
       }
-    default:
+    default: {
       // For paths, groups, and other elements, use transform
       const transform = parseTransform(element.getAttribute('transform') || '')
       return {
         x: transform.translateX,
         y: transform.translateY,
       }
+    }
   }
 }
 
@@ -152,7 +153,7 @@ export function setElementPosition(
       element.setAttribute('x', adjustedX.toString())
       element.setAttribute('y', adjustedY.toString())
       break
-    case 'line':
+    case 'line': {
       const x1 = Number(element.getAttribute('x1')) || 0
       const y1 = Number(element.getAttribute('y1')) || 0
       const x2 = Number(element.getAttribute('x2')) || 0
@@ -164,6 +165,7 @@ export function setElementPosition(
       element.setAttribute('x2', (x2 + deltaX).toString())
       element.setAttribute('y2', (y2 + deltaY).toString())
       break
+    }
     case 'text':
       element.setAttribute('x', adjustedX.toString())
       element.setAttribute('y', adjustedY.toString())

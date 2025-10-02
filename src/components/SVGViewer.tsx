@@ -5,7 +5,6 @@ import ElementInspector from './ElementInspector'
 import Toolbar from './Toolbar'
 import TreePanel from './TreePanel'
 import MarqueeSelection from './MarqueeSelection'
-import { getElementsInRect } from '../utils/selectionUtils'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
@@ -21,7 +20,7 @@ interface ViewportState {
 function SVGViewer({ svgContent }: SVGViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const svgContentRef = useRef<HTMLDivElement>(null)
-  const { selectedElement, selectedElements, selectElement, selectMultiple, toggleElement, clearSelection, isSelected } = useSelection()
+  const { selectedElements, selectElement, selectMultiple, toggleElement, clearSelection } = useSelection()
   const [viewport, setViewport] = useState<ViewportState>({
     scale: 1,
     translateX: 0,
@@ -41,7 +40,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
     if (!svgElement) return
 
     const handleElementClick = (e: Event) => {
-      const mouseEvent = e as MouseEvent
+      const mouseEvent = e as unknown as React.MouseEvent
       const target = e.target as SVGElement
 
       // Don't select the root SVG element
@@ -92,21 +91,23 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
     // Update position based on element type
     switch (tagName) {
       case 'circle':
-      case 'ellipse':
+      case 'ellipse': {
         const cx = Number(element.getAttribute('cx')) || 0
         const cy = Number(element.getAttribute('cy')) || 0
         element.setAttribute('cx', (cx + deltaX).toString())
         element.setAttribute('cy', (cy + deltaY).toString())
         break
+      }
       case 'rect':
       case 'image':
-      case 'use':
+      case 'use': {
         const x = Number(element.getAttribute('x')) || 0
         const y = Number(element.getAttribute('y')) || 0
         element.setAttribute('x', (x + deltaX).toString())
         element.setAttribute('y', (y + deltaY).toString())
         break
-      case 'line':
+      }
+      case 'line': {
         const x1 = Number(element.getAttribute('x1')) || 0
         const y1 = Number(element.getAttribute('y1')) || 0
         const x2 = Number(element.getAttribute('x2')) || 0
@@ -116,7 +117,8 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
         element.setAttribute('x2', (x2 + deltaX).toString())
         element.setAttribute('y2', (y2 + deltaY).toString())
         break
-      default:
+      }
+      default: {
         // For paths, groups, and other elements, use transform
         const currentTransform = element.getAttribute('transform') || ''
         const translateMatch = currentTransform.match(/translate\(([^)]+)\)/)
@@ -143,6 +145,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
           element.setAttribute('transform', newTransform)
         }
         break
+      }
     }
   }
 
