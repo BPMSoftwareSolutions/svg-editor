@@ -4,6 +4,7 @@ import SelectionOverlay from './SelectionOverlay'
 import ElementInspector from './ElementInspector'
 import Toolbar from './Toolbar'
 import TreePanel from './TreePanel'
+import MarqueeSelection from './MarqueeSelection'
 import '../styles/SVGViewer.css'
 
 interface SVGViewerProps {
@@ -266,6 +267,7 @@ function SVGViewer({ svgContent }: SVGViewerProps) {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
       >
+        <MarqueeSelection containerRef={containerRef} isEnabled={!isPanning} />
         <SelectionOverlay />
         <div
           ref={svgContentRef}
