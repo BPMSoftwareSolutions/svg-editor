@@ -20,7 +20,7 @@ function MarqueeSelection({ containerRef, isEnabled }: MarqueeSelectionProps) {
     if (!isEnabled || !containerRef.current) return
 
     const container = containerRef.current
-    let dragThreshold = 5 // Minimum pixels to move before starting marquee
+    const dragThreshold = 5 // Minimum pixels to move before starting marquee
     let mouseDownPos: Point | null = null
 
     const handleMouseDown = (e: MouseEvent) => {

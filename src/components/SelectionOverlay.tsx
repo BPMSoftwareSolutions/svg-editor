@@ -39,10 +39,11 @@ function SelectionOverlay() {
           element.setAttribute('width', (width / scale).toString())
           element.setAttribute('height', (height / scale).toString())
           break
-        case 'circle':
+        case 'circle': {
           const radius = Math.min(width, height) / (2 * scale)
           element.setAttribute('r', radius.toString())
           break
+        }
         case 'ellipse':
           element.setAttribute('rx', (width / (2 * scale)).toString())
           element.setAttribute('ry', (height / (2 * scale)).toString())
@@ -206,8 +207,8 @@ function SelectionOverlay() {
 
   useEffect(() => {
     if (isResizing) {
-      const handleMove = (e: any) => handleResizeMove(e)
-      const handleUp = (e: any) => handleResizeEnd(e)
+      const handleMove = (e: Event) => handleResizeMove(e as unknown as React.MouseEvent)
+      const handleUp = (e: Event) => handleResizeEnd(e as unknown as React.MouseEvent)
 
       document.addEventListener('mousemove', handleMove)
       document.addEventListener('mouseup', handleUp)

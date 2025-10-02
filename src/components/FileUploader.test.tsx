@@ -27,13 +27,14 @@ describe('FileUploader', () => {
       result: svgContent,
     }
     
-    vi.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as any)
-    
+    vi.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as unknown as FileReader)
+
     fireEvent.change(input, { target: { files: [file] } })
-    
+
     // Trigger the onload callback
     if (mockFileReader.onload) {
-      mockFileReader.onload.call(mockFileReader as any, { target: mockFileReader } as any)
+      const progressEvent = { target: mockFileReader } as unknown as ProgressEvent<FileReader>
+      mockFileReader.onload.call(mockFileReader as unknown as FileReader, progressEvent)
     }
     
     expect(mockFileReader.readAsText).toHaveBeenCalledWith(file)

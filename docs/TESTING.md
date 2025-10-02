@@ -16,7 +16,7 @@ This document provides comprehensive information about testing in the SVG Editor
 The SVG Editor uses a multi-layered testing approach:
 
 1. **Unit Tests**: Test individual components and functions in isolation using Vitest
-2. **E2E Tests**: Test complete user workflows using Playwright
+2. **E2E Tests**: Test complete user workflows using Cypress
 3. **CI/CD**: Automated testing on every push and pull request
 
 ## Unit Testing
@@ -77,41 +77,45 @@ describe('MyComponent', () => {
 
 ### Technology Stack
 
-- **Playwright**: Modern E2E testing framework
-- **Chromium**: Browser for running tests
+- **Cypress**: Modern E2E testing framework with excellent developer experience
+- **Chrome**: Browser for running tests
 
 ### Running E2E Tests
 
 ```bash
-# Run all E2E tests
+# Run all E2E tests (headless)
 npm run test:e2e
 
-# Run E2E tests with UI mode (interactive)
-npm run test:e2e:ui
+# Open Cypress Test Runner (interactive)
+npm run test:e2e:open
 
 # Run E2E tests in headed mode (see browser)
 npm run test:e2e:headed
 
-# Debug E2E tests
-npm run test:e2e:debug
+# Run E2E tests in Chrome
+npm run test:e2e:chrome
 
 # Run specific test file
-npm run test:e2e -- multi-selection.spec.ts
+npx cypress run --spec "cypress/e2e/multi-selection.cy.ts"
 
 # Run tests matching a pattern
-npm run test:e2e -- --grep "should select"
+npx cypress run --spec "cypress/e2e/**/*selection*.cy.ts"
 ```
 
 ### E2E Test Structure
 
-E2E tests are located in the `e2e/` directory:
+E2E tests are located in the `cypress/` directory:
 
 ```
-e2e/
+cypress/
+├── e2e/
+│   ├── basic-functionality.cy.ts  # 14 tests
+│   └── multi-selection.cy.ts      # 16 tests
 ├── fixtures/
-│   └── test.svg              # Test SVG file
-├── basic-functionality.spec.ts
-└── multi-selection.spec.ts
+│   └── test.svg                   # Test SVG file
+└── support/
+    ├── commands.ts                # Custom commands
+    └── e2e.ts                     # Support file
 ```
 
 ### Test Coverage
@@ -146,21 +150,42 @@ e2e/
 ### Example E2E Test
 
 ```typescript
-import { test, expect } from '@playwright/test';
+/// <reference types="cypress" />
 
-test('should select element on click', async ({ page }) => {
-  await page.goto('/');
-  
-  // Upload SVG
-  const filePath = path.join(__dirname, 'fixtures', 'test.svg');
-  await page.locator('input[type="file"]').setInputFiles(filePath);
-  
-  // Click element
-  await page.locator('#rect1').click();
-  
-  // Verify selection
-  await expect(page.locator('.selection-overlay')).toBeVisible();
-});
+describe('Element Selection', () => {
+  it('should select element on click', () => {
+    cy.visit('/')
+
+    // Upload SVG using custom command
+    cy.uploadSVG('test.svg')
+
+    // Click element
+    cy.get('#rect1').click()
+
+    // Verify selection
+    cy.get('.selection-overlay').should('be.visible')
+  })
+})
+```
+
+### Custom Commands
+
+Cypress allows you to create custom commands for common operations:
+
+```typescript
+// cypress/support/commands.ts
+Cypress.Commands.add('uploadSVG', (fileName: string) => {
+  cy.fixture(fileName).then((fileContent) => {
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from(fileContent),
+      fileName: fileName,
+      mimeType: 'image/svg+xml',
+    })
+  })
+})
+
+// Usage in tests
+cy.uploadSVG('test.svg')
 ```
 
 ## CI/CD Pipeline
