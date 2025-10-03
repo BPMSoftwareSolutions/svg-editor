@@ -18,7 +18,7 @@ interface SVGViewerProps {
 }
 
 function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
-  const { viewport, containerRef, svgContentRef, setViewport, zoomIn, zoomOut, reset } = useViewport()
+  const { viewport, containerRef, svgContentRef, updateViewport, zoomIn, zoomOut, reset } = useViewport()
   const { selectedElements, selectElement, selectMultiple, toggleElement, clearSelection } = useSelection()
   const { executeCommand } = useUndoRedo()
   const { copyElements, getCopiedElements, hasCopiedElements, pasteCount, incrementPasteCount } = useClipboard()
@@ -31,8 +31,8 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
 
   // Reset viewport when new SVG is loaded or assets change
   useEffect(() => {
-    setViewport({ scale: 1, translateX: 0, translateY: 0 })
-  }, [svgContent, assets.length, setViewport])
+    reset()
+  }, [svgContent, assets.length, reset])
 
   // Add click handlers to SVG elements
   useEffect(() => {
@@ -171,14 +171,11 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
-    
+
     const delta = e.deltaY > 0 ? 0.9 : 1.1
     const newScale = Math.max(0.1, Math.min(10, viewport.scale * delta))
-    
-    setViewport(prev => ({
-      ...prev,
-      scale: newScale,
-    }))
+
+    updateViewport({ scale: newScale })
   }
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
@@ -190,11 +187,10 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (isPanning) {
-      setViewport(prev => ({
-        ...prev,
+      updateViewport({
         translateX: e.clientX - panStart.x,
         translateY: e.clientY - panStart.y,
-      }))
+      })
     }
   }
 
