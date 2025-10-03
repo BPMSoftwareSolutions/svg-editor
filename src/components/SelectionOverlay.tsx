@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
 import { useAssets } from '../contexts/AssetContext'
+import { useViewport } from '../contexts/ViewportContext'
 import { applyTranslation, parseTransform, serializeTransform } from '../utils/transform'
 import { useResize, ResizeHandle } from '../hooks/useResize'
 import { MoveElementCommand, ResizeElementCommand } from '../commands'
@@ -18,8 +19,10 @@ function SelectionOverlay() {
   const { selectedElement, selectedElements } = useSelection()
   const { addToHistory } = useUndoRedo()
   const { updateAsset, getAsset } = useAssets()
+  const { viewport, panBy, containerRef } = useViewport()
   const [bbox, setBbox] = useState<BoundingBox | null>(null)
   const [multiSelectionBoxes, setMultiSelectionBoxes] = useState<BoundingBox[]>([])
+  const [isClipped, setIsClipped] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const dragStartRef = useRef({ x: 0, y: 0 })
   const dragTotalDeltaRef = useRef({ x: 0, y: 0 })
@@ -28,6 +31,7 @@ function SelectionOverlay() {
   const resizeStartDimensionsRef = useRef<{ width: number; height: number } | null>(null)
   const resizeStartTransformRef = useRef<string | null>(null)
   const resizeStartBBoxRef = useRef<DOMRect | null>(null)
+  const autoPanIntervalRef = useRef<number | null>(null)
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
     onResizeStart: () => {
@@ -231,6 +235,7 @@ function SelectionOverlay() {
     if (selectedElements.length === 0) {
       setBbox(null)
       setMultiSelectionBoxes([])
+      setIsClipped(false)
       return
     }
 
@@ -242,9 +247,21 @@ function SelectionOverlay() {
     // For single selection, show resize handles
     if (selectedElements.length === 1) {
       const rect = selectedElements[0].element.getBoundingClientRect()
+      const overlayX = rect.left - containerRect.left
+      const overlayY = rect.top - containerRect.top
+
+      // Check if element is clipped (partially outside viewport)
+      const elementIsClipped =
+        overlayX < 0 ||
+        overlayY < 0 ||
+        overlayX + rect.width > containerRect.width ||
+        overlayY + rect.height > containerRect.height
+
+      setIsClipped(elementIsClipped)
+
       setBbox({
-        x: rect.left - containerRect.left,
-        y: rect.top - containerRect.top,
+        x: overlayX,
+        y: overlayY,
         width: rect.width,
         height: rect.height,
       })
@@ -252,6 +269,19 @@ function SelectionOverlay() {
     } else {
       // For multi-selection, show combined bounding box and individual outlines
       const combined = getCombinedBoundingBox()
+
+      // Check if any element in multi-selection is clipped
+      if (combined) {
+        const multiIsClipped =
+          combined.x < 0 ||
+          combined.y < 0 ||
+          combined.x + combined.width > containerRect.width ||
+          combined.y + combined.height > containerRect.height
+        setIsClipped(multiIsClipped)
+      } else {
+        setIsClipped(false)
+      }
+
       setBbox(combined)
 
       // Calculate individual boxes for visual feedback
@@ -314,6 +344,51 @@ function SelectionOverlay() {
     handleResizeStart(e, handle, rect)
   }
 
+  // Auto-panning logic when dragging near edges
+  const checkAndStartAutoPan = useCallback((e: MouseEvent) => {
+    if (!containerRef.current) return
+
+    const containerRect = containerRef.current.getBoundingClientRect()
+    const edgeThreshold = 50 // pixels from edge to trigger panning
+    const panSpeed = 10 // pixels per frame
+
+    // Calculate mouse position relative to container
+    const mouseX = e.clientX - containerRect.left
+    const mouseY = e.clientY - containerRect.top
+
+    let panX = 0
+    let panY = 0
+
+    // Check if mouse is near edges
+    if (mouseX < edgeThreshold) {
+      panX = panSpeed
+    } else if (mouseX > containerRect.width - edgeThreshold) {
+      panX = -panSpeed
+    }
+
+    if (mouseY < edgeThreshold) {
+      panY = panSpeed
+    } else if (mouseY > containerRect.height - edgeThreshold) {
+      panY = -panSpeed
+    }
+
+    // Start or stop auto-panning based on edge proximity
+    if (panX !== 0 || panY !== 0) {
+      // Start auto-panning if not already running
+      if (autoPanIntervalRef.current === null) {
+        autoPanIntervalRef.current = window.setInterval(() => {
+          panBy(panX, panY)
+        }, 16) // ~60fps
+      }
+    } else {
+      // Stop auto-panning if running
+      if (autoPanIntervalRef.current !== null) {
+        clearInterval(autoPanIntervalRef.current)
+        autoPanIntervalRef.current = null
+      }
+    }
+  }, [containerRef, panBy])
+
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || selectedElements.length === 0) return
 
@@ -325,10 +400,7 @@ function SelectionOverlay() {
     dragTotalDeltaRef.current.y += deltaY
 
     // Get viewport scale from the viewer container
-    const viewerContainer = document.querySelector('.svg-content') as HTMLElement
-    const transform = viewerContainer?.style.transform || ''
-    const scaleMatch = transform.match(/scale\(([^)]+)\)/)
-    const scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1
+    const scale = viewport.scale
 
     // Apply translation to all selected elements
     selectedElements.forEach(sel => {
@@ -338,17 +410,23 @@ function SelectionOverlay() {
     // Update drag start position
     dragStartRef.current = { x: e.clientX, y: e.clientY }
 
+    // Check for auto-panning near edges
+    checkAndStartAutoPan(e)
+
     // Update bounding boxes
     updateBbox()
-  }, [isDragging, selectedElements, updateBbox])
+  }, [isDragging, selectedElements, updateBbox, viewport.scale, checkAndStartAutoPan])
 
   const handleMouseUp = useCallback(() => {
+    // Stop auto-panning
+    if (autoPanIntervalRef.current !== null) {
+      clearInterval(autoPanIntervalRef.current)
+      autoPanIntervalRef.current = null
+    }
+
     if (isDragging && selectedElements.length > 0) {
       // Get viewport scale
-      const viewerContainer = document.querySelector('.svg-content') as HTMLElement
-      const transform = viewerContainer?.style.transform || ''
-      const scaleMatch = transform.match(/scale\(([^)]+)\)/)
-      const scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1
+      const scale = viewport.scale
 
       // Create move command with total delta
       const totalDelta = dragTotalDeltaRef.current
@@ -379,7 +457,7 @@ function SelectionOverlay() {
     setIsDragging(false)
     dragStartTransformsRef.current = []
     document.body.style.cursor = ''
-  }, [isDragging, selectedElements, addToHistory])
+  }, [isDragging, selectedElements, addToHistory, viewport.scale])
 
   useEffect(() => {
     if (isDragging) {
@@ -389,9 +467,24 @@ function SelectionOverlay() {
       return () => {
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
+        // Clean up auto-panning on unmount
+        if (autoPanIntervalRef.current !== null) {
+          clearInterval(autoPanIntervalRef.current)
+          autoPanIntervalRef.current = null
+        }
       }
     }
   }, [isDragging, selectedElements, handleMouseMove, handleMouseUp])
+
+  // Cleanup auto-panning on component unmount
+  useEffect(() => {
+    return () => {
+      if (autoPanIntervalRef.current !== null) {
+        clearInterval(autoPanIntervalRef.current)
+        autoPanIntervalRef.current = null
+      }
+    }
+  }, [])
 
   // Use refs to avoid recreating event listeners during resize
   const handleResizeMoveRef = useRef(handleResizeMove)
@@ -444,7 +537,7 @@ function SelectionOverlay() {
       {/* Main selection overlay */}
       <div
         ref={overlayRef}
-        className={`selection-overlay ${isDragging ? 'dragging' : ''} ${isResizing ? 'resizing' : ''} ${isMultiSelection ? 'multi-selection' : ''}`}
+        className={`selection-overlay ${isDragging ? 'dragging' : ''} ${isResizing ? 'resizing' : ''} ${isMultiSelection ? 'multi-selection' : ''} ${isClipped ? 'clipped' : ''}`}
         style={{
           left: `${bbox.x}px`,
           top: `${bbox.y}px`,
@@ -452,6 +545,7 @@ function SelectionOverlay() {
           height: `${bbox.height}px`,
         }}
         onMouseDown={handleMouseDown}
+        title={isClipped ? 'Element is partially outside viewport' : undefined}
       >
         {/* Only show resize handles for single selection */}
         {!isMultiSelection && (
