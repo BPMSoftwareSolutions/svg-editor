@@ -50,7 +50,7 @@ function SelectionOverlay() {
       }
     },
     onResize: (width, height, _left, _top) => {
-      if (!selectedElement || !resizeStartDimensionsRef.current) return
+      if (!selectedElement || !resizeStartDimensionsRef.current || !resizeStartBBoxRef.current) return
 
       const element = selectedElement.element
       const tagName = element.tagName.toLowerCase()
@@ -78,63 +78,58 @@ function SelectionOverlay() {
           element.setAttribute('ry', (height / (2 * scale)).toString())
           break
         default: {
-          // For groups and other elements, apply transform scale
+          // For groups and other elements, use transform scale
           const startDimensions = resizeStartDimensionsRef.current
           const startTransform = resizeStartTransformRef.current || ''
           const startBBox = resizeStartBBoxRef.current
 
-          if (!startBBox) break
-
-          // Get the viewer container to account for viewport transforms
+          // Get viewer container
           const viewerContainer = document.querySelector('.viewer-container')
           if (!viewerContainer) break
 
           const containerRect = viewerContainer.getBoundingClientRect()
 
-          // Calculate the original top-left position in container coordinates
-          const originalLeft = startBBox.left - containerRect.left
-          const originalTop = startBBox.top - containerRect.top
+          // Calculate the original top-left position (what we want to preserve)
+          // For rotated elements, we want to keep the top-left of the bounding box fixed
+          const targetLeft = startBBox.left - containerRect.left
+          const targetTop = startBBox.top - containerRect.top
 
-          // Calculate scale ratio relative to original dimensions
+          // Calculate the scale ratio based on size change
           const scaleXRatio = width / startDimensions.width
           const scaleYRatio = height / startDimensions.height
 
-          // Parse the original transform
+          // Parse the original transform (captured at start of resize)
           const transformData = parseTransform(startTransform)
-
-          // Apply the scale ratio to the original scale
+          
+          // Apply the scale ratio to the existing scale
           transformData.scaleX *= scaleXRatio
           transformData.scaleY *= scaleYRatio
 
-          // Serialize and apply the new transform
-          const newTransform = serializeTransform(transformData)
-          element.setAttribute('transform', newTransform)
+          // Apply the scaled transform
+          element.setAttribute('transform', serializeTransform(transformData))
 
-          // Now get the new bounding box after scale is applied
-          const newBBox = element.getBoundingClientRect()
-          const newLeft = newBBox.left - containerRect.left
-          const newTop = newBBox.top - containerRect.top
+          // Measure where the element actually ended up after scaling
+          const scaledBBox = element.getBoundingClientRect()
+          const scaledLeft = scaledBBox.left - containerRect.left
+          const scaledTop = scaledBBox.top - containerRect.top
 
-          // Calculate the offset needed to restore original position
-          const offsetX = originalLeft - newLeft
-          const offsetY = originalTop - newTop
+          // Calculate the offset needed to restore the original position
+          const offsetX = targetLeft - scaledLeft
+          const offsetY = targetTop - scaledTop
 
-          // Apply the offset to the translate values
-          if (offsetX !== 0 || offsetY !== 0) {
-            // Adjust by viewport scale
-            transformData.translateX += offsetX / scale
-            transformData.translateY += offsetY / scale
+          // Adjust translate to fix the position (convert screen coords to SVG coords)
+          transformData.translateX += offsetX / scale
+          transformData.translateY += offsetY / scale
 
-            // Apply the corrected transform
-            element.setAttribute('transform', serializeTransform(transformData))
-          }
+          // Apply the final corrected transform
+          element.setAttribute('transform', serializeTransform(transformData))
 
           break
         }
       }
 
-      // Don't update bbox during resize - it will be updated on resize end
-      // This prevents excessive re-renders during the drag operation
+      // Update bbox during resize for visual feedback
+      updateBbox()
     },
     onResizeEnd: (width, height) => {
       if (!selectedElement || !resizeStartDimensionsRef.current) return
