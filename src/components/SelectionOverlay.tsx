@@ -32,6 +32,7 @@ function SelectionOverlay() {
   const resizeStartTransformRef = useRef<string | null>(null)
   const resizeStartBBoxRef = useRef<DOMRect | null>(null)
   const autoPanIntervalRef = useRef<number | null>(null)
+  const autoPanDeltaRef = useRef({ x: 0, y: 0 })
 
   const { isResizing, handleResizeStart, handleResizeMove, handleResizeEnd } = useResize({
     onResizeStart: () => {
@@ -372,12 +373,18 @@ function SelectionOverlay() {
       panY = -panSpeed
     }
 
+    // Store current pan values in ref so interval can access them
+    autoPanDeltaRef.current = { x: panX, y: panY }
+
     // Start or stop auto-panning based on edge proximity
     if (panX !== 0 || panY !== 0) {
       // Start auto-panning if not already running
       if (autoPanIntervalRef.current === null) {
         autoPanIntervalRef.current = window.setInterval(() => {
-          panBy(panX, panY)
+          const delta = autoPanDeltaRef.current
+          if (delta.x !== 0 || delta.y !== 0) {
+            panBy(delta.x, delta.y)
+          }
         }, 16) // ~60fps
       }
     } else {
