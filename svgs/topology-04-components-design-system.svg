@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-163 -163 1103 960" role="img" aria-label="Components Team - UX/UI Design System">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1"/>
+    </linearGradient>
+    
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E293B;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1"/>
+    </linearGradient>
+
+    <!-- Shadow -->
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Glow effect for icons -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main Card -->
+  <g filter="url(#cardShadow)">
+    <rect x="20" y="20" width="762.3038940429688" height="619.223876953125" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="2"/>
+  </g>
+
+  <!-- Header Section -->
+  <rect x="20" y="20" width="760" height="120" rx="16" fill="url(#headerGrad)"/>
+  
+  <!-- Team Icon -->
+  <g transform="translate(50, 45)">
+    <circle cx="25" cy="25" r="30" fill="rgba(255,255,255,0.2)" filter="url(#glow)"/>
+    <!-- Design system icon - palette/components -->
+    <rect x="15" y="18" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+    <rect x="25" y="18" width="8" height="8" rx="2" fill="white" opacity="0.7"/>
+    <rect x="15" y="28" width="8" height="8" rx="2" fill="white" opacity="0.7"/>
+    <rect x="25" y="28" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+  </g>
+
+  <!-- Title -->
+  <text x="110" y="65" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="800" fill="white">
+    Components Team
+  </text>
+  <text x="110" y="95" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="500" fill="rgba(255,255,255,0.85)">
+    UX/UI Design System
+  </text>
+
+  <!-- Tags -->
+  <g transform="translate(110, 108)">
+    <rect width="120" height="24" rx="12" fill="rgba(255,255,255,0.2)"/>
+    <text x="12" y="16" font-family="Inter" font-size="12" font-weight="600" fill="white">Design System</text>
+  </g>
+  <g transform="translate(240, 108)">
+    <rect width="110" height="24" rx="12" fill="rgba(255,255,255,0.2)"/>
+    <text x="12" y="16" font-family="Inter" font-size="12" font-weight="600" fill="white">Cross-Functional</text>
+  </g>
+
+  <!-- Content Grid -->
+  <g transform="translate(40, 160)">
+    
+    <!-- Nature Section -->
+    <g>
+      <!-- Section Header with Icon -->
+      <g>
+        <circle cx="8" cy="8" r="8" fill="#F59E0B" opacity="0.2"/>
+        <circle cx="8" cy="8" r="3" fill="#F59E0B"/>
+        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Nature</text>
+      </g>
+      
+      <!-- Content Box -->
+      <rect x="0" y="24" width="340" height="80" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+      <text x="16" y="48" font-family="Inter" font-size="14" fill="#CBD5E1">
+        <tspan x="16" dy="0">Custodians of RenderX design system</tspan>
+        <tspan x="16" dy="20">providing reusable UI components</tspan>
+        <tspan x="16" dy="20" font-style="italic" fill="#94A3B8">for consistent user experience</tspan>
+      </text>
+    </g>
+
+    <!-- Structure Section -->
+    <g transform="translate(0, 120)">
+      <g>
+        <circle cx="8" cy="8" r="8" fill="#10B981" opacity="0.2"/>
+        <circle cx="8" cy="8" r="3" fill="#10B981"/>
+        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Structure</text>
+      </g>
+      
+      <rect x="0" y="24" width="340" height="80" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+      <text x="16" y="48" font-family="Inter" font-size="14" fill="#CBD5E1">
+        <tspan x="16" dy="0">Cross-functional team of UX designers</tspan>
+        <tspan x="16" dy="20">and frontend specialists</tspan>
+        <tspan x="16" dy="20" font-style="italic" fill="#94A3B8">Balancing creativity with code</tspan>
+      </text>
+    </g>
+
+    <!-- Focus Section -->
+    <g transform="translate(0, 240)">
+      <g>
+        <circle cx="8" cy="8" r="8" fill="#3B82F6" opacity="0.2"/>
+        <circle cx="8" cy="8" r="3" fill="#3B82F6"/>
+        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Focus Areas</text>
+      </g>
+      
+      <rect x="0" y="24" width="340" height="140" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+      
+      <!-- Bullet points with icons -->
+      <g transform="translate(16, 44)">
+        <circle cx="5" cy="5" r="3" fill="#FBBF24"/>
+        <text x="16" y="9" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Build core component library
+        </text>
+      </g>
+      <g transform="translate(16, 74)">
+        <circle cx="5" cy="5" r="3" fill="#FBBF24"/>
+        <text x="16" y="9" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Define UX flows &amp; styling guidelines
+        </text>
+      </g>
+      <g transform="translate(16, 104)">
+        <circle cx="5" cy="5" r="3" fill="#FBBF24"/>
+        <text x="16" y="9" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Provide reusables for plugin teams
+        </text>
+      </g>
+    </g>
+
+    <!-- Right Column -->
+    
+    <!-- Topology Fit -->
+    <g transform="translate(380, 0)">
+      <g>
+        <circle cx="8" cy="8" r="8" fill="#EF4444" opacity="0.2"/>
+        <circle cx="8" cy="8" r="3" fill="#EF4444"/>
+        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Topology Fit</text>
+      </g>
+      
+      <rect x="0" y="24" width="340" height="100" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+      
+      <!-- Highlighted badge -->
+      <g transform="translate(16, 44)">
+        <rect width="240" height="32" rx="16" fill="#EF4444" opacity="0.2" stroke="#EF4444" stroke-width="2"/>
+        <text x="20" y="21" font-family="Inter" font-size="14" font-weight="700" fill="#FCA5A5">
+          Complicated Subsystem
+        </text>
+      </g>
+      
+      <text x="16" y="100" font-family="Inter" font-size="13" fill="#94A3B8">
+        Deep UI/UX expertise not every
+      </text>
+      <text x="16" y="116" font-family="Inter" font-size="13" fill="#94A3B8">
+        team needs to replicate
+      </text>
+    </g>
+
+    <!-- Key Characteristics -->
+    <g transform="translate(380, 140)">
+      <g>
+        <circle cx="8" cy="8" r="8" fill="#8B5CF6" opacity="0.2"/>
+        <circle cx="8" cy="8" r="3" fill="#8B5CF6"/>
+        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Key Characteristics</text>
+      </g>
+      
+      <rect x="0" y="24" width="340" height="180" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+      
+      <!-- Feature list with icons -->
+      <g transform="translate(16, 44)">
+        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
+        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Centralized design tokens
+        </text>
+      </g>
+      <g transform="translate(16, 74)">
+        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
+        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Accessibility compliance (WCAG)
+        </text>
+      </g>
+      <g transform="translate(16, 104)">
+        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
+        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Component documentation (Storybook)
+        </text>
+      </g>
+      <g transform="translate(16, 134)">
+        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
+        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
+          Theme &amp; branding consistency
+        </text>
+      </g>
+    </g>
+
+    <!-- Collaboration Box -->
+    <g transform="translate(380, 360)">
+      <g>
+        <circle cx="8" cy="8" r="8" fill="#06B6D4" opacity="0.2"/>
+        <circle cx="8" cy="8" r="3" fill="#06B6D4"/>
+        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Collaboration</text>
+      </g>
+      
+      <rect x="0" y="24" width="340" height="60" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+      <text x="16" y="48" font-family="Inter" font-size="13" fill="#CBD5E1">
+        <tspan x="16" dy="0">Serve all plugin teams as component lib</tspan>
+        <tspan x="16" dy="20">Iterate with Product teams on UX</tspan>
+      </text>
+    </g>
+
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(20, 560)">
+    <text x="380" y="38" text-anchor="middle" font-family="Inter" font-size="12" fill="#64748B" transform="translate(-5, 26)">
+      RenderX Team Topologies — Components Design System Pattern
+    </text>
+  </g>
+</svg>
