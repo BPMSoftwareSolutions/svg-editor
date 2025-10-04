@@ -1,0 +1,17 @@
+[x] NAME:Fix Canvas Boundary and Selection Overlay Issues (Issue #35) DESCRIPTION:Implement auto-panning and improve selection overlay tracking to prevent elements from disappearing at canvas edges
+-[x] NAME:Review issue DESCRIPTION:https://github.com/BPMSoftwareSolutions/svg-editor/issues/35
+-[x] NAME:Review codebase DESCRIPTION:
+-[x] NAME:Create branch DESCRIPTION:
+-[x] NAME:Create ViewportContext DESCRIPTION:Create a shared viewport context to coordinate between SVGViewer and SelectionOverlay components
+-[x] NAME:Update task list DESCRIPTION:Update the current task list that are required to resolve this issue.
+-[-] NAME:Fix Canvas Boundary and Selection Overlay Issues DESCRIPTION:
+-[x] NAME:Create E2E test DESCRIPTION:
+-[x] NAME:Push + PR DESCRIPTION:Once all tests are green, push + PR
+-[-] NAME:Review issue DESCRIPTION:Review GitHub issue #35 and understand requirements
+-[x] NAME:Integrate ViewportContext in App DESCRIPTION:Wrap the application with ViewportProvider and update component tree
+-[x] NAME:Update SVGViewer to use ViewportContext DESCRIPTION:Refactor SVGViewer to use viewport context instead of local state
+-[x] NAME:Implement auto-panning in SelectionOverlay DESCRIPTION:Add edge detection and auto-panning logic when dragging elements near canvas edges
+-[x] NAME:Improve selection overlay clipping handling DESCRIPTION:Enhance overlay to handle elements that are partially outside viewport
+-[x] NAME:Write unit tests for ViewportContext DESCRIPTION:Create comprehensive unit tests for viewport context functionality
+-[-] NAME:Write unit tests for auto-panning DESCRIPTION:Test edge detection and auto-panning behavior
+-[x] NAME:Manual testing and verification DESCRIPTION:Test the implementation manually with various SVG files and edge cases

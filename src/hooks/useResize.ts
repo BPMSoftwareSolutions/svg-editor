@@ -1,9 +1,9 @@
 import { useState, useCallback, MouseEvent } from 'react'
 
-export type ResizeHandle = 
-  | 'top-left' 
-  | 'top-right' 
-  | 'bottom-left' 
+export type ResizeHandle =
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
   | 'bottom-right'
   | 'top'
   | 'right'
@@ -19,6 +19,8 @@ interface ResizeState {
   startHeight: number
   startLeft: number
   startTop: number
+  // Track viewport transform at resize start to compensate for coordinate space
+  startViewportScale: number
 }
 
 interface UseResizeOptions {
@@ -26,6 +28,7 @@ interface UseResizeOptions {
   onResize?: (width: number, height: number, left: number, top: number) => void
   onResizeEnd?: (width: number, height: number, left: number, top: number) => void
   maintainAspectRatio?: boolean
+  viewportScale?: number // Current viewport scale for coordinate mapping
 }
 
 export function useResize({
@@ -33,6 +36,7 @@ export function useResize({
   onResize,
   onResizeEnd,
   maintainAspectRatio = false,
+  viewportScale = 1,
 }: UseResizeOptions = {}) {
   const [resizeState, setResizeState] = useState<ResizeState>({
     isResizing: false,
@@ -43,12 +47,13 @@ export function useResize({
     startHeight: 0,
     startLeft: 0,
     startTop: 0,
+    startViewportScale: 1,
   })
 
   const handleResizeStart = useCallback(
     (e: MouseEvent, handle: ResizeHandle, bbox: DOMRect) => {
       e.stopPropagation()
-      
+
       setResizeState({
         isResizing: true,
         handle,
@@ -58,19 +63,30 @@ export function useResize({
         startHeight: bbox.height,
         startLeft: bbox.left,
         startTop: bbox.top,
+        startViewportScale: viewportScale,
       })
 
       onResizeStart?.(handle)
     },
-    [onResizeStart]
+    [onResizeStart, viewportScale]
   )
 
   const handleResizeMove = useCallback(
     (e: MouseEvent) => {
       if (!resizeState.isResizing || !resizeState.handle) return
 
-      const deltaX = e.clientX - resizeState.startX
-      const deltaY = e.clientY - resizeState.startY
+      // Raw mouse delta in screen pixels
+      const rawDeltaX = e.clientX - resizeState.startX
+      const rawDeltaY = e.clientY - resizeState.startY
+
+      // The selection overlay is inside .svg-content which has a scale transform.
+      // Mouse moves in screen space, but the overlay is in scaled space.
+      // We DON'T need to divide by scale here because:
+      // 1. bbox dimensions are already in screen pixels (from getBoundingClientRect)
+      // 2. We're calculating new screen-pixel dimensions
+      // 3. The conversion to SVG units happens in SelectionOverlay's onResize callback
+      const deltaX = rawDeltaX
+      const deltaY = rawDeltaY
 
       let newWidth = resizeState.startWidth
       let newHeight = resizeState.startHeight
@@ -98,7 +114,7 @@ export function useResize({
       // Maintain aspect ratio if needed
       if (maintainAspectRatio) {
         const aspectRatio = resizeState.startWidth / resizeState.startHeight
-        
+
         if (handle.includes('left') || handle.includes('right')) {
           newHeight = newWidth / aspectRatio
           if (handle.includes('top')) {
@@ -125,8 +141,11 @@ export function useResize({
     (e: MouseEvent) => {
       if (!resizeState.isResizing) return
 
-      const deltaX = e.clientX - resizeState.startX
-      const deltaY = e.clientY - resizeState.startY
+      const rawDeltaX = e.clientX - resizeState.startX
+      const rawDeltaY = e.clientY - resizeState.startY
+
+      const deltaX = rawDeltaX
+      const deltaY = rawDeltaY
 
       let finalWidth = resizeState.startWidth
       let finalHeight = resizeState.startHeight
@@ -152,7 +171,7 @@ export function useResize({
 
       if (maintainAspectRatio && handle) {
         const aspectRatio = resizeState.startWidth / resizeState.startHeight
-        
+
         if (handle.includes('left') || handle.includes('right')) {
           finalHeight = finalWidth / aspectRatio
           if (handle.includes('top')) {
@@ -178,6 +197,7 @@ export function useResize({
         startHeight: 0,
         startLeft: 0,
         startTop: 0,
+        startViewportScale: 1,
       })
 
       onResizeEnd?.(finalWidth, finalHeight, finalLeft, finalTop)

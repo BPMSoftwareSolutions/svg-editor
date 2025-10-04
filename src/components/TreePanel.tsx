@@ -63,17 +63,31 @@ function TreePanel() {
   }, [])
 
   const handleNodeClick = (element: SVGElement, e?: React.MouseEvent) => {
+    // Prefer selecting concrete child shapes over wrapper <g> with filters
+    const resolveSelectable = (el: SVGElement): SVGElement => {
+      if (el.tagName.toLowerCase() === 'g') {
+        const g = el as SVGGElement
+        if (g.childElementCount === 1) {
+          const child = g.firstElementChild as SVGElement | null
+          if (child && child.tagName.toLowerCase() !== 'g') return child
+        }
+      }
+      return el
+    }
+
+    const target = resolveSelectable(element)
+
     // Don't select the root SVG element
-    if (element.tagName.toLowerCase() === 'svg') {
+    if (target.tagName.toLowerCase() === 'svg') {
       selectElement(null)
       return
     }
 
     // Check if Ctrl/Cmd is pressed for multi-selection
     if (e && (e.ctrlKey || e.metaKey)) {
-      toggleElement(element)
+      toggleElement(target)
     } else {
-      selectElement(element)
+      selectElement(target)
     }
   }
 
