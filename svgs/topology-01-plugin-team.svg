@@ -339,70 +339,104 @@
 <g data-asset-id="structure-icon" data-asset-name="structure-icon.svg" transform="translate(318.44439697265625, 296.58328247070312) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
   <!-- Team of 6 people in circular formation -->
   <g xmlns="http://www.w3.org/2000/svg" transform="translate(102, 99)">
-    <circle cx="100" cy="100" r="90" fill="url(#greenGrad)" opacity="0.1" filter="url(#glow)"/>
+    <circle cx="100" cy="100" r="90" fill="url(#greenGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
     
     <g transform="translate(100, 100)">
       <!-- Person 1 (top) -->
       <g transform="translate(0, -50)">
-        <circle cx="0" cy="0" r="12" fill="#10B981"/>
+        <circle cx="0" cy="0" r="12" fill="#10B981">
+          <animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/>
+        </circle>
         <rect x="-8" y="10" width="16" height="20" rx="8" fill="#10B981"/>
       </g>
       
       <!-- Person 2 (top right) -->
       <g transform="translate(43, -25)">
-        <circle cx="0" cy="0" r="12" fill="#34D399"/>
+        <circle cx="0" cy="0" r="12" fill="#34D399">
+          <animate attributeName="r" values="12;14;12" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+        </circle>
         <rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/>
       </g>
       
       <!-- Person 3 (bottom right) -->
       <g transform="translate(43, 25)">
-        <circle cx="0" cy="0" r="12" fill="#10B981"/>
+        <circle cx="0" cy="0" r="12" fill="#10B981">
+          <animate attributeName="r" values="12;14;12" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+        </circle>
         <rect x="-8" y="10" width="16" height="20" rx="8" fill="#10B981"/>
       </g>
       
       <!-- Person 4 (bottom) -->
       <g transform="translate(0, 50)">
-        <circle cx="0" cy="0" r="12" fill="#34D399"/>
+        <circle cx="0" cy="0" r="12" fill="#34D399">
+          <animate attributeName="r" values="12;14;12" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+        </circle>
         <rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/>
       </g>
       
       <!-- Person 5 (bottom left) -->
       <g transform="translate(-43, 25)">
-        <circle cx="0" cy="0" r="12" fill="#10B981"/>
+        <circle cx="0" cy="0" r="12" fill="#10B981">
+          <animate attributeName="r" values="12;14;12" dur="2s" begin="1.2s" repeatCount="indefinite"/>
+        </circle>
         <rect x="-8" y="10" width="16" height="20" rx="8" fill="#10B981"/>
       </g>
       
       <!-- Person 6 (top left) -->
       <g transform="translate(-43, -25)">
-        <circle cx="0" cy="0" r="12" fill="#34D399"/>
+        <circle cx="0" cy="0" r="12" fill="#34D399">
+          <animate attributeName="r" values="12;14;12" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+        </circle>
         <rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/>
       </g>
       
       <!-- Connection circle -->
-      <circle cx="0" cy="0" r="45" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+      <circle cx="0" cy="0" r="45" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="5,5" opacity="0.5">
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0.8;0.5" dur="3s" repeatCount="indefinite"/>
+      </circle>
     </g>
   </g>
 </g>
 <g data-asset-id="focus-icon" data-asset-name="focus-icon.svg" transform="translate(318.44439697265625, 416.58328247070312) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
   <!-- Gear/cog representing orchestration -->
   <g xmlns="http://www.w3.org/2000/svg" transform="translate(102, 99)">
-    <circle cx="100" cy="100" r="90" fill="url(#orangeGrad)" opacity="0.1" filter="url(#glow)"/>
+    <circle cx="100" cy="100" r="90" fill="url(#orangeGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
     
     <g transform="translate(100, 100)">
-      <!-- Outer gear teeth -->
-      <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B"/>
-      <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(60)"/>
-      <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(120)"/>
-      <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(180)"/>
-      <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(240)"/>
-      <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(300)"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+        
+        <!-- Outer gear teeth -->
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(60)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(120)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(180)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(240)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(300)"/>
+        
+        <!-- Main gear body -->
+        <circle cx="0" cy="0" r="35" fill="#F59E0B"/>
+      </g>
       
-      <!-- Main gear body -->
-      <circle cx="0" cy="0" r="35" fill="#F59E0B"/>
-      <circle cx="0" cy="0" r="15" fill="#0F172A"/>
+      <circle cx="0" cy="0" r="15" fill="#0F172A">
+        <animate attributeName="r" values="15;17;15" dur="4s" repeatCount="indefinite"/>
+      </circle>
       
       <!-- Inner accent -->
-      <circle cx="0" cy="0" r="25" fill="none" stroke="#FCD34D" stroke-width="2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="25" fill="none" stroke="#FCD34D" stroke-width="2" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      
+      <!-- Energy pulses -->
+      <circle cx="0" cy="0" r="35" fill="none" stroke="#FCD34D" stroke-width="3" opacity="0">
+        <animate attributeName="r" from="35" to="60" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>
+      </circle>
     </g>
   </g>
 </g>
@@ -425,25 +459,59 @@
         <path d="M 10,10 L 130,10" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/>
         <polygon points="140,10 130,5 130,15" fill="#8B5CF6"/>
       </g>
+      
+      <!-- Flow particles -->
+      <circle cx="40" cy="10" r="4" fill="#C4B5FD">
+        <animate attributeName="cx" from="10" to="140" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="60" cy="35" r="4" fill="#DDD6FE">
+        <animate attributeName="cx" from="10" to="140" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="80" cy="60" r="4" fill="#C4B5FD">
+        <animate attributeName="cx" from="10" to="140" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
     </g>
   </g>
 </g>
 <g data-asset-id="characteristics-icon" data-asset-name="characteristics-icon.svg" transform="translate(698.44439697265625, 316.58328247070312) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
   <!-- Shield with checkmarks -->
   <g xmlns="http://www.w3.org/2000/svg" transform="translate(102, 99)">
-    <circle cx="100" cy="100" r="90" fill="url(#pinkGrad)" opacity="0.1" filter="url(#glow)"/>
+    <circle cx="100" cy="100" r="90" fill="url(#pinkGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
     
     <g transform="translate(100, 80)">
       <!-- Shield shape -->
-      <path d="M 0,-40 L 35,-35 L 35,15 Q 35,45 0,60 Q -35,45 -35,15 L -35,-35 Z" fill="#EC4899" opacity="0.8"/>
-      <path d="M 0,-40 L 35,-35 L 35,15 Q 35,45 0,60 Q -35,45 -35,15 L -35,-35 Z" fill="none" stroke="#F9A8D4" stroke-width="2"/>
+      <path d="M 0,-40 L 35,-35 L 35,15 Q 35,45 0,60 Q -35,45 -35,15 L -35,-35 Z" fill="#EC4899" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.95;0.8" dur="3s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 0,-40 L 35,-35 L 35,15 Q 35,45 0,60 Q -35,45 -35,15 L -35,-35 Z" fill="none" stroke="#F9A8D4" stroke-width="2">
+        <animate attributeName="stroke-width" values="2;3;2" dur="2s" repeatCount="indefinite"/>
+      </path>
       
-      <!-- Checkmarks -->
+      <!-- Checkmarks with animation -->
       <g stroke="#FFF" stroke-width="4" stroke-linecap="round" fill="none">
-        <path d="M -20,-10 L -10,0 L 10,-20"/>
-        <path d="M -20,10 L -10,20 L 10,0"/>
-        <path d="M -15,30 L -5,40 L 15,20"/>
+        <path d="M -20,-10 L -10,0 L 10,-20" stroke-dasharray="40" stroke-dashoffset="40">
+          <animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.6s" begin="0s" fill="freeze"/>
+        </path>
+        <path d="M -20,10 L -10,20 L 10,0" stroke-dasharray="40" stroke-dashoffset="40">
+          <animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.6s" begin="0.3s" fill="freeze"/>
+        </path>
+        <path d="M -15,30 L -5,40 L 15,20" stroke-dasharray="40" stroke-dashoffset="40">
+          <animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.6s" begin="0.6s" fill="freeze"/>
+        </path>
       </g>
+      
+      <!-- Sparkles -->
+      <circle cx="25" cy="-25" r="3" fill="#FFF" opacity="0">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-25" cy="0" r="2" fill="#FFF" opacity="0">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="30" cy="25" r="2.5" fill="#FFF" opacity="0">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.6s" repeatCount="indefinite"/>
+      </circle>
     </g>
   </g>
 </g>
@@ -472,6 +540,12 @@
       <!-- Central hub (larger) -->
       <circle cx="0" cy="0" r="18" fill="#22D3EE"/>
       <circle cx="0" cy="0" r="8" fill="#FFF" opacity="0.5"/>
+      
+      <!-- Pulse animation on central node -->
+      <circle cx="0" cy="0" r="18" fill="none" stroke="#22D3EE" stroke-width="2" opacity="0.8">
+        <animate attributeName="r" from="18" to="35" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>
+      </circle>
     </g>
   </g>
 </g></svg>
