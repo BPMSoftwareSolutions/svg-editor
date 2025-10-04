@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 800 600">
+      
+<g data-asset-id="13fc0037-cdbd-4bb0-b3f8-f93e139558bd" data-asset-name="plugin-box.svg" transform="translate(497, 182)" opacity="1">
+  <defs xmlns="http://www.w3.org/2000/svg">
+    <!-- Radial gradient for more noticeable shine in top left -->
+    <radialGradient id="shineGradient" cx="25%" cy="15%" r="50%">
+      <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.8"/>
+      <stop offset="40%" style="stop-color:#10b981;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Main tall rounded rectangle -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="8" y="8" width="180" height="264" rx="32" ry="32" fill="#059669" stroke="#047857" stroke-width="2"/>
+  
+  <!-- Shine overlay in top left -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="8" y="8" width="180" height="264" rx="32" ry="32" fill="url(#shineGradient)"/>
+</g>
+<g data-asset-id="732f2340-85eb-4b6a-83f0-84f32d7ce5fe" data-asset-name="dark-green-rectangle.svg" transform="translate(525, 341)" opacity="1">
+  <!-- Dark green rounded rectangle -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="4" y="4" width="132" height="52" rx="12" ry="12" fill="#047857" stroke="#10b981" stroke-width="2"/>
+</g>
+    <g data-asset-id="3d062213-0691-492f-b310-0e57648b3a40" data-asset-name="light-green-rectangle.svg" transform="translate(514, 246) scale(0.9949842830255451, 0.9949842830255451)" opacity="1">
+  <!-- Light green rounded rectangle -->
+  <rect xmlns="http://www.w3.org/2000/svg" x="4" y="4" width="152" height="52" rx="12" ry="12" fill="#86efac" stroke="#4ade80" stroke-width="2"/>
+</g></svg>

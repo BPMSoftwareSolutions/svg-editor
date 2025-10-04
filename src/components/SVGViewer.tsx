@@ -33,15 +33,136 @@ function SVGViewer({ svgContent, useAssetMode = false }: SVGViewerProps) {
   useEffect(() => {
     reset()
   }, [svgContent, assets.length, reset])
+  // Initialize a generous working margin by centering content on load/import
+  useEffect(() => {
+    const container = containerRef.current
+    const content = svgContentRef.current
+    if (!container || !content) return
+
+    // Defer until SVG is laid out
+    let raf1 = 0, raf2 = 0
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        const svg = content.querySelector('svg') as SVGGraphicsElement | null
+        if (!svg) return
+        const cRect = container.getBoundingClientRect()
+        const sRect = svg.getBoundingClientRect()
+        // Compute deltas to align centers
+        const deltaX = (cRect.left + cRect.width / 2) - (sRect.left + sRect.width / 2)
+        const deltaY = (cRect.top + cRect.height / 2) - (sRect.top + sRect.height / 2)
+        // Apply initial translate in viewport space
+        updateViewport({
+          translateX: viewport.translateX + deltaX,
+          translateY: viewport.translateY + deltaY,
+        })
+      })
+    })
+
+    return () => {
+      cancelAnimationFrame(raf1)
+      cancelAnimationFrame(raf2)
+    }
+  }, [svgContent])
+
+
+  // Dynamically expand viewBox to prevent clipping when elements are moved/resized
+  useEffect(() => {
+    const svgElement = svgContentRef.current?.querySelector('svg')
+    if (!svgElement) return
+
+    const expandViewBox = () => {
+      // Get all child elements
+      const children = Array.from(svgElement.children) as SVGGraphicsElement[]
+      if (children.length === 0) return
+
+      // Calculate bounding box of all content in SVG coordinate space
+      let minX = Infinity
+      let minY = Infinity
+      let maxX = -Infinity
+      let maxY = -Infinity
+
+      children.forEach(child => {
+        try {
+          const bbox = child.getBBox()
+          minX = Math.min(minX, bbox.x)
+          minY = Math.min(minY, bbox.y)
+          maxX = Math.max(maxX, bbox.x + bbox.width)
+          maxY = Math.max(maxY, bbox.y + bbox.height)
+        } catch (e) {
+          // Some elements may not have a bbox (defs, etc.)
+        }
+      })
+
+      if (!isFinite(minX)) return
+
+      // Add generous padding (20% on each side)
+      const padding = Math.max(
+        (maxX - minX) * 0.2,
+        (maxY - minY) * 0.2,
+        100 // minimum padding
+      )
+
+      const viewBoxX = Math.floor(minX - padding)
+      const viewBoxY = Math.floor(minY - padding)
+      const viewBoxWidth = Math.ceil(maxX - minX + padding * 2)
+      const viewBoxHeight = Math.ceil(maxY - minY + padding * 2)
+
+      const newViewBox = `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`
+      const currentViewBox = svgElement.getAttribute('viewBox')
+
+      if (newViewBox !== currentViewBox) {
+        svgElement.setAttribute('viewBox', newViewBox)
+        console.log('[SVGViewer] Expanded viewBox:', newViewBox)
+      }
+    }
+
+    // Expand on load
+    expandViewBox()
+
+    // Watch for attribute changes on all children (transform, position, size)
+    const observer = new MutationObserver(() => {
+      expandViewBox()
+    })
+
+    const children = Array.from(svgElement.children)
+    children.forEach(child => {
+      observer.observe(child, {
+        attributes: true,
+        attributeFilter: ['transform', 'x', 'y', 'width', 'height', 'cx', 'cy', 'r', 'rx', 'ry', 'd'],
+        subtree: true,
+      })
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [svgContent])
 
   // Add click handlers to SVG elements
   useEffect(() => {
     const svgElement = svgContentRef.current?.querySelector('svg')
     if (!svgElement) return
 
+    // Prefer selecting concrete child shapes over wrapper <g> with filters
+    const resolveSelectable = (el: SVGElement): SVGElement => {
+      if (el.tagName.toLowerCase() === 'g') {
+        const g = el as SVGGElement
+        if (g.childElementCount === 1) {
+          const child = g.firstElementChild as SVGElement | null
+          if (child && child.tagName.toLowerCase() !== 'g') {
+            return child
+          }
+        }
+      }
+      return el
+    }
+
     const handleElementClick = (e: Event) => {
       const mouseEvent = e as unknown as React.MouseEvent
-      const target = e.target as SVGElement
+      let target = e.target as SVGElement
+
+      // Prefer concrete child if wrapper group with a single child
+      target = resolveSelectable(target)
 
       // Don't select the root SVG element
       if (target.tagName.toLowerCase() === 'svg') {

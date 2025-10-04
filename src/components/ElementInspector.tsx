@@ -1,14 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelection } from '../contexts/SelectionContext'
 import { useUndoRedo } from '../contexts/UndoRedoContext'
+import { useViewport } from '../contexts/ViewportContext'
 import { DeleteElementCommand, TextEditCommand, ZOrderCommand } from '../commands'
 import '../styles/ElementInspector.css'
 
 function ElementInspector() {
   const { selectedElement, selectedElements, clearSelection } = useSelection()
   const { executeCommand } = useUndoRedo()
+  const { viewport } = useViewport()
   const [textContent, setTextContent] = useState('')
   const originalTextRef = useRef('')
+
+  // Live dimensions for the currently selected single element
+  const [liveBBox, setLiveBBox] = useState<DOMRect | null>(null)
 
   // Update text content when selection changes
   useEffect(() => {
@@ -21,6 +26,33 @@ function ElementInspector() {
       originalTextRef.current = ''
     }
   }, [selectedElement])
+
+  // Sync live bounding box for single selection (must run before any early returns)
+  useEffect(() => {
+    if (!selectedElement) {
+      setLiveBBox(null)
+      return
+    }
+
+    const el = selectedElement.element
+    const measure = () => setLiveBBox(el.getBoundingClientRect())
+    measure()
+
+    const observer = new MutationObserver(() => measure())
+    observer.observe(el, {
+      attributes: true,
+      attributeFilter: ['transform', 'width', 'height', 'x', 'y', 'cx', 'cy', 'r', 'rx', 'ry'],
+    })
+
+    const onWindowResize = () => measure()
+    window.addEventListener('resize', onWindowResize)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', onWindowResize)
+    }
+  }, [selectedElement, viewport.translateX, viewport.translateY, viewport.scale])
+
 
   const handleDelete = () => {
     if (selectedElements.length === 0) return
@@ -169,10 +201,11 @@ function ElementInspector() {
     )
   }
 
+
   // Single selection view (existing code)
   if (!selectedElement) return null
 
-  const { element, id, type, bbox } = selectedElement
+  const { element, id, type } = selectedElement
   const className = element.getAttribute('class')
 
   // Get element attributes
@@ -254,19 +287,19 @@ function ElementInspector() {
         <div className="dimensions">
           <div className="dimension-item">
             <span className="label">Width:</span>
-            <span className="value">{Math.round(bbox.width)}px</span>
+            <span className="value">{liveBBox ? Math.round(liveBBox.width) : '—'}px</span>
           </div>
           <div className="dimension-item">
             <span className="label">Height:</span>
-            <span className="value">{Math.round(bbox.height)}px</span>
+            <span className="value">{liveBBox ? Math.round(liveBBox.height) : '—'}px</span>
           </div>
           <div className="dimension-item">
             <span className="label">X:</span>
-            <span className="value">{Math.round(bbox.x)}px</span>
+            <span className="value">{liveBBox ? Math.round(liveBBox.x) : '—'}px</span>
           </div>
           <div className="dimension-item">
             <span className="label">Y:</span>
-            <span className="value">{Math.round(bbox.y)}px</span>
+            <span className="value">{liveBBox ? Math.round(liveBBox.y) : '—'}px</span>
           </div>
         </div>
       </div>

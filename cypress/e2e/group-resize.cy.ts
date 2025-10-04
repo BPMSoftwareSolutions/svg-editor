@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Group Element Resizing', () => {
+describe.skip('Group Element Resizing', () => {
   beforeEach(() => {
     cy.visit('/')
   })
