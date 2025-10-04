@@ -3,6 +3,7 @@ import { SelectionProvider } from './contexts/SelectionContext'
 import { UndoRedoProvider } from './contexts/UndoRedoContext'
 import { AssetProvider, useAssets } from './contexts/AssetContext'
 import { ClipboardProvider } from './contexts/ClipboardContext'
+import { ViewportProvider } from './contexts/ViewportContext'
 import { SVGAsset } from './types/asset'
 import FileUploader from './components/FileUploader'
 import SVGViewer from './components/SVGViewer'
@@ -117,13 +118,15 @@ function AppContent() {
 function App() {
   return (
     <AssetProvider>
-      <SelectionProvider>
-        <UndoRedoProvider>
-          <ClipboardProvider>
-            <AppContent />
-          </ClipboardProvider>
-        </UndoRedoProvider>
-      </SelectionProvider>
+      <ViewportProvider>
+        <SelectionProvider>
+          <UndoRedoProvider>
+            <ClipboardProvider>
+              <AppContent />
+            </ClipboardProvider>
+          </UndoRedoProvider>
+        </SelectionProvider>
+      </ViewportProvider>
     </AssetProvider>
   )
 }
