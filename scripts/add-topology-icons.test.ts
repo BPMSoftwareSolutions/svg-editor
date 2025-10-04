@@ -15,12 +15,12 @@ describe('add-topology-icons', () => {
   describe('ICON_POSITIONS', () => {
     it('should have correct positions for all 6 icons', () => {
       expect(ICON_POSITIONS).toEqual({
-        nature: { x: 318.44, y: 176.58 },
-        structure: { x: 318.44, y: 296.58 },
-        focus: { x: 318.44, y: 416.58 },
-        topologyFit: { x: 698.44, y: 176.58 },
-        characteristics: { x: 698.44, y: 316.58 },
-        collaboration: { x: 698.44, y: 536.58 }
+        nature: { x: 318.44, y: 200 },
+        structure: { x: 318.44, y: 320 },
+        focus: { x: 318.44, y: 440 },
+        topologyFit: { x: 698.44, y: 200 },
+        characteristics: { x: 698.44, y: 340 },
+        collaboration: { x: 698.44, y: 560 }
       });
     });
 

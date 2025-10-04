@@ -64,6 +64,10 @@
     </linearGradient>
 
 
+
+
+
+
   </defs>
 
   <!-- Main Card -->
@@ -260,7 +264,7 @@
   </g>
 
   <!-- Animated Section Icons -->
-  <g data-asset-id="nature-icon" data-asset-name="nature-icon.svg" transform="translate(318.44, 176.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="nature-icon" data-asset-name="nature-icon.svg" transform="translate(318.44, 190) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#blueGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -280,7 +284,7 @@
     </g>
   </g>
 
-  <g data-asset-id="structure-icon" data-asset-name="structure-icon.svg" transform="translate(318.44, 296.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="structure-icon" data-asset-name="structure-icon.svg" transform="translate(318.44, 310) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#greenGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -295,7 +299,7 @@
     </g>
   </g>
 
-  <g data-asset-id="focus-icon" data-asset-name="focus-icon.svg" transform="translate(318.44, 416.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="focus-icon" data-asset-name="focus-icon.svg" transform="translate(318.44, 430) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#orangeGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -315,7 +319,7 @@
     </g>
   </g>
 
-  <g data-asset-id="topology-fit-icon" data-asset-name="topology-fit-icon.svg" transform="translate(698.44, 176.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="topology-fit-icon" data-asset-name="topology-fit-icon.svg" transform="translate(698.44, 190) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#purpleGrad)" opacity="0.1" filter="url(#glow)"/>
     <g xmlns="http://www.w3.org/2000/svg" transform="translate(40, 70)">
       <g opacity="0.8"><path d="M 10,10 L 130,10" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/><polygon points="140,10 130,5 130,15" fill="#8B5CF6"/></g>
@@ -327,7 +331,7 @@
     </g>
   </g>
 
-  <g data-asset-id="characteristics-icon" data-asset-name="characteristics-icon.svg" transform="translate(698.44, 316.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="characteristics-icon" data-asset-name="characteristics-icon.svg" transform="translate(698.44, 330) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#pinkGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -345,7 +349,7 @@
     </g>
   </g>
 
-  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(698.44, 536.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(698.44, 545) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#cyanGrad)" opacity="0.1" filter="url(#glow)"/>
     <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 100)">
       <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>

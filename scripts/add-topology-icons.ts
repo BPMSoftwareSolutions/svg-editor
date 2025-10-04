@@ -48,13 +48,14 @@ const ICON_GRADIENTS = `
 // Left column sections: x=0, width=340 (right edge at 340)
 // Right column sections: x=380, width=340 (right edge at 720)
 // Icons positioned at right edge minus icon width adjustment
+// Y positions adjusted to place icons within rect boundaries (rect starts at section y + 24)
 const ICON_POSITIONS = {
-  nature: { x: 318.44, y: 176.58 },        // Left column, Nature section
-  structure: { x: 318.44, y: 296.58 },     // Left column, Structure section
-  focus: { x: 318.44, y: 416.58 },         // Left column, Focus section
-  topologyFit: { x: 698.44, y: 176.58 },   // Right column, Topology Fit section
-  characteristics: { x: 698.44, y: 316.58 }, // Right column, Characteristics section
-  collaboration: { x: 698.44, y: 536.58 }  // Right column, Collaboration section
+  nature: { x: 318.44, y: 190 },           // Left column, Nature section (160 + 0 + 24 + 16 padding)
+  structure: { x: 318.44, y: 310 },        // Left column, Structure section (160 + 120 + 24 + 16 padding)
+  focus: { x: 318.44, y: 430 },            // Left column, Focus section (160 + 240 + 24 + 16 padding)
+  topologyFit: { x: 698.44, y: 190 },      // Right column, Topology Fit section
+  characteristics: { x: 698.44, y: 330 },  // Right column, Characteristics section
+  collaboration: { x: 698.44, y: 545 }     // Right column, Collaboration section
 };
 
 const ICON_SCALE = { x: 0.28173085392104, y: 0.3143794929418287 };
