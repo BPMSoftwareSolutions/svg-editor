@@ -68,6 +68,9 @@
 
 
 
+
+
+
   </defs>
 
   <!-- Main Card -->
@@ -346,7 +349,7 @@
     </g>
   </g>
 
-  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(698.44, 545) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(698.44, 550) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#cyanGrad)" opacity="0.1" filter="url(#glow)"/>
     <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 100)">
       <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>

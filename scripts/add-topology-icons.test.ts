@@ -6,33 +6,89 @@ import { describe, it, expect } from 'vitest';
 import {
   addIconGradients,
   addAnimatedIcons,
-  processTopologyFile,
   ICON_POSITIONS,
-  ICON_SCALE
+  ICON_SCALE,
+  LAYOUT,
+  SECTIONS,
+  calculateIconPosition
 } from './add-topology-icons';
 
 describe('add-topology-icons', () => {
-  describe('ICON_POSITIONS', () => {
-    it('should have correct positions for all 6 icons', () => {
-      expect(ICON_POSITIONS).toEqual({
-        nature: { x: 318.44, y: 200 },
-        structure: { x: 318.44, y: 320 },
-        focus: { x: 318.44, y: 440 },
-        topologyFit: { x: 698.44, y: 200 },
-        characteristics: { x: 698.44, y: 340 },
-        collaboration: { x: 698.44, y: 560 }
-      });
+  describe('LAYOUT constants', () => {
+    it('should define content grid offset', () => {
+      expect(LAYOUT.contentGrid).toEqual({ x: 40, y: 160 });
     });
 
-    it('should position icons in two columns', () => {
-      const leftColumn = [ICON_POSITIONS.nature, ICON_POSITIONS.structure, ICON_POSITIONS.focus];
-      const rightColumn = [ICON_POSITIONS.topologyFit, ICON_POSITIONS.characteristics, ICON_POSITIONS.collaboration];
+    it('should define left and right column properties', () => {
+      expect(LAYOUT.leftColumn).toEqual({ x: 0, width: 340 });
+      expect(LAYOUT.rightColumn).toEqual({ x: 380, width: 340 });
+    });
 
-      // All left column icons should have same x
-      expect(leftColumn.every(pos => pos.x === 318.44)).toBe(true);
-      
-      // All right column icons should have same x
-      expect(rightColumn.every(pos => pos.x === 698.44)).toBe(true);
+    it('should define spacing and padding constants', () => {
+      expect(LAYOUT.rectOffset).toBe(24);
+      expect(LAYOUT.iconPadding).toBe(6);
+      expect(LAYOUT.iconRightMargin).toBe(61.56);
+    });
+  });
+
+  describe('SECTIONS offsets', () => {
+    it('should define left column section offsets', () => {
+      expect(SECTIONS.nature).toBe(0);
+      expect(SECTIONS.structure).toBe(120);
+      expect(SECTIONS.focus).toBe(240);
+    });
+
+    it('should define right column section offsets', () => {
+      expect(SECTIONS.topologyFit).toBe(0);
+      expect(SECTIONS.characteristics).toBe(140);
+      expect(SECTIONS.collaboration).toBe(360);
+    });
+  });
+
+  describe('calculateIconPosition', () => {
+    it('should calculate correct position for left column', () => {
+      const pos = calculateIconPosition('left', 0);
+      // 40 (grid.x) + 0 (col.x) + 340 (col.width) - 61.56 (margin) = 318.44
+      expect(pos.x).toBe(318.44);
+      // 160 (grid.y) + 0 (section) + 24 (rect) + 6 (padding) = 190
+      expect(pos.y).toBe(190);
+    });
+
+    it('should calculate correct position for right column', () => {
+      const pos = calculateIconPosition('right', 0);
+      // 40 (grid.x) + 380 (col.x) + 340 (col.width) - 61.56 (margin) = 698.44
+      expect(pos.x).toBe(698.44);
+      // 160 (grid.y) + 0 (section) + 24 (rect) + 6 (padding) = 190
+      expect(pos.y).toBe(190);
+    });
+
+    it('should account for section offset', () => {
+      const pos = calculateIconPosition('left', 120);
+      expect(pos.y).toBe(310); // 160 + 120 + 24 + 6
+    });
+  });
+
+  describe('ICON_POSITIONS', () => {
+    it('should calculate correct positions for all 6 icons', () => {
+      // Verify positions are calculated correctly from constants
+      expect(ICON_POSITIONS.nature).toEqual(calculateIconPosition('left', SECTIONS.nature));
+      expect(ICON_POSITIONS.structure).toEqual(calculateIconPosition('left', SECTIONS.structure));
+      expect(ICON_POSITIONS.focus).toEqual(calculateIconPosition('left', SECTIONS.focus));
+      expect(ICON_POSITIONS.topologyFit).toEqual(calculateIconPosition('right', SECTIONS.topologyFit));
+      expect(ICON_POSITIONS.characteristics).toEqual(calculateIconPosition('right', SECTIONS.characteristics));
+      expect(ICON_POSITIONS.collaboration).toEqual(calculateIconPosition('right', SECTIONS.collaboration));
+    });
+
+    it('should position all left column icons at same x coordinate', () => {
+      const leftColumn = [ICON_POSITIONS.nature, ICON_POSITIONS.structure, ICON_POSITIONS.focus];
+      const xValues = leftColumn.map(pos => pos.x);
+      expect(new Set(xValues).size).toBe(1); // All same x value
+    });
+
+    it('should position all right column icons at same x coordinate', () => {
+      const rightColumn = [ICON_POSITIONS.topologyFit, ICON_POSITIONS.characteristics, ICON_POSITIONS.collaboration];
+      const xValues = rightColumn.map(pos => pos.x);
+      expect(new Set(xValues).size).toBe(1); // All same x value
     });
   });
 

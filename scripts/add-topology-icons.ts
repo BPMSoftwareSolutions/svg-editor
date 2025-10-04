@@ -43,19 +43,44 @@ const ICON_GRADIENTS = `
       <stop offset="100%" style="stop-color:#0891B2"/>
     </linearGradient>`;
 
-// Icon positions based on section layout (aligned to right edge of section boxes)
-// Content grid is at translate(40, 160)
-// Left column sections: x=0, width=340 (right edge at 340)
-// Right column sections: x=380, width=340 (right edge at 720)
-// Icons positioned at right edge minus icon width adjustment
-// Y positions adjusted to place icons within rect boundaries (rect starts at section y + 24)
+// Layout constants for section positioning
+const LAYOUT = {
+  contentGrid: { x: 40, y: 160 },          // Content grid offset from SVG origin
+  leftColumn: { x: 0, width: 340 },        // Left column sections
+  rightColumn: { x: 380, width: 340 },     // Right column sections
+  rectOffset: 24,                          // Rect starts at section y + 24
+  iconPadding: 6,                          // Vertical padding inside rect for icon
+  iconRightMargin: 61.56,                  // Horizontal offset from section right edge (for both columns)
+  sectionGap: 120,                         // Vertical gap between sections
+};
+
+// Section vertical offsets within content grid (relative to content grid y)
+const SECTIONS = {
+  nature: 0,
+  structure: 120,
+  focus: 240,
+  topologyFit: 0,
+  characteristics: 140,
+  collaboration: 360,
+};
+
+// Helper function to calculate icon position
+const calculateIconPosition = (column: 'left' | 'right', sectionOffset: number) => {
+  const col = column === 'left' ? LAYOUT.leftColumn : LAYOUT.rightColumn;
+  return {
+    x: LAYOUT.contentGrid.x + col.x + col.width - LAYOUT.iconRightMargin,
+    y: LAYOUT.contentGrid.y + sectionOffset + LAYOUT.rectOffset + LAYOUT.iconPadding
+  };
+};
+
+// Icon positions calculated from layout constants
 const ICON_POSITIONS = {
-  nature: { x: 318.44, y: 190 },           // Left column, Nature section (160 + 0 + 24 + 16 padding)
-  structure: { x: 318.44, y: 310 },        // Left column, Structure section (160 + 120 + 24 + 16 padding)
-  focus: { x: 318.44, y: 430 },            // Left column, Focus section (160 + 240 + 24 + 16 padding)
-  topologyFit: { x: 698.44, y: 190 },      // Right column, Topology Fit section
-  characteristics: { x: 698.44, y: 330 },  // Right column, Characteristics section
-  collaboration: { x: 698.44, y: 545 }     // Right column, Collaboration section
+  nature: calculateIconPosition('left', SECTIONS.nature),
+  structure: calculateIconPosition('left', SECTIONS.structure),
+  focus: calculateIconPosition('left', SECTIONS.focus),
+  topologyFit: calculateIconPosition('right', SECTIONS.topologyFit),
+  characteristics: calculateIconPosition('right', SECTIONS.characteristics),
+  collaboration: calculateIconPosition('right', SECTIONS.collaboration),
 };
 
 const ICON_SCALE = { x: 0.28173085392104, y: 0.3143794929418287 };
@@ -303,7 +328,10 @@ export {
   addAnimatedIcons,
   processTopologyFile,
   ICON_POSITIONS,
-  ICON_SCALE
+  ICON_SCALE,
+  LAYOUT,
+  SECTIONS,
+  calculateIconPosition
 };
 
 // Run main function
