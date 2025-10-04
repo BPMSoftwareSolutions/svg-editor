@@ -13,7 +13,11 @@
     "test:e2e": "cypress run",
     "test:e2e:open": "cypress open",
     "test:e2e:headed": "cypress run --headed",
-    "test:e2e:chrome": "cypress run --browser chrome"
+    "test:e2e:chrome": "cypress run --browser chrome",
+    "topology:add-icons": "tsx scripts/add-topology-icons.ts",
+    "topology:remove-icons": "tsx scripts/remove-topology-icons.ts",
+    "topology:reapply-icons": "npm run topology:remove-icons && npm run topology:add-icons",
+    "topology:test": "vitest run scripts/add-topology-icons.test.ts"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -33,6 +37,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "jsdom": "^27.0.0",
+    "tsx": "^4.20.6",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"

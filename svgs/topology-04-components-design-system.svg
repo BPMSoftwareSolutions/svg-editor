@@ -32,6 +32,38 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <!-- Icon Gradients -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#2563EB"/>
+    </linearGradient>
+    
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B"/>
+      <stop offset="100%" style="stop-color:#D97706"/>
+    </linearGradient>
+    
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6"/>
+      <stop offset="100%" style="stop-color:#7C3AED"/>
+    </linearGradient>
+    
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EC4899"/>
+      <stop offset="100%" style="stop-color:#DB2777"/>
+    </linearGradient>
+    
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06B6D4"/>
+      <stop offset="100%" style="stop-color:#0891B2"/>
+    </linearGradient>
+
+
   </defs>
 
   <!-- Main Card -->
@@ -225,5 +257,112 @@
     <text x="380" y="38" text-anchor="middle" font-family="Inter" font-size="12" fill="#64748B" transform="translate(-5, 26)">
       RenderX Team Topologies — Components Design System Pattern
     </text>
+  </g>
+
+  <!-- Animated Section Icons -->
+  <g data-asset-id="nature-icon" data-asset-name="nature-icon.svg" transform="translate(318.44, 176.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#blueGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(40, 50)">
+      <ellipse cx="60" cy="90" rx="50" ry="12" fill="#3B82F6" opacity="0.8"><animate attributeName="opacity" values="0.8;0.95;0.8" dur="3s" repeatCount="indefinite"/></ellipse>
+      <rect x="10" y="80" width="100" height="25" fill="#3B82F6"/>
+      <ellipse cx="60" cy="80" rx="50" ry="12" fill="#60A5FA"/>
+      <ellipse cx="60" cy="65" rx="50" ry="12" fill="#3B82F6" opacity="0.8"><animate attributeName="opacity" values="0.8;0.95;0.8" dur="3s" begin="0.5s" repeatCount="indefinite"/></ellipse>
+      <rect x="10" y="55" width="100" height="25" fill="#3B82F6"/>
+      <ellipse cx="60" cy="55" rx="50" ry="12" fill="#60A5FA"/>
+      <ellipse cx="60" cy="40" rx="50" ry="12" fill="#3B82F6" opacity="0.8"><animate attributeName="opacity" values="0.8;0.95;0.8" dur="3s" begin="1s" repeatCount="indefinite"/></ellipse>
+      <rect x="10" y="30" width="100" height="25" fill="#3B82F6"/>
+      <ellipse cx="60" cy="30" rx="50" ry="12" fill="#60A5FA"/>
+      <line x1="60" y1="25" x2="60" y2="95" stroke="#FCD34D" stroke-width="4" stroke-dasharray="4,4"><animate attributeName="stroke-dashoffset" from="0" to="8" dur="1s" repeatCount="indefinite"/></line>
+      <polygon points="60,20 55,28 65,28" fill="#FCD34D"><animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/></polygon>
+      <polygon points="60,100 55,92 65,92" fill="#FCD34D"><animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/></polygon>
+    </g>
+  </g>
+
+  <g data-asset-id="structure-icon" data-asset-name="structure-icon.svg" transform="translate(318.44, 296.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#greenGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 100)">
+      <g transform="translate(0, -50)"><circle cx="0" cy="0" r="12" fill="#10B981"><animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#10B981"/></g>
+      <g transform="translate(43, -25)"><circle cx="0" cy="0" r="12" fill="#34D399"><animate attributeName="r" values="12;14;12" dur="2s" begin="0.3s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/></g>
+      <g transform="translate(43, 25)"><circle cx="0" cy="0" r="12" fill="#10B981"><animate attributeName="r" values="12;14;12" dur="2s" begin="0.6s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#10B981"/></g>
+      <g transform="translate(0, 50)"><circle cx="0" cy="0" r="12" fill="#34D399"><animate attributeName="r" values="12;14;12" dur="2s" begin="0.9s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/></g>
+      <g transform="translate(-43, 25)"><circle cx="0" cy="0" r="12" fill="#10B981"><animate attributeName="r" values="12;14;12" dur="2s" begin="1.2s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#10B981"/></g>
+      <g transform="translate(-43, -25)"><circle cx="0" cy="0" r="12" fill="#34D399"><animate attributeName="r" values="12;14;12" dur="2s" begin="1.5s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/></g>
+      <circle cx="0" cy="0" r="45" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.8;0.5" dur="3s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <g data-asset-id="focus-icon" data-asset-name="focus-icon.svg" transform="translate(318.44, 416.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#orangeGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 100)">
+      <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(60)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(120)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(180)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(240)"/>
+        <path d="M 0,-55 L 10,-50 L 10,-40 L 0,-35 L -10,-40 L -10,-50 Z" fill="#F59E0B" transform="rotate(300)"/>
+        <circle cx="0" cy="0" r="35" fill="#F59E0B"/>
+      </g>
+      <circle cx="0" cy="0" r="15" fill="#0F172A"><animate attributeName="r" values="15;17;15" dur="4s" repeatCount="indefinite"/></circle>
+      <circle cx="0" cy="0" r="25" fill="none" stroke="#FCD34D" stroke-width="2" opacity="0.6"><animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="0" cy="0" r="35" fill="none" stroke="#FCD34D" stroke-width="3" opacity="0"><animate attributeName="r" from="35" to="60" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <g data-asset-id="topology-fit-icon" data-asset-name="topology-fit-icon.svg" transform="translate(698.44, 176.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#purpleGrad)" opacity="0.1" filter="url(#glow)"/>
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(40, 70)">
+      <g opacity="0.8"><path d="M 10,10 L 130,10" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/><polygon points="140,10 130,5 130,15" fill="#8B5CF6"/></g>
+      <g opacity="0.6" transform="translate(0, 25)"><path d="M 10,10 L 130,10" stroke="#A78BFA" stroke-width="8" stroke-linecap="round"/><polygon points="140,10 130,5 130,15" fill="#A78BFA"/></g>
+      <g opacity="0.9" transform="translate(0, 50)"><path d="M 10,10 L 130,10" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/><polygon points="140,10 130,5 130,15" fill="#8B5CF6"/></g>
+      <circle cx="40" cy="10" r="4" fill="#C4B5FD"><animate attributeName="cx" from="10" to="140" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="60" cy="35" r="4" fill="#DDD6FE"><animate attributeName="cx" from="10" to="140" dur="2.5s" repeatCount="indefinite"/></circle>
+      <circle cx="80" cy="60" r="4" fill="#C4B5FD"><animate attributeName="cx" from="10" to="140" dur="1.8s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <g data-asset-id="characteristics-icon" data-asset-name="characteristics-icon.svg" transform="translate(698.44, 316.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#pinkGrad)" opacity="0.1" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 80)">
+      <path d="M 0,-40 L 35,-35 L 35,15 Q 35,45 0,60 Q -35,45 -35,15 L -35,-35 Z" fill="#EC4899" opacity="0.8"><animate attributeName="opacity" values="0.8;0.95;0.8" dur="3s" repeatCount="indefinite"/></path>
+      <path d="M 0,-40 L 35,-35 L 35,15 Q 35,45 0,60 Q -35,45 -35,15 L -35,-35 Z" fill="none" stroke="#F9A8D4" stroke-width="2"><animate attributeName="stroke-width" values="2;3;2" dur="2s" repeatCount="indefinite"/></path>
+      <g stroke="#FFF" stroke-width="4" stroke-linecap="round" fill="none">
+        <path d="M -20,-10 L -10,0 L 10,-20" stroke-dasharray="40" stroke-dashoffset="40"><animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.6s" begin="0s" fill="freeze"/></path>
+        <path d="M -20,10 L -10,20 L 10,0" stroke-dasharray="40" stroke-dashoffset="40"><animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.6s" begin="0.3s" fill="freeze"/></path>
+        <path d="M -15,30 L -5,40 L 15,20" stroke-dasharray="40" stroke-dashoffset="40"><animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.6s" begin="0.6s" fill="freeze"/></path>
+      </g>
+      <circle cx="25" cy="-25" r="3" fill="#FFF" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+      <circle cx="-25" cy="0" r="2" fill="#FFF" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.3s" repeatCount="indefinite"/></circle>
+      <circle cx="30" cy="25" r="2.5" fill="#FFF" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.6s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(698.44, 536.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#cyanGrad)" opacity="0.1" filter="url(#glow)"/>
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 100)">
+      <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <line x1="-40" y1="-30" x2="0" y2="30" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <line x1="40" y1="-30" x2="0" y2="30" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <line x1="-40" y1="-30" x2="-30" y2="40" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <line x1="40" y1="-30" x2="30" y2="40" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <line x1="0" y1="30" x2="-30" y2="40" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <line x1="0" y1="30" x2="30" y2="40" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
+      <circle cx="-40" cy="-30" r="12" fill="#06B6D4"/>
+      <circle cx="40" cy="-30" r="12" fill="#06B6D4"/>
+      <circle cx="0" cy="30" r="12" fill="#22D3EE"/>
+      <circle cx="-30" cy="40" r="10" fill="#06B6D4"/>
+      <circle cx="30" cy="40" r="10" fill="#06B6D4"/>
+      <circle cx="0" cy="0" r="18" fill="#22D3EE"/>
+      <circle cx="0" cy="0" r="8" fill="#FFF" opacity="0.5"/>
+      <circle cx="0" cy="0" r="18" fill="none" stroke="#22D3EE" stroke-width="2" opacity="0.8"><animate attributeName="r" from="18" to="35" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/></circle>
+    </g>
   </g>
 </svg>

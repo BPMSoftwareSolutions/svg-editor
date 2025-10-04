@@ -1,37 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-163 -163 1103 960" role="img" aria-label="Thin Host Team - Enabling &amp; E2E Testing">
-  <defs>
-    <!-- Gradients -->
-    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1"/>
-    </linearGradient>
-    
-    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1E293B;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1"/>
-    </linearGradient>
+/**
+ * Script to add animated section icons to all topology slide SVG files
+ * This ensures consistent positioning and structure across all slides
+ */
 
-    <!-- Shadow -->
-    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
-      <feOffset dx="0" dy="4" result="offsetblur"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.3"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+import { readFileSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-    <!-- Glow effect for icons -->
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Icon gradient definitions to add to SVG defs
+const ICON_GRADIENTS = `
     <!-- Icon Gradients -->
     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#3B82F6"/>
@@ -61,203 +41,27 @@
     <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#06B6D4"/>
       <stop offset="100%" style="stop-color:#0891B2"/>
-    </linearGradient>
+    </linearGradient>`;
 
-  </defs>
+// Icon positions based on section layout (aligned to right edge of section boxes)
+// Content grid is at translate(40, 160)
+// Left column sections: x=0, width=340 (right edge at 340)
+// Right column sections: x=380, width=340 (right edge at 720)
+// Icons positioned at right edge minus icon width adjustment
+const ICON_POSITIONS = {
+  nature: { x: 318.44, y: 176.58 },        // Left column, Nature section
+  structure: { x: 318.44, y: 296.58 },     // Left column, Structure section
+  focus: { x: 318.44, y: 416.58 },         // Left column, Focus section
+  topologyFit: { x: 698.44, y: 176.58 },   // Right column, Topology Fit section
+  characteristics: { x: 698.44, y: 316.58 }, // Right column, Characteristics section
+  collaboration: { x: 698.44, y: 536.58 }  // Right column, Collaboration section
+};
 
-  <!-- Main Card -->
-  <g filter="url(#cardShadow)">
-    <rect x="20" y="20" width="762.3038940429688" height="619.223876953125" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="2"/>
-  </g>
+const ICON_SCALE = { x: 0.28173085392104, y: 0.3143794929418287 };
 
-  <!-- Header Section -->
-  <rect x="20" y="20" width="760" height="120" rx="16" fill="url(#headerGrad)"/>
-  
-  <!-- Team Icon -->
-  <g transform="translate(50, 45)">
-    <circle cx="25" cy="25" r="30" fill="rgba(255,255,255,0.2)" filter="url(#glow)"/>
-    <!-- Testing icon - checkmark in shield -->
-    <path d="M 25 13 L 18 18 L 18 28 C 18 32 21 35 25 37 C 29 35 32 32 32 28 L 32 18 Z" fill="white" opacity="0.9"/>
-    <path d="M 22 25 L 24 27 L 28 22" stroke="url(#headerGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
-  </g>
-
-  <!-- Title -->
-  <text x="110" y="65" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="800" fill="white">
-    Thin Host Team
-  </text>
-  <text x="110" y="95" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="500" fill="rgba(255,255,255,0.85)">
-    Enabling &amp; E2E Testing
-  </text>
-
-  <!-- Tags -->
-  <g transform="translate(110, 108)">
-    <rect width="120" height="24" rx="12" fill="rgba(255,255,255,0.2)"/>
-    <text x="12" y="16" font-family="Inter" font-size="12" font-weight="600" fill="white">E2E Specialists</text>
-  </g>
-  <g transform="translate(240, 108)">
-    <rect width="140" height="24" rx="12" fill="rgba(255,255,255,0.2)"/>
-    <text x="12" y="16" font-family="Inter" font-size="12" font-weight="600" fill="white">Integration Focus</text>
-  </g>
-
-  <!-- Content Grid -->
-  <g transform="translate(40, 160)">
-    
-    <!-- Nature Section -->
-    <g>
-      <!-- Section Header with Icon -->
-      <g>
-        <circle cx="8" cy="8" r="8" fill="#7C3AED" opacity="0.2"/>
-        <circle cx="8" cy="8" r="3" fill="#7C3AED"/>
-        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Nature</text>
-      </g>
-      
-      <!-- Content Box -->
-      <rect x="0" y="24" width="340" height="80" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-      <text x="16" y="48" font-family="Inter" font-size="14" fill="#CBD5E1">
-        <tspan x="16" dy="0">Owns the thin shell orchestrating</tspan>
-        <tspan x="16" dy="20">slots, manifest loader, fallbacks</tspan>
-        <tspan x="16" dy="20" font-style="italic" fill="#94A3B8">Ensures plugins integrate seamlessly</tspan>
-      </text>
-    </g>
-
-    <!-- Structure Section -->
-    <g transform="translate(0, 120)">
-      <g>
-        <circle cx="8" cy="8" r="8" fill="#10B981" opacity="0.2"/>
-        <circle cx="8" cy="8" r="3" fill="#10B981"/>
-        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Structure</text>
-      </g>
-      
-      <rect x="0" y="24" width="340" height="80" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-      <text x="16" y="48" font-family="Inter" font-size="14" fill="#CBD5E1">
-        <tspan x="16" dy="0">Fewer devs, more E2E test engineers</tspan>
-        <tspan x="16" dy="20">with deep orchestration knowledge</tspan>
-        <tspan x="16" dy="20" font-style="italic" fill="#94A3B8">Playwright, Cypress expertise</tspan>
-      </text>
-    </g>
-
-    <!-- Focus Section -->
-    <g transform="translate(0, 240)">
-      <g>
-        <circle cx="8" cy="8" r="8" fill="#F59E0B" opacity="0.2"/>
-        <circle cx="8" cy="8" r="3" fill="#F59E0B"/>
-        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Focus Areas</text>
-      </g>
-      
-      <rect x="0" y="24" width="340" height="140" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-      
-      <!-- Bullet points with icons -->
-      <g transform="translate(16, 44)">
-        <circle cx="5" cy="5" r="3" fill="#A78BFA"/>
-        <text x="16" y="9" font-family="Inter" font-size="13" fill="#CBD5E1">
-          E2E testing harness maintenance
-        </text>
-      </g>
-      <g transform="translate(16, 74)">
-        <circle cx="5" cy="5" r="3" fill="#A78BFA"/>
-        <text x="16" y="9" font-family="Inter" font-size="13" fill="#CBD5E1">
-          Ensure plugins integrate via manifest
-        </text>
-      </g>
-      <g transform="translate(16, 104)">
-        <circle cx="5" cy="5" r="3" fill="#A78BFA"/>
-        <text x="16" y="9" font-family="Inter" font-size="13" fill="#CBD5E1">
-          Maintain fallback panels for legacy
-        </text>
-      </g>
-    </g>
-
-    <!-- Right Column -->
-    
-    <!-- Topology Fit -->
-    <g transform="translate(380, 0)">
-      <g>
-        <circle cx="8" cy="8" r="8" fill="#EC4899" opacity="0.2"/>
-        <circle cx="8" cy="8" r="3" fill="#EC4899"/>
-        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Topology Fit</text>
-      </g>
-      
-      <rect x="0" y="24" width="340" height="100" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-      
-      <!-- Highlighted badge -->
-      <g transform="translate(16, 44)">
-        <rect width="200" height="32" rx="16" fill="#EC4899" opacity="0.2" stroke="#EC4899" stroke-width="2"/>
-        <text x="20" y="21" font-family="Inter" font-size="14" font-weight="700" fill="#F9A8D4">
-          Enabling / Ops-like
-        </text>
-      </g>
-      
-      <text x="16" y="100" font-family="Inter" font-size="13" fill="#94A3B8">
-        Helps plugin teams succeed in
-      </text>
-      <text x="16" y="116" font-family="Inter" font-size="13" fill="#94A3B8">
-        E2E integration scenarios
-      </text>
-    </g>
-
-    <!-- Key Characteristics -->
-    <g transform="translate(380, 140)">
-      <g>
-        <circle cx="8" cy="8" r="8" fill="#06B6D4" opacity="0.2"/>
-        <circle cx="8" cy="8" r="3" fill="#06B6D4"/>
-        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Key Characteristics</text>
-      </g>
-      
-      <rect x="0" y="24" width="340" height="180" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-      
-      <!-- Feature list with icons -->
-      <g transform="translate(16, 44)">
-        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
-        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
-          Thin integration layer ownership
-        </text>
-      </g>
-      <g transform="translate(16, 74)">
-        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
-        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
-          Comprehensive E2E test suites
-        </text>
-      </g>
-      <g transform="translate(16, 104)">
-        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
-        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
-          Cross-plugin scenario validation
-        </text>
-      </g>
-      <g transform="translate(16, 134)">
-        <rect x="0" y="0" width="4" height="20" rx="2" fill="#10B981"/>
-        <text x="12" y="14" font-family="Inter" font-size="13" fill="#CBD5E1">
-          Integration troubleshooting support
-        </text>
-      </g>
-    </g>
-
-    <!-- Collaboration Box -->
-    <g transform="translate(380, 360)">
-      <g>
-        <circle cx="8" cy="8" r="8" fill="#F59E0B" opacity="0.2"/>
-        <circle cx="8" cy="8" r="3" fill="#F59E0B"/>
-        <text x="24" y="13" font-family="Inter" font-size="16" font-weight="700" fill="#E2E8F0">Collaboration</text>
-      </g>
-      
-      <rect x="0" y="24" width="340" height="60" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-      <text x="16" y="48" font-family="Inter" font-size="13" fill="#CBD5E1">
-        <tspan x="16" dy="0">Support plugin teams with integration</tspan>
-        <tspan x="16" dy="20">Coordinate with Host SDK on APIs</tspan>
-      </text>
-    </g>
-
-  </g>
-
-  <!-- Footer -->
-  <g transform="translate(20, 560)">
-    <text x="380" y="38" text-anchor="middle" font-family="Inter" font-size="12" fill="#64748B" transform="translate(-5, 26)">
-      RenderX Team Topologies — Thin Host Enabling Pattern
-    </text>
-  </g>
-
-  <!-- Animated Section Icons -->
-  <g data-asset-id="nature-icon" data-asset-name="nature-icon.svg" transform="translate(318.44, 176.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+// Nature icon - Vertical slice (layered cake)
+const NATURE_ICON = `
+  <g data-asset-id="nature-icon" data-asset-name="nature-icon.svg" transform="translate(${ICON_POSITIONS.nature.x}, ${ICON_POSITIONS.nature.y}) scale(${ICON_SCALE.x}, ${ICON_SCALE.y})" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#blueGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -275,9 +79,11 @@
       <polygon points="60,20 55,28 65,28" fill="#FCD34D"><animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/></polygon>
       <polygon points="60,100 55,92 65,92" fill="#FCD34D"><animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/></polygon>
     </g>
-  </g>
+  </g>`;
 
-  <g data-asset-id="structure-icon" data-asset-name="structure-icon.svg" transform="translate(318.44, 296.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+// Structure icon - 6 people in team formation
+const STRUCTURE_ICON = `
+  <g data-asset-id="structure-icon" data-asset-name="structure-icon.svg" transform="translate(${ICON_POSITIONS.structure.x}, ${ICON_POSITIONS.structure.y}) scale(${ICON_SCALE.x}, ${ICON_SCALE.y})" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#greenGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -290,9 +96,11 @@
       <g transform="translate(-43, -25)"><circle cx="0" cy="0" r="12" fill="#34D399"><animate attributeName="r" values="12;14;12" dur="2s" begin="1.5s" repeatCount="indefinite"/></circle><rect x="-8" y="10" width="16" height="20" rx="8" fill="#34D399"/></g>
       <circle cx="0" cy="0" r="45" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.8;0.5" dur="3s" repeatCount="indefinite"/></circle>
     </g>
-  </g>
+  </g>`;
 
-  <g data-asset-id="focus-icon" data-asset-name="focus-icon.svg" transform="translate(318.44, 416.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+// Focus icon - Gear/cog for orchestration
+const FOCUS_ICON = `
+  <g data-asset-id="focus-icon" data-asset-name="focus-icon.svg" transform="translate(${ICON_POSITIONS.focus.x}, ${ICON_POSITIONS.focus.y}) scale(${ICON_SCALE.x}, ${ICON_SCALE.y})" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#orangeGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -310,9 +118,11 @@
       <circle cx="0" cy="0" r="25" fill="none" stroke="#FCD34D" stroke-width="2" opacity="0.6"><animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/></circle>
       <circle cx="0" cy="0" r="35" fill="none" stroke="#FCD34D" stroke-width="3" opacity="0"><animate attributeName="r" from="35" to="60" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/></circle>
     </g>
-  </g>
+  </g>`;
 
-  <g data-asset-id="topology-fit-icon" data-asset-name="topology-fit-icon.svg" transform="translate(698.44, 176.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+// Topology Fit icon - Stream/flow arrows
+const TOPOLOGY_FIT_ICON = `
+  <g data-asset-id="topology-fit-icon" data-asset-name="topology-fit-icon.svg" transform="translate(${ICON_POSITIONS.topologyFit.x}, ${ICON_POSITIONS.topologyFit.y}) scale(${ICON_SCALE.x}, ${ICON_SCALE.y})" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#purpleGrad)" opacity="0.1" filter="url(#glow)"/>
     <g xmlns="http://www.w3.org/2000/svg" transform="translate(40, 70)">
       <g opacity="0.8"><path d="M 10,10 L 130,10" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/><polygon points="140,10 130,5 130,15" fill="#8B5CF6"/></g>
@@ -322,9 +132,11 @@
       <circle cx="60" cy="35" r="4" fill="#DDD6FE"><animate attributeName="cx" from="10" to="140" dur="2.5s" repeatCount="indefinite"/></circle>
       <circle cx="80" cy="60" r="4" fill="#C4B5FD"><animate attributeName="cx" from="10" to="140" dur="1.8s" repeatCount="indefinite"/></circle>
     </g>
-  </g>
+  </g>`;
 
-  <g data-asset-id="characteristics-icon" data-asset-name="characteristics-icon.svg" transform="translate(698.44, 316.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+// Characteristics icon - Shield with checkmarks
+const CHARACTERISTICS_ICON = `
+  <g data-asset-id="characteristics-icon" data-asset-name="characteristics-icon.svg" transform="translate(${ICON_POSITIONS.characteristics.x}, ${ICON_POSITIONS.characteristics.y}) scale(${ICON_SCALE.x}, ${ICON_SCALE.y})" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#pinkGrad)" opacity="0.1" filter="url(#glow)">
       <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
     </circle>
@@ -340,9 +152,11 @@
       <circle cx="-25" cy="0" r="2" fill="#FFF" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.3s" repeatCount="indefinite"/></circle>
       <circle cx="30" cy="25" r="2.5" fill="#FFF" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.6s" repeatCount="indefinite"/></circle>
     </g>
-  </g>
+  </g>`;
 
-  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(698.44, 536.58) scale(0.28173085392104, 0.3143794929418287)" opacity="1">
+// Collaboration icon - Connected nodes
+const COLLABORATION_ICON = `
+  <g data-asset-id="collaboration-icon" data-asset-name="collaboration-icon.svg" transform="translate(${ICON_POSITIONS.collaboration.x}, ${ICON_POSITIONS.collaboration.y}) scale(${ICON_SCALE.x}, ${ICON_SCALE.y})" opacity="1">
     <circle xmlns="http://www.w3.org/2000/svg" cx="100" cy="100" r="90" fill="url(#cyanGrad)" opacity="0.1" filter="url(#glow)"/>
     <g xmlns="http://www.w3.org/2000/svg" transform="translate(100, 100)">
       <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#06B6D4" stroke-width="3" opacity="0.5"/>
@@ -361,5 +175,135 @@
       <circle cx="0" cy="0" r="8" fill="#FFF" opacity="0.5"/>
       <circle cx="0" cy="0" r="18" fill="none" stroke="#22D3EE" stroke-width="2" opacity="0.8"><animate attributeName="r" from="18" to="35" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/></circle>
     </g>
-  </g>
-</svg>
+  </g>`;
+
+const ALL_ICONS = [
+  NATURE_ICON,
+  STRUCTURE_ICON,
+  FOCUS_ICON,
+  TOPOLOGY_FIT_ICON,
+  CHARACTERISTICS_ICON,
+  COLLABORATION_ICON
+].join('\n');
+
+interface ProcessResult {
+  file: string;
+  success: boolean;
+  message: string;
+}
+
+/**
+ * Add icon gradients to the defs section of an SVG file
+ */
+function addIconGradients(svgContent: string): string {
+  // Check if gradients already exist
+  if (svgContent.includes('id="blueGrad"')) {
+    return svgContent;
+  }
+
+  // Find the closing </defs> tag and insert gradients before it
+  const defsEndRegex = /(\s*)<\/defs>/;
+  return svgContent.replace(defsEndRegex, `${ICON_GRADIENTS}\n$1</defs>`);
+}
+
+/**
+ * Add animated section icons to an SVG file
+ */
+function addAnimatedIcons(svgContent: string): string {
+  // Check if icons already exist
+  if (svgContent.includes('data-asset-id="nature-icon"')) {
+    return svgContent;
+  }
+
+  // Find the closing </svg> tag and insert icons before it
+  const svgEndRegex = /([ \t]*)<\/svg>\s*$/;
+  return svgContent.replace(svgEndRegex, `\n  <!-- Animated Section Icons -->${ALL_ICONS}\n$1</svg>`);
+}
+
+/**
+ * Process a single topology SVG file
+ */
+function processTopologyFile(filePath: string): ProcessResult {
+  try {
+    const svgContent = readFileSync(filePath, 'utf-8');
+    
+    // Add gradients
+    let updatedContent = addIconGradients(svgContent);
+    
+    // Add icons
+    updatedContent = addAnimatedIcons(updatedContent);
+    
+    // Only write if content changed
+    if (updatedContent !== svgContent) {
+      writeFileSync(filePath, updatedContent, 'utf-8');
+      return {
+        file: filePath,
+        success: true,
+        message: 'Added icon gradients and animated icons'
+      };
+    }
+    
+    return {
+      file: filePath,
+      success: true,
+      message: 'Icons already present, no changes needed'
+    };
+  } catch (error) {
+    return {
+      file: filePath,
+      success: false,
+      message: `Error: ${error instanceof Error ? error.message : String(error)}`
+    };
+  }
+}
+
+/**
+ * Main execution
+ */
+function main() {
+  const svgsDir = join(__dirname, '..', 'svgs');
+  
+  // Process topology files 02-07 (01 is already done manually)
+  const topologyFiles = [
+    'topology-02-host-sdk-platform.svg',
+    'topology-03-thin-host-enabling.svg',
+    'topology-04-components-design-system.svg',
+    'topology-05-conductor-core.svg',
+    'topology-06-valence-governance.svg',
+    'topology-07-product-solution.svg'
+  ];
+  
+  console.log('🎨 Adding animated section icons to topology slides...\n');
+  
+  const results: ProcessResult[] = [];
+  
+  for (const file of topologyFiles) {
+    const filePath = join(svgsDir, file);
+    console.log(`Processing: ${file}`);
+    const result = processTopologyFile(filePath);
+    results.push(result);
+    console.log(`  ${result.success ? '✓' : '✗'} ${result.message}\n`);
+  }
+  
+  // Summary
+  const successful = results.filter(r => r.success).length;
+  const failed = results.filter(r => !r.success).length;
+  
+  console.log('━'.repeat(60));
+  console.log(`\n✨ Complete! ${successful} files processed successfully`);
+  if (failed > 0) {
+    console.log(`⚠️  ${failed} files had errors`);
+  }
+}
+
+// Export for testing
+export {
+  addIconGradients,
+  addAnimatedIcons,
+  processTopologyFile,
+  ICON_POSITIONS,
+  ICON_SCALE
+};
+
+// Run main function
+main();
